@@ -1,4 +1,5 @@
-# singluar-ui-kits
-singluar ui kits
+# singluar-assetslib
+
+singluar assets library
 
 Private source business is not allowed!
