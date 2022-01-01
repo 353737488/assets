@@ -129,6 +129,7 @@ _singluarSetAbility = {
                     if (storage[i] == nil) then
                         tmpData.btn[i].show = false
                         tmpData.btn[i].maskValue = 0
+                        tmpData.btnLvUp[i].show = false
                     else
                         local tt = storage[i].targetType()
                         tmpData.btn[i].texture = storage[i].icon()

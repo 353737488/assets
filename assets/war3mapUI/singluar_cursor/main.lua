@@ -41,22 +41,18 @@ this.onSetup(function(stage)
     end, "singluar_cursor")
 end)
 
-_sCursorCatcher = _sCursorCatcher or function(x, y, radius, limit, ab)
-    local res = {}
-    ---@param enumUnit Unit
-    UnitGroup().units().forEach(function(_, enumUnit)
-        if (enumUnit.isDead() and ab.isCastTargetAllow(enumUnit)) then
-            return
+---@param ab Ability
+_sCursorCatcher = function(x, y, radius, limit, ab)
+    local g = group.catch({
+        key = "Unit",
+        x = x, y = y, radius = radius,
+        limit = limit,
+        ---@param enumUnit Unit
+        filter = function(enumUnit)
+            return enumUnit.isAlive() and ab.isCastTarget(enumUnit)
         end
-        if (radius < math.distance(x, y, enumUnit.x(), enumUnit.y())) then
-            return
-        end
-        table.insert(res, enumUnit)
-        if (#res >= limit) then
-            return false
-        end
-    end)
-    return res
+    })
+    return g
 end
 
 this.onRefresh(0.03, function(stage)
@@ -99,6 +95,7 @@ this.onRefresh(0.03, function(stage)
                             japi.EXSetEffectXY(tmpData.radius.area, 0, 0)
                             japi.EXSetEffectZ(tmpData.radius.area, -9999)
                             J.DestroyEffect(tmpData.radius.area)
+                            JassDebug.handle_unref(tmpData.radius.area)
                             tmpData.radius.area = nil
                         end
                     end
@@ -110,6 +107,7 @@ this.onRefresh(0.03, function(stage)
                             eff = ''
                         end
                         tmpData.radius.area = J.AddSpecialEffect(eff, tmpData.radius.x, tmpData.radius.y)
+                        JassDebug.handle_ref(tmpData.radius.area)
                         japi.EXSetEffectZ(tmpData.radius.area, tmpData.radius.z)
                         japi.EXSetEffectSize(tmpData.radius.area, tmpData.radius.size)
                     end
@@ -131,7 +129,7 @@ this.onRefresh(0.03, function(stage)
                         else
                             local tx = japi.DzGetMouseTerrainX()
                             local ty = japi.DzGetMouseTerrainY()
-                            if (tt == ABILITY_TARGET_TYPE.TAG_U or tt == ABILITY_TARGET_TYPE.TAG_IT or tt == ABILITY_TARGET_TYPE.TAG_L) then
+                            if (tt == ABILITY_TARGET_TYPE.TAG_U or tt == ABILITY_TARGET_TYPE.TAG_L) then
                                 tmpData.texture = "cursor\\aim_white"
                                 tmpData.size = { 0.03, 0.04 }
                                 if (isBan) then

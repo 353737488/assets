@@ -12,6 +12,8 @@ this.onSetup(function(stage)
     stage.main = FrameAnimate(kit .. "->an1", FrameGameUI)
         .relation(FRAME_ALIGN_CENTER, FrameGameUI, FRAME_ALIGN_CENTER, 0, 0)
         .size(0.048, 0.06)
+        .duration(1)
+        .halt(0)
         .motion({
         "motion\\00",
         "motion\\01",
@@ -24,8 +26,6 @@ this.onSetup(function(stage)
         "motion\\08",
         "motion\\09",
     })
-        .duration(1)
-        .halt(0)
 
     stage.main.play(true)
 
