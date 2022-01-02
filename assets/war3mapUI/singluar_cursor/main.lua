@@ -95,7 +95,7 @@ this.onRefresh(0.03, function(stage)
                             japi.EXSetEffectXY(tmpData.radius.area, 0, 0)
                             japi.EXSetEffectZ(tmpData.radius.area, -9999)
                             J.DestroyEffect(tmpData.radius.area)
-                            JassDebug.handle_unref(tmpData.radius.area)
+                            J.handleUnRef(tmpData.radius.area)
                             tmpData.radius.area = nil
                         end
                     end
@@ -107,7 +107,7 @@ this.onRefresh(0.03, function(stage)
                             eff = ''
                         end
                         tmpData.radius.area = J.AddSpecialEffect(eff, tmpData.radius.x, tmpData.radius.y)
-                        JassDebug.handle_ref(tmpData.radius.area)
+                        J.handleRef(tmpData.radius.area)
                         japi.EXSetEffectZ(tmpData.radius.area, tmpData.radius.z)
                         japi.EXSetEffectSize(tmpData.radius.area, tmpData.radius.size)
                     end
