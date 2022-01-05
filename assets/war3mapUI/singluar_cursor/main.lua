@@ -7,7 +7,8 @@ local kit = 'singluar_cursor'
 
 local this = UIKit(kit)
 
-this.onSetup(function(stage)
+this.onSetup(function()
+    local stage = this.stage()
     stage.playerData = {}
     stage.radiusAreaLimit = 0
     stage.main = FrameBackdrop(kit, FrameGameUI)
@@ -55,7 +56,8 @@ _sCursorCatcher = function(x, y, radius, limit, ab)
     return g
 end
 
-this.onRefresh(0.03, function(stage)
+this.onRefresh(0.03, function()
+    local stage = this.stage()
     stage.radiusAreaLimit = stage.radiusAreaLimit + 1
     for pi, p in ipairs(Players(table.section(1, 12))) do
         if (p.isPlaying()) then
@@ -155,7 +157,7 @@ this.onRefresh(0.03, function(stage)
                                     end
                                 end
                                 Async.call(p, function()
-                                    japi.DzFrameSetPoint(stage.main.frameId(), FRAME_ALIGN_CENTER, FrameGameUI.frameId(), FRAME_ALIGN_LEFT_BOTTOM, rx, ry)
+                                    japi.DzFrameSetPoint(stage.main.handle(), FRAME_ALIGN_CENTER, FrameGameUI.handle(), FRAME_ALIGN_LEFT_BOTTOM, rx, ry)
                                 end)
                             elseif (tt == ABILITY_TARGET_TYPE.TAG_R) then
                                 tmpData.texture = "Singluar\\ui\\nil.tga"
@@ -245,9 +247,9 @@ this.onRefresh(0.03, function(stage)
             japi.EXSetEffectZ(tmpData.radius.area, tmpData.radius.z)
             japi.EXSetEffectSize(tmpData.radius.area, tmpData.radius.size)
             Async.call(p, function()
-                japi.DzFrameSetTexture(stage.main.frameId(), AUIKit(kit, tmpData.texture, 'tga'), 0)
-                japi.DzFrameSetSize(stage.main.frameId(), tmpData.size[1], tmpData.size[2])
-                japi.DzFrameSetAlpha(stage.main.frameId(), tmpData.alpha)
+                japi.DzFrameSetTexture(stage.main.handle(), AUIKit(kit, tmpData.texture, 'tga'), 0)
+                japi.DzFrameSetSize(stage.main.handle(), tmpData.size[1], tmpData.size[2])
+                japi.DzFrameSetAlpha(stage.main.handle(), tmpData.alpha)
             end)
         end
     end

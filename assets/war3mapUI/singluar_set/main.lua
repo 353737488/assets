@@ -7,7 +7,8 @@ local kit = 'singluar_set'
 
 local this = UIKit(kit)
 
-this.onSetup(function(stage)
+this.onSetup(function()
+    local stage = this.stage()
     _singluarSetMsg.onSetup(kit, stage)
     _singluarSetMenu.onSetup(kit, stage)
     _singluarSetController.onSetup(kit, stage)
@@ -21,8 +22,9 @@ this.onSetup(function(stage)
     stage.tooltips = FrameTooltip(kit .. '->tooltips').textAlign(TEXT_ALIGN_LEFT).fontSize(10)
 end)
 
----@param stage {tips:table,main:FrameBackdrop,miniMap:Frame,miniMapBtns:Frame[],portrait:Frame,portraitShadow:FrameBackdrop,plate:table<string,FrameBackdropTile>,nilDisplay:FrameText,mp:FrameBar,hp:FrameBar,info:table<string,FrameButton|FrameText>,tile:table<string,FrameBar>}
-this.onRefresh(0.1, function(stage)
+this.onRefresh(0.1, function()
+    ---@type {tips:table,main:FrameBackdrop,miniMap:Frame,miniMapBtns:Frame[],portrait:Frame,portraitShadow:FrameBackdrop,plate:table<string,FrameBackdropTile>,nilDisplay:FrameText,mp:FrameBar,hp:FrameBar,info:table<string,FrameButton|FrameText>,tile:table<string,FrameBar>}
+    local stage = this.stage()
     for _, p in ipairs(Players(table.section(1, 12))) do
         if (p.isPlaying()) then
             _singluarSetMsg.onRefresh(stage, p)

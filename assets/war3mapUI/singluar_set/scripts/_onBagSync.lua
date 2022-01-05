@@ -34,8 +34,8 @@ _singluarSetOnBagSync = function(stage)
                 local relation = f.relation()
                 local alpha = f.alpha()
                 Async.call(syncPlayer, function()
-                    japi.DzFrameSetPoint(f.frameId(), relation[1], relation[2].frameId(), relation[3], relation[4], relation[5])
-                    japi.DzFrameSetAlpha(f.frameId(), alpha)
+                    japi.DzFrameSetPoint(f.handle(), relation[1], relation[2].handle(), relation[3], relation[4], relation[5])
+                    japi.DzFrameSetAlpha(f.handle(), alpha)
                 end)
                 followIndex[pIdx] = nil
                 followTimer[pIdx] = nil
@@ -100,7 +100,7 @@ _singluarSetOnBagSync = function(stage)
                 else
                     frame = frameWarehouse[idx - itemMax]
                 end
-                japi.DzFrameSetAlpha(frame.frameId(), 0.6 * (frame.alpha() or 255))
+                japi.DzFrameSetAlpha(frame.handle(), 0.6 * (frame.alpha() or 255))
                 Async.call(syncPlayer, function()
                     stage.tooltips.show(false, 0)
                     vcmClick1.play()
@@ -137,7 +137,7 @@ _singluarSetOnBagSync = function(stage)
                             if (my - hh < 0) then my = hh end
                             if (my + hh > 0.6) then my = 0.6 - hh end
                         end
-                        japi.DzFrameSetPoint(frame.frameId(), FRAME_ALIGN_CENTER, FrameGameUI.frameId(), FRAME_ALIGN_LEFT_BOTTOM, mx, my)
+                        japi.DzFrameSetPoint(frame.handle(), FRAME_ALIGN_CENTER, FrameGameUI.handle(), FRAME_ALIGN_LEFT_BOTTOM, mx, my)
                     end)
                 end)
             elseif (command == "dropItem") then

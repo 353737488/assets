@@ -27,8 +27,8 @@ _singluarSetOnAbilitySync = function(stage)
                 local f = frameButton[followIndex[pIdx]]
                 local alpha = f.alpha()
                 Async.call(syncPlayer, function()
-                    japi.DzFrameSetPoint(f.frameId(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].frameId(), FRAME_ALIGN_CENTER, 0, 0)
-                    japi.DzFrameSetAlpha(f.frameId(), alpha)
+                    japi.DzFrameSetPoint(f.handle(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].handle(), FRAME_ALIGN_CENTER, 0, 0)
+                    japi.DzFrameSetAlpha(f.handle(), alpha)
                 end)
                 followIndex[pIdx] = nil
             elseif (command == "change") then
@@ -47,8 +47,8 @@ _singluarSetOnAbilitySync = function(stage)
                 local f = frameButton[followIndex[pIdx]]
                 local alpha = f.alpha()
                 Async.call(syncPlayer, function()
-                    japi.DzFrameSetPoint(f.frameId(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].frameId(), FRAME_ALIGN_CENTER, 0, 0)
-                    japi.DzFrameSetAlpha(f.frameId(), alpha)
+                    japi.DzFrameSetPoint(f.handle(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].handle(), FRAME_ALIGN_CENTER, 0, 0)
+                    japi.DzFrameSetAlpha(f.handle(), alpha)
                 end)
                 followTimer[pIdx] = nil
                 followIndex[pIdx] = nil
@@ -56,7 +56,7 @@ _singluarSetOnAbilitySync = function(stage)
             elseif (command == "follow") then
                 local idx = tonumber(syncData.transferData[3])
                 local frame = frameButton[idx]
-                japi.DzFrameSetAlpha(frame.frameId(), 0.6 * (frame.alpha() or 255))
+                japi.DzFrameSetAlpha(frame.handle(), 0.6 * (frame.alpha() or 255))
                 followIndex[pIdx] = idx
                 Async.call(syncPlayer, function()
                     stage.tooltips.show(false, 0)
@@ -71,8 +71,8 @@ _singluarSetOnAbilitySync = function(stage)
                         local alpha = f.alpha()
                         followTimer[pIdx] = nil
                         Async.call(syncPlayer, function()
-                            japi.DzFrameSetPoint(f.frameId(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].frameId(), FRAME_ALIGN_CENTER, 0, 0)
-                            japi.DzFrameSetAlpha(f.frameId(), alpha)
+                            japi.DzFrameSetPoint(f.handle(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].handle(), FRAME_ALIGN_CENTER, 0, 0)
+                            japi.DzFrameSetAlpha(f.handle(), alpha)
                         end)
                         followIndex[pIdx] = nil
                         return
@@ -89,7 +89,7 @@ _singluarSetOnAbilitySync = function(stage)
                             if (my - hh < 0) then my = hh end
                             if (my + hh > 0.6) then my = 0.6 - hh end
                         end
-                        japi.DzFrameSetPoint(frame.frameId(), FRAME_ALIGN_CENTER, FrameGameUI.frameId(), FRAME_ALIGN_LEFT_BOTTOM, mx, my)
+                        japi.DzFrameSetPoint(frame.handle(), FRAME_ALIGN_CENTER, FrameGameUI.handle(), FRAME_ALIGN_LEFT_BOTTOM, mx, my)
                     end)
                 end)
             end

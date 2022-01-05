@@ -12,7 +12,8 @@ if (DEBUGGING) then
 
     local this = UIKit(kit)
 
-    this.onSetup(function(stage)
+    this.onSetup(function()
+        local stage = this.stage()
         stage.main = FrameText(kit, FrameGameUI)
             .relation(FRAME_ALIGN_LEFT, FrameGameUI, FRAME_ALIGN_LEFT, 0.001, 0.05)
             .textAlign(TEXT_ALIGN_LEFT)
@@ -152,8 +153,9 @@ if (DEBUGGING) then
 
     end)
 
-    ---@param stage {main:FrameText,debug:fun():table<number,number>}
-    this.onRefresh(1, function(stage)
+    this.onRefresh(1, function()
+        ---@type {main:FrameText,debug:fun():table<number,number>}
+        local stage = this.stage()
         for _, p in ipairs(Players(table.section(1, 12))) do
             if (p.isPlaying() and p.isComputer() == false) then
                 local s = string.implode('|n', stage.debug())

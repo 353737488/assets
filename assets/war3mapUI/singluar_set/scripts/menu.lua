@@ -33,7 +33,7 @@ _singluarSetMenu = {
             stage.menu_fn[i].btn = Frame(kit .. '->' .. i, japi.DzFrameGetUpperButtonBarButton(i - 1), stage.menu)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.menu, FRAME_ALIGN_LEFT_TOP, (i - 1) * 0.071, 0.002)
                 .size(0.064, 0.02)
-            japi.DzFrameSetAlpha(stage.menu_fn[i].btn.frameId(), 0)
+            japi.DzFrameSetAlpha(stage.menu_fn[i].btn.handle(), 0)
             stage.menu_fn[i].txt = FrameText(kit .. '->txt->' .. i, stage.menu)
                 .relation(FRAME_ALIGN_CENTER, stage.menu_fn[i].btn, FRAME_ALIGN_CENTER, 0, 0)
                 .textAlign(TEXT_ALIGN_CENTER)

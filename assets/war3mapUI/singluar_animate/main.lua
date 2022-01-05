@@ -7,8 +7,8 @@ local kit = 'singluar_animate'
 
 local this = UIKit(kit)
 
-this.onSetup(function(stage)
-
+this.onSetup(function()
+    local stage = this.stage()
     stage.main = FrameAnimate(kit .. "->an1", FrameGameUI)
         .relation(FRAME_ALIGN_CENTER, FrameGameUI, FRAME_ALIGN_CENTER, 0, 0)
         .size(0.048, 0.06)
