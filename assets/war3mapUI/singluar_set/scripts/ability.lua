@@ -32,7 +32,11 @@ _singluarSetAbility = {
                     if (_singluarSetOnAbilitySyncFollowIndex[evtData.triggerPlayer.index()] ~= nil) then
                         return
                     end
-                    local content = _singluarSetTooltipsBuilder.ability(i, evtData.triggerPlayer, 0)
+                    local selection = evtData.triggerPlayer.selection()
+                    if (selection == nil) then
+                        return
+                    end
+                    local content = _singluarSetTooltipsBuilder.ability(selection.abilitySlot().storage()[i], 0)
                     if (content ~= nil) then
                         stage.tooltips
                              .relation(FRAME_ALIGN_BOTTOM, stage.ability_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
@@ -61,7 +65,11 @@ _singluarSetAbility = {
                 .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
-                    local content = _singluarSetTooltipsBuilder.ability(i, evtData.triggerPlayer, 1)
+                    local selection = evtData.triggerPlayer.selection()
+                    if (selection == nil) then
+                        return
+                    end
+                    local content = _singluarSetTooltipsBuilder.ability(selection.abilitySlot().storage()[i], 1)
                     if (content ~= nil) then
                         stage.tooltips
                              .relation(FRAME_ALIGN_BOTTOM, stage.ability_btnLvUp[i], FRAME_ALIGN_TOP, 0, 0.002)
@@ -77,7 +85,7 @@ _singluarSetAbility = {
                         local ab = selection.abilitySlot().storage()[i]
                         if (isObject(ab, "Ability")) then
                             Game().sync("SINGLUAR_GAME_SYNC", { evtData.triggerPlayer.index(), "ability_level_up", ab.id() })
-                            local content = _singluarSetTooltipsBuilder.ability(i, evtData.triggerPlayer, 1)
+                            local content = _singluarSetTooltipsBuilder.ability(ab, 1)
                             if (content ~= nil) then
                                 stage.tooltips.content(content)
                             end

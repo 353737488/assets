@@ -41,7 +41,11 @@ _singluarSetItem = {
                     if (_singluarSetOnBagSyncFollowIndex[evtData.triggerPlayer.index()] ~= nil) then
                         return
                     end
-                    local content = _singluarSetTooltipsBuilder.item(i, evtData.triggerPlayer)
+                    local sel = evtData.triggerPlayer.selection()
+                    if (false == isObject(sel, "Unit") or sel.isDestroy()) then
+                        return nil
+                    end
+                    local content = _singluarSetTooltipsBuilder.item(sel.itemSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
                         stage.tooltips
                              .relation(FRAME_ALIGN_BOTTOM, stage.item_btn[i], FRAME_ALIGN_TOP, 0, 0.002)

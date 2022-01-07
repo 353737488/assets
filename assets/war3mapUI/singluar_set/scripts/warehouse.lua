@@ -99,7 +99,7 @@ _singluarSetWarehouse = {
                     if (_singluarSetOnBagSyncFollowIndex[evtData.triggerPlayer.index()] ~= nil) then
                         return
                     end
-                    local content = _singluarSetTooltipsBuilder.warehouse(i, evtData.triggerPlayer)
+                    local content = _singluarSetTooltipsBuilder.warehouse(evtData.triggerPlayer.warehouseSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
                         stage.tooltips
                              .relation(FRAME_ALIGN_BOTTOM, stage.warehouse_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
