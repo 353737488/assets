@@ -143,7 +143,7 @@ _singluarSetItem = {
                     tmpData.btn[i].border = 'btn\\border-white'
                     tmpData.btn[i].maskValue = 0
                     tmpData.charges[i] = math.floor(it.charges())
-                    local ab = it.bindAbility()
+                    local ab = it.ability()
                     if (isObject(ab, "Ability")) then
                         if (ab.coolDown() > 0 and ab.coolDownRemain() > 0) then
                             tmpData.btn[i].maskValue = stage.item_itHeight * ab.coolDownRemain() / ab.coolDown() / stage.item_itHeight
