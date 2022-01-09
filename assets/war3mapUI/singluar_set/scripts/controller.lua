@@ -307,6 +307,7 @@ _singluarSetController = {
             end
         end
     end,
+    ---@param whichPlayer Player
     onRefresh = function(stage, whichPlayer)
         local tmpData = {
             class = 'Nil',
@@ -320,7 +321,7 @@ _singluarSetController = {
             tmpData.nilDisplay = string.implode("|n", table.merge({ Game().name() }, Game().introduction()))
         elseif (tmpData.class == "Unit") then
             if (tmpData.selection.isDead()) then
-                whichPlayer.freeProp("selection")
+                whichPlayer.prop("selection", NIL)
                 return
             end
             local primary = tmpData.selection.primary()
@@ -445,7 +446,7 @@ _singluarSetController = {
             end
         elseif (tmpData.class == "Item") then
             if (tmpData.selection.instance() == false) then
-                whichPlayer.freeProp("selection")
+                whichPlayer.prop("selection", NIL)
                 return
             end
             tmpData.nilDisplay = ""
