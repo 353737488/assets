@@ -21,7 +21,7 @@ _singluarSetMsg = {
             .fontSize(13)
     end,
     onRefresh = function(stage, whichPlayer)
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             stage.alert.text(whichPlayer.alert() or "")
         end)
     end,

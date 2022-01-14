@@ -13,11 +13,14 @@ _singluarSetTooltipsBuilder = {
         }
         lvOffset = lvOffset or 0
         local lv = lvOffset + ab.level()
+        if (lv > ab.levelMax()) then
+            return nil
+        end
         local tips
         if (lvOffset > 0) then
-            tips = Game().combineDescription(ab, nil, "abilityBase", "<D>", "abilityLvPoint")
+            tips = Game().combineDescription(ab, { level = lv }, "abilityBase", "<D>", "attributes", "abilityLvPoint")
         else
-            tips = Game().combineDescription(ab, nil, "abilityBase", "<D>")
+            tips = Game().combineDescription(ab, nil, "abilityBase", "<D>", "attributes")
         end
         local content = {
             tips = tips,
@@ -73,7 +76,7 @@ _singluarSetTooltipsBuilder = {
             { 'copper', 'EC6700', '铜' }
         }
         local content = {
-            tips = Game().combineDescription(it, nil, "itemBase", "<D>"),
+            tips = Game().combineDescription(it, nil, "itemBase", "<D>", "attributes"),
             icons = {},
             bars = {},
             list = {},
@@ -150,7 +153,7 @@ _singluarSetTooltipsBuilder = {
             { 'copper', 'EC6700', '铜' }
         }
         local content = {
-            tips = Game().combineDescription(it, nil, "itemBase", "<D>"),
+            tips = Game().combineDescription(it, nil, "itemBase", "<D>", "attributes"),
             icons = {},
             bars = {},
             list = {},

@@ -12,7 +12,7 @@ _singluarSetOnAbilitySync = function(stage)
         local frameBedding = stage.ability_bedding
         ---@type FrameButton[]
         local frameButton = stage.ability_btn
-        Game().onSync("_singluarSetOnAbilitySync", function(syncData)
+        sync.receive("_singluarSetOnAbilitySync", function(syncData)
             if (syncData.syncPlayer.index() ~= tonumber(syncData.transferData[1])) then
                 return
             end
@@ -26,7 +26,7 @@ _singluarSetOnAbilitySync = function(stage)
             if (command == "drop") then
                 local f = frameButton[followIndex[pIdx]]
                 local alpha = f.alpha()
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     japi.DzFrameSetPoint(f.handle(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].handle(), FRAME_ALIGN_CENTER, 0, 0)
                     japi.DzFrameSetAlpha(f.handle(), alpha)
                 end)
@@ -41,12 +41,12 @@ _singluarSetOnAbilitySync = function(stage)
                     or isObject(syncPlayer.cursor().ability(), "Ability")) then
                     return
                 end
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     vcmClick1.play()
                 end)
                 local f = frameButton[followIndex[pIdx]]
                 local alpha = f.alpha()
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     japi.DzFrameSetPoint(f.handle(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].handle(), FRAME_ALIGN_CENTER, 0, 0)
                     japi.DzFrameSetAlpha(f.handle(), alpha)
                 end)
@@ -58,7 +58,7 @@ _singluarSetOnAbilitySync = function(stage)
                 local frame = frameButton[idx]
                 japi.DzFrameSetAlpha(frame.handle(), 0.6 * (frame.alpha() or 255))
                 followIndex[pIdx] = idx
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     stage.tooltips.show(false, 0)
                     vcmClick1.play()
                 end)
@@ -70,14 +70,14 @@ _singluarSetOnAbilitySync = function(stage)
                         local f = frameButton[followIndex[pIdx]]
                         local alpha = f.alpha()
                         followTimer[pIdx] = nil
-                        Async.call(syncPlayer, function()
+                        async.call(syncPlayer, function()
                             japi.DzFrameSetPoint(f.handle(), FRAME_ALIGN_CENTER, frameBedding[followIndex[pIdx]].handle(), FRAME_ALIGN_CENTER, 0, 0)
                             japi.DzFrameSetAlpha(f.handle(), alpha)
                         end)
                         followIndex[pIdx] = nil
                         return
                     end
-                    Async.call(syncPlayer, function()
+                    async.call(syncPlayer, function()
                         local _se = frame.size()
                         local mx = japi.MouseRX()
                         local my = japi.MouseRY()
@@ -94,7 +94,7 @@ _singluarSetOnAbilitySync = function(stage)
                 end)
             end
         end)
-        Game().onMouseRightClick(function(evtData)
+        mouse.onRightClick(function(evtData)
             local triggerPlayer = evtData.triggerPlayer
             local pIdx = triggerPlayer.index()
             local selection = triggerPlayer.selection()
@@ -120,12 +120,12 @@ _singluarSetOnAbilitySync = function(stage)
                             if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                                 if (followIndex[pIdx] ~= nil) then
                                     if (followIndex[pIdx] ~= i) then
-                                        Game().sync("_singluarSetOnAbilitySync", { triggerPlayer.index(), "change", i })
+                                        sync.send("_singluarSetOnAbilitySync", { triggerPlayer.index(), "change", i })
                                     else
-                                        Game().sync("_singluarSetOnAbilitySync", { triggerPlayer.index(), "drop" })
+                                        sync.send("_singluarSetOnAbilitySync", { triggerPlayer.index(), "drop" })
                                     end
                                 elseif (isObject(ab, "Ability")) then
-                                    Game().sync("_singluarSetOnAbilitySync", { triggerPlayer.index(), "follow", i })
+                                    sync.send("_singluarSetOnAbilitySync", { triggerPlayer.index(), "follow", i })
                                 end
                                 break
                             end
@@ -133,7 +133,7 @@ _singluarSetOnAbilitySync = function(stage)
                         j = i + 1
                     end
                     if (followIndex[pIdx] ~= nil and j > frameMax) then
-                        Game().sync("_singluarSetOnAbilitySync", { triggerPlayer.index(), "drop" })
+                        sync.send("_singluarSetOnAbilitySync", { triggerPlayer.index(), "drop" })
                     end
                 end
             end

@@ -69,7 +69,7 @@ _singluarSetCaster = {
                 end
             end
         end
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             --- 技能点
             if (tmpData.sp ~= nil) then
                 stage.caster_sp.text(colour.gold(tmpData.sp) .. ' 技能点')

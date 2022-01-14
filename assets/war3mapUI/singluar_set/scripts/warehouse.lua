@@ -116,7 +116,7 @@ _singluarSetWarehouse = {
                                             ed.triggerPlayer.warehouseSlot().remove(it.warehouseSlotIndex())
                                             selection.itemSlot().push(it)
                                             local v = Vcm("war3_pickItem")
-                                            Async.call(ed.triggerPlayer, function()
+                                            async.call(ed.triggerPlayer, function()
                                                 v.play()
                                             end)
                                         end
@@ -146,7 +146,7 @@ _singluarSetWarehouse = {
                         local mx = japi.MouseRX()
                         local my = japi.MouseRY()
                         if (mx > 0.01 and mx < 0.79 and my > 0.155 and my < 0.56) then
-                            Game().sync("_singluarSetOnBagSync", { pIdx, "dropItem", japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
+                            sync.send("_singluarSetOnBagSync", { pIdx, "dropItem", japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
                         end
                     end
                 end)
@@ -218,7 +218,7 @@ _singluarSetWarehouse = {
                 end
             end
         end
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             stage.warehouse_cell.text(tmpData.cell)
             for i, _ in ipairs(stage.warehouse_resAllow) do
                 stage.warehouse_resInfo[i].text(tmpData.resInfo[i])

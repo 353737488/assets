@@ -13,7 +13,7 @@ _singluarSetOnBagSync = function(stage)
         local frameItems = stage.item_btn
         ---@type FrameButton[]
         local frameWarehouse = stage.warehouse_btn
-        Game().onSync("_singluarSetOnBagSync", function(syncData)
+        sync.receive("_singluarSetOnBagSync", function(syncData)
             if (syncData.syncPlayer.index() ~= tonumber(syncData.transferData[1])) then
                 return
             end
@@ -33,7 +33,7 @@ _singluarSetOnBagSync = function(stage)
                 end
                 local relation = f.relation()
                 local alpha = f.alpha()
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     japi.DzFrameSetPoint(f.handle(), relation[1], relation[2].handle(), relation[3], relation[4], relation[5])
                     japi.DzFrameSetAlpha(f.handle(), alpha)
                 end)
@@ -60,7 +60,7 @@ _singluarSetOnBagSync = function(stage)
                 if (isObject(it, "Item") == false or isObject(syncPlayer.cursor().ability(), "Ability")) then
                     return
                 end
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     vcmClick1.play()
                 end)
                 local fpi = followIndex[pIdx]
@@ -101,7 +101,7 @@ _singluarSetOnBagSync = function(stage)
                     frame = frameWarehouse[idx - itemMax]
                 end
                 japi.DzFrameSetAlpha(frame.handle(), 0.6 * (frame.alpha() or 255))
-                Async.call(syncPlayer, function()
+                async.call(syncPlayer, function()
                     stage.tooltips.show(false, 0)
                     vcmClick1.play()
                 end)
@@ -125,7 +125,7 @@ _singluarSetOnBagSync = function(stage)
                         cancel()
                         return
                     end
-                    Async.call(syncPlayer, function()
+                    async.call(syncPlayer, function()
                         local _se = frame.size()
                         local mx = japi.MouseRX()
                         local my = japi.MouseRY()
@@ -168,7 +168,7 @@ _singluarSetOnBagSync = function(stage)
                 end
             end
         end)
-        Game().onMouseRightClick(function(evtData)
+        mouse.onRightClick(function(evtData)
             local triggerPlayer = evtData.triggerPlayer
             local pIdx = triggerPlayer.index()
             local selection = triggerPlayer.selection()
@@ -194,12 +194,12 @@ _singluarSetOnBagSync = function(stage)
                             if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                                 if (followIndex[pIdx] ~= nil) then
                                     if (followIndex[pIdx] ~= i) then
-                                        Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "change", i })
+                                        sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "change", i })
                                     else
-                                        Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "drop" })
+                                        sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "drop" })
                                     end
                                 elseif (isObject(it, "Item")) then
-                                    Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "follow", i })
+                                    sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "follow", i })
                                 end
                                 iCheck = true
                                 break
@@ -226,12 +226,12 @@ _singluarSetOnBagSync = function(stage)
                     if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                         if (followIndex[pIdx] ~= nil) then
                             if ((followIndex[pIdx] - itemMax) ~= i) then
-                                Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "change", i + itemMax })
+                                sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "change", i + itemMax })
                             else
-                                Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "drop" })
+                                sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "drop" })
                             end
                         elseif (isObject(it, "Item")) then
-                            Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "follow", i + itemMax })
+                            sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "follow", i + itemMax })
                         end
                         wCheck = true
                         break
@@ -239,7 +239,7 @@ _singluarSetOnBagSync = function(stage)
                 end
             end
             if (followIndex[pIdx] ~= nil and iCheck == false and wCheck == false) then
-                Game().sync("_singluarSetOnBagSync", { triggerPlayer.index(), "drop" })
+                sync.send("_singluarSetOnBagSync", { triggerPlayer.index(), "drop" })
             end
         end, "singluarSet_onBagSync")
     end

@@ -60,16 +60,11 @@ if (DEBUGGING) then
 
         local kbKey = KEYBOARD['Control']
 
-        Game().onKeyboardPress(kbKey, function(_)
-            stage.mark.show(true)
+        keyboard.onRelease(kbKey, function(_)
+            local s = stage.mark.show()
+            stage.mark.show(not s)
             for _, l in ipairs(stage.line) do
-                l.show(true)
-            end
-        end, "debug")
-        Game().onKeyboardRelease(kbKey, function(_)
-            stage.mark.show(false)
-            for _, l in ipairs(stage.line) do
-                l.show(false)
+                l.show(not s)
             end
         end, "debug")
 
@@ -159,7 +154,7 @@ if (DEBUGGING) then
         for _, p in ipairs(Players(table.section(1, 12))) do
             if (p.isPlaying() and p.isComputer() == false) then
                 local s = string.implode('|n', stage.debug())
-                Async.call(p, function()
+                async.call(p, function()
                     stage.main.text(s)
                 end)
             end

@@ -26,10 +26,10 @@ _singluarSetBuff = {
             reborn = "复活时间",
             hp = "生命",
             mp = "魔法",
-            hpSuck = "攻击吸血",
-            hpSuckSpell = "技能吸血",
-            mpSuck = "攻击吸魔",
-            mpSuckSpell = "技能吸魔",
+            hpSuckAttack = "攻击吸血",
+            hpSuckAbility = "技能吸血",
+            mpSuckAttack = "攻击吸魔",
+            mpSuckAbility = "技能吸魔",
             hpRegen = "生命恢复",
             mpRegen = "魔法恢复",
             move = "移动",
@@ -277,7 +277,7 @@ _singluarSetBuff = {
                 end
             end
         end
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             for bi = 1, stage.buff_max, 1 do
                 if (buffShow[bi] == true) then
                     stage.buff_buffSignal[bi].texture(tmpData.signalTexture[bi])

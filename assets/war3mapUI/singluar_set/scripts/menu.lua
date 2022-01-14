@@ -52,7 +52,7 @@ _singluarSetMenu = {
             welcome = '你好 ' .. whichPlayer.name() .. ', 欢迎游玩 : ' .. colour.gold(Game().name()),
             lv = "MapLv" .. "：" .. whichPlayer.mapLv(),
         }
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             for i, t in ipairs(stage.menu_fns) do
                 stage.menu_fn[i].txt.text(t[2])
                 if (i == 3 and Game().playingQuantity() == 1) then

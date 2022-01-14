@@ -13,7 +13,7 @@ this.onSetup(function()
     stage.radiusAreaLimit = 0
     stage.main = FrameBackdrop(kit, FrameGameUI)
     --- 单位技能左键引用
-    Game().onMouseLeftClick(function(evtData)
+    mouse.onLeftClick(function(evtData)
         local cs = evtData.triggerPlayer.cursor()
         local ab = cs.ability()
         if (isObject(ab, "Ability")) then
@@ -27,7 +27,7 @@ this.onSetup(function()
                 if (ry < 0.125) then
                     if (rx > 0.240 and rx < 0.32) then
                         if (tt == ABILITY_TARGET_TYPE.TAG_U) then
-                            Game().sync("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_u", ab.id(), evtData.triggerPlayer.selection().id() })
+                            sync.send("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_u", ab.id(), evtData.triggerPlayer.selection().id() })
                         end
                     end
                     return
@@ -35,7 +35,7 @@ this.onSetup(function()
                     return
                 end
                 if (tt == ABILITY_TARGET_TYPE.TAG_L or tt == ABILITY_TARGET_TYPE.TAG_R) then
-                    Game().sync("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_xyz", ab.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY(), japi.DzGetMouseTerrainZ() })
+                    sync.send("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_xyz", ab.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY(), japi.DzGetMouseTerrainZ() })
                 end
             end
         end
@@ -156,7 +156,7 @@ this.onRefresh(0.03, function()
                                         tmpData.texture = "cursor\\aim_green"
                                     end
                                 end
-                                Async.call(p, function()
+                                async.call(p, function()
                                     japi.DzFrameSetPoint(stage.main.handle(), FRAME_ALIGN_CENTER, FrameGameUI.handle(), FRAME_ALIGN_LEFT_BOTTOM, rx, ry)
                                 end)
                             elseif (tt == ABILITY_TARGET_TYPE.TAG_R) then
@@ -192,7 +192,7 @@ this.onRefresh(0.03, function()
                                             local green = rgba.get('green')
                                             local blue = rgba.get('blue')
                                             local alpha = rgba.get('alpha')
-                                            Async.call(p, function()
+                                            async.call(p, function()
                                                 J.SetUnitVertexColor(dru.handle(), red, green, blue, alpha)
                                             end)
                                         end
@@ -218,7 +218,7 @@ this.onRefresh(0.03, function()
                                                 alpha = 100
                                             end
                                             if ((red ~= 255 or green ~= 255 or blue ~= 255)) then
-                                                Async.call(p, function()
+                                                async.call(p, function()
                                                     J.SetUnitVertexColor(ru.handle(), red, green, blue, alpha)
                                                 end)
                                             end
@@ -237,7 +237,7 @@ this.onRefresh(0.03, function()
                     local green = rgba.get('green')
                     local blue = rgba.get('blue')
                     local alpha = rgba.get('alpha')
-                    Async.call(p, function()
+                    async.call(p, function()
                         J.SetUnitVertexColor(dru.handle(), red, green, blue, alpha)
                     end)
                 end
@@ -246,7 +246,7 @@ this.onRefresh(0.03, function()
             japi.EXSetEffectXY(tmpData.radius.area, tmpData.radius.x, tmpData.radius.y)
             japi.EXSetEffectZ(tmpData.radius.area, tmpData.radius.z)
             japi.EXSetEffectSize(tmpData.radius.area, tmpData.radius.size)
-            Async.call(p, function()
+            async.call(p, function()
                 japi.DzFrameSetTexture(stage.main.handle(), AUIKit(kit, tmpData.texture, 'tga'), 0)
                 japi.DzFrameSetSize(stage.main.handle(), tmpData.size[1], tmpData.size[2])
                 japi.DzFrameSetAlpha(stage.main.handle(), tmpData.alpha)

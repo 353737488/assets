@@ -66,7 +66,7 @@ _singluarSetController = {
         stage.ctl_info = {}
         --
         stage.ctl_mouseLeave = function(evtData)
-            Async.call(evtData.triggerPlayer, function()
+            async.call(evtData.triggerPlayer, function()
                 stage.tooltips.show(false, 0)
             end)
         end
@@ -451,7 +451,7 @@ _singluarSetController = {
             end
             tmpData.nilDisplay = ""
         end
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             stage.ctl.texture('bg\\' .. tmpData.race)
             if (tmpData.class == "Nil") then
                 stage.ctl_nilDisplay.text(tmpData.nilDisplay)

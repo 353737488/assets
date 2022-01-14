@@ -62,7 +62,7 @@ _singluarSetItem = {
                                             selection.itemSlot().remove(it.itemSlotIndex())
                                             ed.triggerPlayer.warehouseSlot().push(it)
                                             local v = Vcm("war3_dropItem")
-                                            Async.call(ed.triggerPlayer, function()
+                                            async.call(ed.triggerPlayer, function()
                                                 v.play()
                                             end)
                                         elseif (ed.key == "drop") then
@@ -88,14 +88,14 @@ _singluarSetItem = {
                         -- 引用
                         local it = selection.itemSlot().storage()[i]
                         if (isObject(it, "Item")) then
-                            Game().sync("SINGLUAR_GAME_SYNC", { pIdx, "item_quote", it.id() })
+                            sync.send("SINGLUAR_GAME_SYNC", { pIdx, "item_quote", it.id() })
                         end
                     else
                         -- 丢弃物品在鼠标坐标
                         local mx = japi.MouseRX()
                         local my = japi.MouseRY()
                         if (mx > 0.01 and mx < 0.79 and my > 0.155 and my < 0.56) then
-                            Game().sync("_singluarSetOnBagSync", { pIdx, "dropItem", japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
+                            sync.send("_singluarSetOnBagSync", { pIdx, "dropItem", japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
                         end
                     end
                 end)
@@ -169,7 +169,7 @@ _singluarSetItem = {
                 end
             end
         end
-        Async.call(whichPlayer, function()
+        async.call(whichPlayer, function()
             stage.item.show(tmpData.show)
             if (tmpData.show) then
                 stage.item_weight.text(tmpData.weight)
