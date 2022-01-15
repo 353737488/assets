@@ -314,8 +314,10 @@ _singluarSetController = {
             selection = whichPlayer.selection(),
             race = whichPlayer.race(),
         }
-        if (type(tmpData.selection) == 'table' and tmpData.selection.__NAME__ ~= nil) then
-            tmpData.class = tmpData.selection.__NAME__
+        if (isObject(tmpData.selection, "Unit")) then
+            tmpData.class = "Unit"
+        elseif (isObject(tmpData.selection, "Item")) then
+            tmpData.class = "Item"
         end
         if (tmpData.class == "Nil") then
             tmpData.nilDisplay = string.implode("|n", table.merge({ Game().name() }, Game().introduction()))
