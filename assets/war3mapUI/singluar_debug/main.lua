@@ -97,7 +97,6 @@ if (DEBUGGING) then
             ["+dlb"] = "对话框按钮",
             ["devt"] = "对话框事件",
         }
-        stage.costMax = stage.costMax or 0
         stage.costAvg = stage.costAvg or {}
         stage.debug = function()
             local count = { all = 0, max = JassDebug.handlemax() }
@@ -120,14 +119,18 @@ if (DEBUGGING) then
                 table.insert(txts, "  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
             end
             table.insert(txts, "|n  [S内核]")
+            if (group._d.Unit) then table.insert(txts, "  单位 : " .. group._d.Unit.count()) end
+            if (group._d.Item) then table.insert(txts, "  物品 : " .. group._d.Item.count()) end
             table.insert(txts, "  漂浮模型 : " .. _ttg_limiter)
             local i = 0
-            for _, _ in pairs(time.kernel) do
-                i = i + 1
+            for _, k in pairs(time.kernel) do
+                for _, _ in pairs(k) do
+                    i = i + 1
+                end
             end
             table.insert(txts, "  计时器 : " .. i)
-            local cost = math.round((collectgarbage("count") - ram) / 1024, 2)
-            if (stage.costMax < cost) then
+            local cost = math.round((collectgarbage("count") - ram) / 1024, 3)
+            if (stage.costMax == nil or stage.costMax < cost) then
                 stage.costMax = cost
             end
             local avg = 0
@@ -140,7 +143,7 @@ if (DEBUGGING) then
             end
             avg = math.round(avg, 2)
             table.insert(txts, "|n  [内存占用]")
-            table.insert(txts, colour.greenLight("  平均 : " .. avg .. ' MB'))
+            table.insert(txts, colour.yellowLight("  平均 : " .. avg .. ' MB'))
             table.insert(txts, colour.redLight("  最大 : " .. stage.costMax .. ' MB'))
             table.insert(txts, colour.gold("  当前 : " .. cost .. ' MB'))
             return txts
@@ -153,9 +156,8 @@ if (DEBUGGING) then
         local stage = this.stage()
         for _, p in ipairs(Players(table.section(1, 12))) do
             if (p.isPlaying() and p.isComputer() == false) then
-                local s = string.implode('|n', stage.debug())
                 async.call(p, function()
-                    stage.main.text(s)
+                    stage.main.text(string.implode('|n', stage.debug()))
                 end)
             end
         end
