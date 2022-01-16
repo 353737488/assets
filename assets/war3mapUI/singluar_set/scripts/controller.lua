@@ -105,10 +105,10 @@ _singluarSetController = {
                     table.insert(tips, '基础攻击: ' .. math.floor(selection.attack()))
                     table.insert(tips, '攻击浮动: ' .. math.floor(selection.attackRipple()))
                     table.insert(tips, '伤害<加成>: ' .. math.round(selection.damageIncrease(), 2) .. '%')
-                    table.insert(tips, '攻击吸血: ' .. math.round(selection.hpSuck(), 2) .. '%')
-                    table.insert(tips, '技能吸血: ' .. math.round(selection.hpSuckSpell(), 2) .. '%')
-                    table.insert(tips, '攻击吸魔: ' .. math.round(selection.mpSuck(), 2) .. '%')
-                    table.insert(tips, '技能吸魔: ' .. math.round(selection.mpSuckSpell(), 2) .. '%')
+                    table.insert(tips, '攻击吸血: ' .. math.round(selection.hpSuckAttack(), 2) .. '%')
+                    table.insert(tips, '技能吸血: ' .. math.round(selection.hpSuckAbility(), 2) .. '%')
+                    table.insert(tips, '攻击吸魔: ' .. math.round(selection.mpSuckAttack(), 2) .. '%')
+                    table.insert(tips, '技能吸魔: ' .. math.round(selection.mpSuckAbility(), 2) .. '%')
                 end
             elseif (field == 'attackSpeed') then
                 table.insert(tips, '攻速<加成>: ' .. math.round(selection.attackSpeed(), 2) .. '%')
@@ -121,12 +121,38 @@ _singluarSetController = {
                     if (selection.isRanged() == false) then
                         table.insert(tips, '武器: 极速')
                     elseif (selection.lightning() ~= nil) then
+                        local l = selection.lightning()
                         table.insert(tips, '武器: 闪电')
+                        if (l.scatter() > 0 and l.radius() > 0) then
+                            table.insert(tips, '散射数量: ' .. math.floor(l.scatter()))
+                            table.insert(tips, '散射范围: ' .. math.floor(l.radius()))
+                        end
+                        if (l.focus() > 0) then
+                            table.insert(tips, '穿心数量: ' .. math.floor(l.focus()))
+                        end
                     else
-                        table.insert(tips, '武器: 远程')
+                        local m = selection.missile()
+                        if (m.homing()) then
+                            table.insert(tips, '武器: 远程')
+                        else
+                            table.insert(tips, '武器: 远程[自动跟踪]')
+                        end
+                        table.insert(tips, '发射速度: ' .. math.floor(m.speed()))
+                        table.insert(tips, '发射加速度: ' .. math.floor(m.acceleration()))
+                        table.insert(tips, '发射高度: ' .. math.floor(m.height()))
+                        if (m.scatter() > 0 and m.radius() > 0) then
+                            table.insert(tips, '散射数量: ' .. math.floor(m.scatter()))
+                            table.insert(tips, '散射范围: ' .. math.floor(m.radius()))
+                        end
+                        if (m.gatlin() > 0) then
+                            table.insert(tips, '多段数量: ' .. math.floor(m.gatlin()))
+                        end
+                        if (m.reflex() > 0) then
+                            table.insert(tips, '反弹数量: ' .. math.floor(m.reflex()))
+                        end
                     end
                 end
-                table.insert(tips, '基础频率: ' .. math.round(selection.attackSpaceBase(), 2) .. ' 秒/击')
+                table.insert(tips, '基准频率: ' .. math.round(selection.attackSpaceBase(), 2) .. ' 秒/击')
             elseif (field == 'knocking') then
                 table.insert(tips, '暴击<加成>: ' .. math.round(selection.crit(), 2) .. '%')
                 table.insert(tips, '暴击<几率>: ' .. math.round(selection.odds("crit"), 2) .. '%')
@@ -137,7 +163,7 @@ _singluarSetController = {
                 table.insert(tips, '黑夜视野: ' .. selection.nsight())
             elseif (field == 'defend') then
                 x = 0.02
-                table.insert(tips, '护甲: ' .. selection.defend())
+                table.insert(tips, '防御: ' .. selection.defend())
                 table.insert(tips, '治疗<加成>: ' .. selection.cure() .. '%')
                 table.insert(tips, '减伤<比例>: ' .. selection.hurtReduction() .. '%')
                 table.insert(tips, '受伤<加深>: ' .. selection.hurtIncrease() .. '%')
@@ -307,7 +333,6 @@ _singluarSetController = {
             end
         end
     end,
-    ---@param whichPlayer Player
     onRefresh = function(stage, whichPlayer)
         local tmpData = {
             class = 'Nil',
