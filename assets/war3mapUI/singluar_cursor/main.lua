@@ -232,7 +232,7 @@ this.onRefresh(0.03, function()
             end
             if (tmpData.radius.z == -9999 and #tmpData.radius.units > 0) then
                 for _, dru in ipairs(tmpData.radius.units) do
-                    local rgba = dru.properties("rgbaBase")
+                    local rgba = dru.prop("rgbaBase")
                     local red = rgba.get('red')
                     local green = rgba.get('green')
                     local blue = rgba.get('blue')
