@@ -99,10 +99,10 @@ if (DEBUGGING) then
         }
         stage.costAvg = stage.costAvg or {}
         stage.debug = function()
-            local count = { all = 0, max = JassDebug.handlemax() }
+            local count = { all = 0, max = J.handleMax() }
             for i = 1, count.max do
                 local h = 0x100000 + i
-                local info = JassDebug.handledef(h)
+                local info = J.handleDef(h)
                 if (info and info.type) then
                     if (not table.includes(types, info.type)) then
                         table.insert(types, info.type)
