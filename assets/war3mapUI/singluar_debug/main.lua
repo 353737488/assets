@@ -5,7 +5,6 @@
 
 if (DEBUGGING) then
 
-    collectgarbage("collect")
     local ram = collectgarbage("count")
 
     local kit = 'singluar_debug'
@@ -128,30 +127,16 @@ if (DEBUGGING) then
                     i = i + 1
                 end
             end
+            collectgarbage("collect")
             table.insert(txts, "  计时器 : " .. i)
-            local cost = math.round((collectgarbage("count") - ram) / 1024, 3)
-            if (stage.costMax == nil or stage.costMax < cost) then
-                stage.costMax = cost
-            end
-            local avg = 0
-            if (#stage.costAvg < 100) then
-                table.insert(stage.costAvg, cost)
-                avg = table.average(stage.costAvg)
-            else
-                avg = table.average(stage.costAvg)
-                stage.costAvg = { avg }
-            end
-            avg = math.round(avg, 2)
             table.insert(txts, "|n  [内存占用]")
-            table.insert(txts, colour.yellowLight("  平均 : " .. avg .. ' MB'))
-            table.insert(txts, colour.redLight("  最大 : " .. stage.costMax .. ' MB'))
-            table.insert(txts, colour.gold("  当前 : " .. cost .. ' MB'))
+            table.insert(txts, colour.yellowLight('  ' .. math.round((collectgarbage("count") - ram) / 1024, 4) .. ' MB'))
             return txts
         end
 
     end)
 
-    this.onRefresh(1, function()
+    this.onRefresh(2, function()
         ---@type {main:FrameText,debug:fun():table<number,number>}
         local stage = this.stage()
         for _, p in ipairs(Players(table.section(1, 12))) do

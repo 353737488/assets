@@ -26,10 +26,10 @@ _singluarSetAbility = {
                 .hotkeyFontSize(9)
                 .fontSize(12)
                 .mask('btn\\mask')
-                .onMouseLeave(function(evtData) stage.tooltips.show(false, 0) end)
+                .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
-                    if (_singluarSetOnAbilitySyncFollowIndex[evtData.triggerPlayer.index()] ~= nil) then
+                    if (evtData.triggerPlayer.cursor().following()) then
                         return
                     end
                     local selection = evtData.triggerPlayer.selection()
@@ -80,7 +80,7 @@ _singluarSetAbility = {
                 .onMouseClick(
                 function(evtData)
                     local selection = evtData.triggerPlayer.selection()
-                    if (selection ~= nil and isObject(selection, 'Unit') or selection.isDead() and selection.owner() == evtData.triggerPlayer) then
+                    if (isObject(selection, 'Unit') and selection.isAlive() and selection.owner() == evtData.triggerPlayer) then
                         Vcm('war3_click1').play()
                         local ab = selection.abilitySlot().storage()[i]
                         if (isObject(ab, "Ability")) then
@@ -93,9 +93,10 @@ _singluarSetAbility = {
                     end
                 end)
         end
+        stage.ability_cover = FrameBackdrop(kit .. '->cover', stage.ability).alpha(0)
 
         --- 注册同步策略
-        _singluarSetOnAbilitySync(stage)
+        _singluarSetAbilityOnRight(stage)
     end,
     onRefresh = function(stage, whichPlayer)
         local tmpData = {
@@ -103,6 +104,7 @@ _singluarSetAbility = {
             selection = whichPlayer.selection(),
             race = whichPlayer.race(),
             show = false,
+            size = nil,
             bedding = {},
             btn = {},
             btnLvUp = {},
@@ -126,6 +128,7 @@ _singluarSetAbility = {
             local bagRy = bagRx * (8 / 6)
             local bagRl = (0.186 - bagRx * tail - margin * (tail - 1)) / 2
             local storage = tmpData.selection.abilitySlot().storage()
+            tmpData.size = { bagRx, bagRy }
             for i = 1, stage.ability_max do
                 if (i > tail) then
                     tmpData.bedding[i].show = false
@@ -174,7 +177,6 @@ _singluarSetAbility = {
                         else
                             tmpData.btn[i].hotkey = Game().abilityHotkey(i)
                         end
-                        tmpData.btn[i].size = { bagRx, bagRy }
                         tmpData.btn[i].show = (nil ~= tt)
                         local lv = storage[i].level()
                         -- next
@@ -189,7 +191,6 @@ _singluarSetAbility = {
                         end
                     end
                     tmpData.bedding[i].relation = { xOffset, yOffset }
-                    tmpData.bedding[i].size = { bagRx, bagRy }
                     tmpData.bedding[i].show = true
                 end
             end
@@ -199,8 +200,8 @@ _singluarSetAbility = {
             stage.ability.show(tmpData.show)
             if (tmpData.show) then
                 for i = 1, stage.ability_max do
-                    if (tmpData.btn[i].size) then
-                        stage.ability_btn[i].size(tmpData.btn[i].size[1], tmpData.btn[i].size[2])
+                    if (tmpData.size) then
+                        stage.ability_btn[i].size(tmpData.size[1], tmpData.size[2])
                     end
                     stage.ability_btn[i].hotkey(tmpData.btn[i].hotkey)
                     stage.ability_btn[i].texture(tmpData.btn[i].texture)
@@ -217,8 +218,8 @@ _singluarSetAbility = {
                     if (tmpData.bedding[i].relation) then
                         stage.ability_bedding[i].relation(FRAME_ALIGN_LEFT_BOTTOM, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, tmpData.bedding[i].relation[1], tmpData.bedding[i].relation[2])
                     end
-                    if (tmpData.bedding[i].size) then
-                        stage.ability_bedding[i].size(tmpData.bedding[i].size[1], tmpData.bedding[i].size[2])
+                    if (tmpData.size) then
+                        stage.ability_bedding[i].size(tmpData.size[1], tmpData.size[2])
                     end
                     stage.ability_bedding[i].show(tmpData.bedding[i].show)
                 end

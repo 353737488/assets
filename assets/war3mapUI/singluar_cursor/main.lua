@@ -16,12 +16,13 @@ this.onSetup(function()
     mouse.onLeftClick(function(evtData)
         local cs = evtData.triggerPlayer.cursor()
         local ab = cs.ability()
+        local obj = cs.followObject()
+        local pIdx = evtData.triggerPlayer.index()
         if (isObject(ab, "Ability")) then
             local tt = ab.targetType()
             if (tt == ABILITY_TARGET_TYPE.TAG_U or tt == ABILITY_TARGET_TYPE.TAG_L or tt == ABILITY_TARGET_TYPE.TAG_R) then
                 -- x 0.240 0.32
                 -- y 0.125 0.5925
-                local pIdx = evtData.triggerPlayer.index()
                 local rx = japi.MouseRX()
                 local ry = japi.MouseRY()
                 if (ry < 0.125) then
@@ -36,6 +37,15 @@ this.onSetup(function()
                 end
                 if (tt == ABILITY_TARGET_TYPE.TAG_L or tt == ABILITY_TARGET_TYPE.TAG_R) then
                     sync.send("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_xyz", ab.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY(), japi.DzGetMouseTerrainZ() })
+                end
+            end
+        elseif (obj ~= nil) then
+            if (isObject(obj, "Item")) then
+                -- 丢弃物品在鼠标坐标
+                local mx = japi.MouseRX()
+                local my = japi.MouseRY()
+                if (mx > 0.01 and mx < 0.79 and my > 0.155 and my < 0.56) then
+                    sync.send("SINGLUAR_GAME_SYNC", { pIdx, "item_drop_cursor", obj.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
                 end
             end
         end

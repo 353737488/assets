@@ -26,7 +26,5 @@ this.onSetup(function()
         "motion\\08",
         "motion\\09",
     })
-
     stage.main.play(true)
-
 end)

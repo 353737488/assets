@@ -197,7 +197,7 @@ _singluarSetTooltipsBuilder = {
                 end
             end
             local selection = whichPlayer.selection()
-            if (isObject(selection, "Unit") and false == selection.isDestroy()) then
+            if (isObject(selection, "Unit")) then
                 if (selection.itemSlot().empty() > 0) then
                     table.insert(content.list, { key = "item", text = colour.skyLight("放入背包"), highlight = true, textAlign = TEXT_ALIGN_LEFT })
                 else

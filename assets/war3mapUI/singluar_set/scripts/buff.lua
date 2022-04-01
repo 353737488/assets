@@ -25,15 +25,15 @@ _singluarSetBuff = {
             --
             reborn = "复活时间",
             hp = "生命",
-            mp = "魔法",
+            hpRegen = "生命恢复",
             hpSuckAttack = "攻击吸血",
             hpSuckAbility = "技能吸血",
+            mp = "魔法",
+            mpRegen = "魔法恢复",
             mpSuckAttack = "攻击吸魔",
             mpSuckAbility = "技能吸魔",
-            hpRegen = "生命恢复",
-            mpRegen = "魔法恢复",
             move = "移动",
-            defend = "护甲",
+            defend = "防御",
             attackSpeed = "攻速",
             attackSpace = "攻击间隔",
             attackSpaceBase = "攻击间隔",
@@ -133,6 +133,7 @@ _singluarSetBuff = {
                              .show(true)
                     end
                 end)
+            stage.buff_buffs[i].childText().relation(FRAME_ALIGN_BOTTOM, stage.buff_buffs[i], FRAME_ALIGN_BOTTOM, 0, 0.003)
             stage.buff_buffSignal[i] = FrameBackdrop(kit .. '->signal->' .. i, stage.buff_buffs[i])
                 .relation(FRAME_ALIGN_CENTER, stage.buff_buffs[i], FRAME_ALIGN_CENTER, 0, 0)
                 .size(stage.buff_bagRx, stage.buff_bagRy)

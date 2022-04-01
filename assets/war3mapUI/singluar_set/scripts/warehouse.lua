@@ -96,7 +96,7 @@ _singluarSetWarehouse = {
                 .onMouseLeave(function(_) stage.tooltips.show(false, 0.4) end)
                 .onMouseEnter(
                 function(evtData)
-                    if (_singluarSetOnBagSyncFollowIndex[evtData.triggerPlayer.index()] ~= nil) then
+                    if (evtData.triggerPlayer.cursor().following()) then
                         return
                     end
                     local content = _singluarSetTooltipsBuilder.warehouse(evtData.triggerPlayer.warehouseSlot().storage()[i], evtData.triggerPlayer)
@@ -113,41 +113,20 @@ _singluarSetWarehouse = {
                                     if (ed.key == "item") then
                                         local selection = ed.triggerPlayer.selection()
                                         if (isObject(selection, "Unit")) then
-                                            ed.triggerPlayer.warehouseSlot().remove(it.warehouseSlotIndex())
-                                            selection.itemSlot().push(it)
-                                            local v = Vcm("war3_pickItem")
-                                            async.call(ed.triggerPlayer, function()
-                                                v.play()
-                                            end)
+                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "warehouse_to_item", it.id() })
                                         end
                                     elseif (ed.key == "drop") then
                                         local selection = ed.triggerPlayer.selection()
                                         if (isObject(selection, "Unit")) then
-                                            it.drop(selection.x(), selection.y())
+                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_drop", it.id(), selection.x(), selection.y() })
                                         end
                                     elseif (ed.key == "pawn") then
-                                        it.pawn()
+                                        sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_pawn", it.id() })
                                     elseif (ed.key == "separate") then
 
                                     end
                                 end
                             end)
-                    end
-                end)
-                .onMouseClick(
-                function(evtData)
-                    local selection = evtData.triggerPlayer.selection()
-                    if (isObject(selection, "Unit") == false or selection.owner() ~= evtData.triggerPlayer) then
-                        return
-                    end
-                    local pIdx = evtData.triggerPlayer.index()
-                    if (_singluarSetOnBagSyncFollowIndex[pIdx] ~= nil) then
-                        -- 丢弃物品在鼠标坐标
-                        local mx = japi.MouseRX()
-                        local my = japi.MouseRY()
-                        if (mx > 0.01 and mx < 0.79 and my > 0.155 and my < 0.56) then
-                            sync.send("_singluarSetOnBagSync", { pIdx, "dropItem", japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
-                        end
                     end
                 end)
 

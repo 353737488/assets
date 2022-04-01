@@ -19,7 +19,7 @@ _singluarSetMenu = {
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(10)
         stage.menu_lv = FrameText(kit .. '->msv', stage.menu)
-            .relation(FRAME_ALIGN_LEFT_TOP, stage.menu, FRAME_ALIGN_RIGHT_TOP, -0.054, -0.0032)
+            .relation(FRAME_ALIGN_LEFT_TOP, stage.menu, FRAME_ALIGN_RIGHT_TOP, -0.058, -0.0032)
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(10)
         stage.menu_clock = FrameText(kit .. '->clock', stage.menu)
@@ -44,6 +44,19 @@ _singluarSetMenu = {
                 stage.menu_fn[i].txt.text(t[2])
             end
         end
+        Game().onEvent(EVENT.Game.Start, "I18N_DIALOG", function()
+            stage.menu_i18nDialog = Dialog('Language', I18N_LANGS, function(evtData)
+                async.call(evtData.triggerPlayer, function()
+                    I18N.lang(evtData.value)
+                end)
+            end)
+            stage.menu_i18n = FrameButton(stage.menu.kit() .. '->i18n', stage.menu)
+                .relation(FRAME_ALIGN_TOP, stage.menu, FRAME_ALIGN_TOP, 0.256, -0.004)
+                .size(0.012, 0.014)
+                .texture('menu\\i18n')
+                .highlight(true)
+                .onMouseClick(function(evtData) stage.menu_i18nDialog.show(evtData.triggerPlayer) end)
+        end)
     end,
     onRefresh = function(stage, whichPlayer)
         local tmpData = {

@@ -128,7 +128,7 @@ _singluarSetController = {
                             table.insert(tips, '散射范围: ' .. math.floor(l.radius()))
                         end
                         if (l.focus() > 0) then
-                            table.insert(tips, '穿心数量: ' .. math.floor(l.focus()))
+                            table.insert(tips, '聚焦数量: ' .. math.floor(l.focus()))
                         end
                     else
                         local m = selection.missile()

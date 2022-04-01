@@ -17,12 +17,11 @@ this.onSetup(function()
     _singluarSetItem.onSetup(kit, stage)
     _singluarSetAbility.onSetup(kit, stage)
     _singluarSetCaster.onSetup(kit, stage)
-
     --- 提示框
     stage.tooltips = FrameTooltip(kit .. '->tooltips').textAlign(TEXT_ALIGN_LEFT).fontSize(10)
 end)
 
-this.onRefresh(0.1, function()
+this.onRefresh(0.03, function()
     ---@type {tips:table,main:FrameBackdrop,miniMap:Frame,miniMapBtns:Frame[],portrait:Frame,portraitShadow:FrameBackdrop,plate:table<string,FrameBackdropTile>,nilDisplay:FrameText,mp:FrameBar,hp:FrameBar,info:table<string,FrameButton|FrameText>,tile:table<string,FrameBar>}
     local stage = this.stage()
     for _, p in ipairs(Players(table.section(1, 12))) do
