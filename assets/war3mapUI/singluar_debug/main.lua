@@ -5,7 +5,7 @@
 
 if (DEBUGGING) then
 
-    local ram = collectgarbage("count")
+    DEBUGGING_RAM = DEBUGGING_RAM or collectgarbage("count")
 
     local kit = 'singluar_debug'
 
@@ -130,7 +130,7 @@ if (DEBUGGING) then
             collectgarbage("collect")
             table.insert(txts, "  计时器 : " .. i)
             table.insert(txts, "|n  [内存占用]")
-            table.insert(txts, colour.yellowLight('  ' .. math.round((collectgarbage("count") - ram) / 1024, 4) .. ' MB'))
+            table.insert(txts, '  ' .. math.round((collectgarbage("count") - DEBUGGING_RAM) / 1024, 4) .. ' MB')
             return txts
         end
 
