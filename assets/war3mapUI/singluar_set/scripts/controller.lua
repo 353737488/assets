@@ -440,7 +440,13 @@ _singluarSetController = {
                 tmpData.mpRegen = colour.red(mpRegen)
             end
             tmpData.mpPercent = math.round(mpCur / mp, 3)
-            tmpData.mpTxt = mpCur .. '/' .. mp
+            if (mp == 0) then
+                tmpData.mpTxt = colour.grey(mpCur .. '/' .. mp)
+                tmpData.mpTexture = 'bar\\blueGrey'
+            else
+                tmpData.mpTxt = mpCur .. '/' .. mp
+                tmpData.mpTexture = 'bar\\blue'
+            end
 
             local tileValueCount = 0
             local period = tmpData.selection.period()
@@ -492,6 +498,7 @@ _singluarSetController = {
                      .text(LAYOUT_ALIGN_CENTER, tmpData.hpTxt)
                      .text(LAYOUT_ALIGN_RIGHT, tmpData.hpRegen)
                 stage.ctl_mp
+                     .texture('value', tmpData.mpTexture)
                      .value(tmpData.mpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
                      .text(LAYOUT_ALIGN_CENTER, tmpData.mpTxt)
                      .text(LAYOUT_ALIGN_RIGHT, tmpData.mpRegen)
