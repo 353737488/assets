@@ -64,7 +64,7 @@ _singluarSetBuff = {
             attackSpaceBase = "attackSpace",
             attackRangeAcquire = "attackRange",
         }
-        attribute.conf("enchant").forEach(function(key, value)
+        enchant.types.forEach(function(key, value)
             stage.buff_turner._name["e_" .. key] = value.label .. '<强化>'
             stage.buff_turner._name["<WEAPON>e_" .. key] = value.label .. '<附武>'
             stage.buff_turner._name["<APPEND>e_" .. key] = value.label .. '<附着>'
