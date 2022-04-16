@@ -20,18 +20,5 @@ _singluarSetMsg = {
             .textAlign(TEXT_ALIGN_CENTER)
             .fontSize(13)
 
-        stage.updateAlert = function()
-            stage.alert.text(PlayerLocal().alert() or "")
-        end
-
-        ---@param evtData noteOnPropPlayer
-        event.reaction(EVENT.Prop.Player, "_singluarSetMsg", function(evtData)
-            if (evtData.key == "i18nLang" or evtData.key == "alert") then
-                async.call(evtData.triggerPlayer, function()
-                    stage.updateAlert()
-                end)
-            end
-        end)
-
     end,
 }

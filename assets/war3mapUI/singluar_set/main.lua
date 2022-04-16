@@ -43,6 +43,9 @@ this.onSetup(function()
     stage.updateInfoCenter = function()
         stage.menu_infoCenter.text(string.implode("|n", Game().prop("infoCenter")))
     end
+    stage.updateAlert = function()
+        stage.alert.text(PlayerLocal().alert() or "")
+    end
 
     --- 默认种族、欢迎语、等级
     for _, p in ipairs(Players(table.section(1, 12))) do
@@ -57,11 +60,7 @@ this.onSetup(function()
 
     ---@param evtData noteOnPropGame
     event.reaction(EVENT.Prop.Game, "_singluarSet", function(evtData)
-        if (evtData.key == "i18nLang") then
-            stage.updateWelcome()
-            stage.updateFn()
-            stage.updateInfoCenter()
-        elseif (evtData.key == "playingQuantity") then
+        if (evtData.key == "playingQuantity") then
             stage.updateFn()
         elseif (evtData.key == "infoCenter") then
             stage.updateInfoCenter()
@@ -75,6 +74,8 @@ this.onSetup(function()
                 stage.updateRace()
             elseif (evtData.key == "name") then
                 stage.updateWelcome()
+            elseif (evtData.key == "alert") then
+                stage.updateAlert()
             end
         end)
     end)
