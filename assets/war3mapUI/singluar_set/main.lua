@@ -17,8 +17,68 @@ this.onSetup(function()
     _singluarSetItem.onSetup(kit, stage)
     _singluarSetAbility.onSetup(kit, stage)
     _singluarSetCaster.onSetup(kit, stage)
+
     --- 提示框
     stage.tooltips = FrameTooltip(kit .. '->tooltips').textAlign(TEXT_ALIGN_LEFT).fontSize(10)
+
+    -- updater
+    stage.updateRace = function()
+        stage.menu.texture("menu\\" .. PlayerLocal().race())
+        stage.ctl.texture("bg\\" .. PlayerLocal().race())
+    end
+    stage.updateLv = function()
+        stage.menu_lv.text("MapLv" .. "：" .. PlayerLocal().mapLv())
+    end
+    stage.updateWelcome = function()
+        stage.menu_welcome.text(colour.gold(Game().name()) .. ', 你好 ' .. colour.gold(PlayerLocal().name()))
+    end
+    stage.updateFn = function()
+        for i, t in ipairs(stage.menu_fns) do
+            stage.menu_fn[i].txt.text(t[2])
+            if (i == 3 and Game().playingQuantity() == 1) then
+                stage.menu_fn[i].txt.text(colour.greyDeep(t[2]))
+            end
+        end
+    end
+    stage.updateInfoCenter = function()
+        stage.menu_infoCenter.text(string.implode("|n", Game().prop("infoCenter")))
+    end
+
+    --- 默认种族、欢迎语、等级
+    for _, p in ipairs(Players(table.section(1, 12))) do
+        if (p.isPlaying()) then
+            async.call(p, function()
+                stage.updateRace()
+                stage.updateWelcome()
+                stage.updateLv()
+            end)
+        end
+    end
+
+    ---@param evtData noteOnPropGame
+    event.reaction(EVENT.Prop.Game, "_singluarSet", function(evtData)
+        if (evtData.key == "i18nLang") then
+            stage.updateWelcome()
+            stage.updateFn()
+            stage.updateInfoCenter()
+        elseif (evtData.key == "playingQuantity") then
+            stage.updateFn()
+        elseif (evtData.key == "infoCenter") then
+            stage.updateInfoCenter()
+        end
+    end)
+
+    ---@param evtData noteOnPropPlayer
+    event.reaction(EVENT.Prop.Player, "_singluarSet", function(evtData)
+        async.call(evtData.triggerPlayer, function()
+            if (evtData.key == "race") then
+                stage.updateRace()
+            elseif (evtData.key == "name") then
+                stage.updateWelcome()
+            end
+        end)
+    end)
+
 end)
 
 this.onRefresh(0.03, function()
@@ -26,8 +86,6 @@ this.onRefresh(0.03, function()
     local stage = this.stage()
     for _, p in ipairs(Players(table.section(1, 12))) do
         if (p.isPlaying()) then
-            _singluarSetMsg.onRefresh(stage, p)
-            _singluarSetMenu.onRefresh(stage, p)
             _singluarSetController.onRefresh(stage, p)
             _singluarSetBuff.onRefresh(stage, p)
             _singluarSetWarehouse.onRefresh(stage, p)

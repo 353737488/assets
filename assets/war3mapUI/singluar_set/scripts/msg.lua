@@ -19,10 +19,19 @@ _singluarSetMsg = {
             .relation(FRAME_ALIGN_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0.025, 0.15)
             .textAlign(TEXT_ALIGN_CENTER)
             .fontSize(13)
-    end,
-    onRefresh = function(stage, whichPlayer)
-        async.call(whichPlayer, function()
-            stage.alert.text(whichPlayer.alert() or "")
+
+        stage.updateAlert = function()
+            stage.alert.text(PlayerLocal().alert() or "")
+        end
+
+        ---@param evtData noteOnPropPlayer
+        event.reaction(EVENT.Prop.Player, "_singluarSetMsg", function(evtData)
+            if (evtData.key == "i18nLang" or evtData.key == "alert") then
+                async.call(evtData.triggerPlayer, function()
+                    stage.updateAlert()
+                end)
+            end
         end)
+
     end,
 }

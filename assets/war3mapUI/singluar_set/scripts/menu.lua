@@ -22,11 +22,11 @@ _singluarSetMenu = {
             .relation(FRAME_ALIGN_LEFT_TOP, stage.menu, FRAME_ALIGN_RIGHT_TOP, -0.058, -0.0032)
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(10)
-        stage.menu_clock = FrameText(kit .. '->clock', stage.menu)
+        stage.menu_infoCenter = FrameText(kit .. '->infoCenter', stage.menu)
             .relation(FRAME_ALIGN_TOP, stage.menu, FRAME_ALIGN_TOP, 0, -0.007)
             .textAlign(TEXT_ALIGN_CENTER)
             .fontSize(9)
-            .text(string.implode("|n", Game().clock()))
+            .text("")
         stage.menu_fn = {}
         for i, t in ipairs(stage.menu_fns) do
             stage.menu_fn[i] = {}
@@ -44,25 +44,5 @@ _singluarSetMenu = {
                 stage.menu_fn[i].txt.text(t[2])
             end
         end
-    end,
-    onRefresh = function(stage, whichPlayer)
-        local tmpData = {
-            race = whichPlayer.race(),
-            clock = string.implode("|n", Game().clock()),
-            welcome = '你好 ' .. whichPlayer.name() .. ', 欢迎游玩 : ' .. colour.gold(Game().name()),
-            lv = "MapLv" .. "：" .. whichPlayer.mapLv(),
-        }
-        async.call(whichPlayer, function()
-            for i, t in ipairs(stage.menu_fns) do
-                stage.menu_fn[i].txt.text(t[2])
-                if (i == 3 and Game().playingQuantity() == 1) then
-                    stage.menu_fn[i].txt.text(colour.greyDeep(t[2]))
-                end
-            end
-            stage.menu.texture('menu\\' .. tmpData.race)
-            stage.menu_welcome.text(tmpData.welcome)
-            stage.menu_lv.text(tmpData.lv)
-            stage.menu_clock.text(tmpData.clock)
-        end)
     end,
 }

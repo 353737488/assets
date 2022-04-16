@@ -345,7 +345,7 @@ _singluarSetController = {
             tmpData.class = "Item"
         end
         if (tmpData.class == "Nil") then
-            tmpData.nilDisplay = string.implode("|n", table.merge({ Game().name() }, Game().introduction()))
+            tmpData.nilDisplay = string.implode("|n", table.merge({ Game().name() }, Game().prop("infoIntro")))
         elseif (tmpData.class == "Unit") then
             if (tmpData.selection.isDead()) then
                 whichPlayer.prop("selection", NIL)
@@ -413,7 +413,7 @@ _singluarSetController = {
             local hpCur = math.floor(tmpData.selection.hpCur())
             local hp = math.floor(tmpData.selection.hp() or 0)
             local hpRegen = math.round(tmpData.selection.hpRegen(), 2)
-            if (hpRegen == 0 or tmpData.hp == 0 or hpCur >= hp) then
+            if (hpRegen == 0 or hp == 0 or hpCur >= hp) then
                 tmpData.hpRegen = ''
             elseif (hpRegen > 0) then
                 tmpData.hpRegen = colour.green('+' .. hpRegen)
@@ -432,18 +432,19 @@ _singluarSetController = {
             local mpCur = math.floor(tmpData.selection.mpCur())
             local mp = math.floor(tmpData.selection.mp() or 0)
             local mpRegen = math.round(tmpData.selection.mpRegen(), 2)
-            if (mpRegen == 0 or tmpData.mp == 0 or mpCur >= mp) then
+            if (mpRegen == 0 or mp == 0 or mpCur >= mp) then
                 tmpData.mpRegen = ''
             elseif (mpRegen > 0) then
                 tmpData.mpRegen = colour.skyLight('+' .. mpRegen)
             elseif (mpRegen < 0) then
                 tmpData.mpRegen = colour.red(mpRegen)
             end
-            tmpData.mpPercent = math.round(mpCur / mp, 3)
             if (mp == 0) then
+                tmpData.mpPercent = 1
                 tmpData.mpTxt = colour.grey(mpCur .. '/' .. mp)
                 tmpData.mpTexture = 'bar\\blueGrey'
             else
+                tmpData.mpPercent = math.round(mpCur / mp, 3)
                 tmpData.mpTxt = mpCur .. '/' .. mp
                 tmpData.mpTexture = 'bar\\blue'
             end
@@ -485,7 +486,6 @@ _singluarSetController = {
             tmpData.nilDisplay = ""
         end
         async.call(whichPlayer, function()
-            stage.ctl.texture('bg\\' .. tmpData.race)
             if (tmpData.class == "Nil") then
                 stage.ctl_nilDisplay.text(tmpData.nilDisplay)
                 stage.ctl_plate.Unit.show(false)
