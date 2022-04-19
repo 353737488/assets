@@ -117,11 +117,16 @@ if (DEBUGGING) then
             for _, t in ipairs(types) do
                 table.insert(txts, "  " .. (typesLabel[t] or t) .. " : " .. (count[t] or 0))
             end
+            local i = 0
+            for _ in pairs(bop.i2o) do
+                i = i + 1
+            end
             table.insert(txts, "|n  [S内核]")
+            table.insert(txts, "  对象 : " .. i)
             if (group._d.Unit) then table.insert(txts, "  单位 : " .. group._d.Unit.count()) end
             if (group._d.Item) then table.insert(txts, "  物品 : " .. group._d.Item.count()) end
             table.insert(txts, "  漂浮模型 : " .. _ttg_limiter)
-            local i = 0
+            i = 0
             for _, k in pairs(time.kernel) do
                 for _, _ in pairs(k) do
                     i = i + 1
@@ -130,7 +135,7 @@ if (DEBUGGING) then
             collectgarbage("collect")
             table.insert(txts, "  计时器 : " .. i)
             table.insert(txts, "|n  [内存占用]")
-            table.insert(txts, '  ' .. math.round((collectgarbage("count") - DEBUGGING_RAM) / 1024, 4) .. ' MB')
+            table.insert(txts, '  ' .. colour.gold(math.round((collectgarbage("count") - DEBUGGING_RAM) / 1024, 4) .. ' MB'))
             return txts
         end
 

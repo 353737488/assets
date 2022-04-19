@@ -101,7 +101,7 @@ this.onRefresh(0.03, function()
                 else
                     -- 选择圈特效
                     if (tmpData.radius.area ~= nil) then
-                        if (stage.radiusAreaLimit >= 50) then
+                        if (stage.radiusAreaLimit >= 25) then
                             stage.radiusAreaLimit = 0
                             japi.EXSetEffectSize(tmpData.radius.area, 0.01)
                             japi.EXSetEffectXY(tmpData.radius.area, 0, 0)
