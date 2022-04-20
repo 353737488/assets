@@ -135,22 +135,23 @@ if (DEBUGGING) then
             collectgarbage("collect")
             table.insert(txts, "  计时器 : " .. i)
             table.insert(txts, "|n  [内存占用]")
-            table.insert(txts, '  ' .. colour.gold(math.round((collectgarbage("count") - DEBUGGING_RAM) / 1024, 4) .. ' MB'))
+            table.insert(txts, '  ' .. colour.gold(string.format('%.5f', (collectgarbage("count") - DEBUGGING_RAM) / 1024) .. ' MB'))
             return txts
         end
 
     end)
 
-    this.onRefresh(2, function()
-        ---@type {main:FrameText,debug:fun():table<number,number>}
+    this.onStart(function()
         local stage = this.stage()
-        for _, p in ipairs(Players(table.section(1, 12))) do
-            if (p.isPlaying() and p.isComputer() == false) then
-                async.call(p, function()
-                    stage.main.text(string.implode('|n', stage.debug()))
-                end)
+        japi.Refresh("singluar_debug", function()
+            ---@type {main:FrameText,debug:fun():table<number,number>}
+            for _, p in ipairs(Players(table.section(1, 12))) do
+                if (p.isPlaying() and p.isComputer() == false) then
+                    async.call(p, function()
+                        stage.main.text(string.implode('|n', stage.debug()))
+                    end)
+                end
             end
-        end
+        end)
     end)
-
 end
