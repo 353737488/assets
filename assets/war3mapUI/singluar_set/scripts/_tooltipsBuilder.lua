@@ -83,7 +83,7 @@ _singluarSetTooltipsBuilder = {
         }
         if (isObject(whichPlayer, "Player")) then
             local wor = it.worth()
-            local cale = Game().worthCale(wor, whichPlayer.sell() * 0.01)
+            local cale = Game().worthCale(wor, "*", whichPlayer.sell() * 0.01)
             for _, c in ipairs(icons) do
                 local key = c[1]
                 local color = c[2]
@@ -160,7 +160,7 @@ _singluarSetTooltipsBuilder = {
         }
         if (isObject(whichPlayer, "Player")) then
             local wor = it.worth()
-            local cale = Game().worthCale(wor, whichPlayer.sell() * 0.01)
+            local cale = Game().worthCale(wor, "*", whichPlayer.sell() * 0.01)
             for _, c in ipairs(icons) do
                 local key = c[1]
                 local color = c[2]
