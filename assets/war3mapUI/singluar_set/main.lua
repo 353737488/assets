@@ -27,7 +27,7 @@ this.onSetup(function()
         stage.ctl.texture("bg\\" .. PlayerLocal().race())
     end
     stage.updateLv = function()
-        stage.menu_lv.text("MapLv" .. "：" .. PlayerLocal().mapLv())
+        stage.menu_lv.text("奖励级别：" .. PlayerLocal()["mapLv"]())
     end
     stage.updateWelcome = function()
         stage.menu_welcome.text(colour.gold(Game().name()) .. ', 你好 ' .. colour.gold(PlayerLocal().name()))
