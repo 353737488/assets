@@ -61,7 +61,7 @@ _singluarSetWarehouse = {
                     }
                     local cov = Game().worthConvert(k)
                     if (cov ~= nil) then
-                        table.insert(tips, '经济体系: ' .. cov[2] .. ' ' .. n .. '  =  1 ' .. stage.warehouse_resOcc[cov[1]].name)
+                        table.insert(tips, '经济体系: ' .. '1' .. stage.warehouse_resOcc[cov[1]].name .. ' = ' .. cov[2] .. n)
                     end
                     stage.tooltips
                          .relation(FRAME_ALIGN_BOTTOM, stage.warehouse_resIcon[i], FRAME_ALIGN_TOP, 0, 0.002)
