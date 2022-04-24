@@ -4,6 +4,8 @@ _singluarSetController = {
 
         kit = kit .. '->ctl'
 
+        stage.async = {}
+
         -- 设置下方黑边
         japi.DzFrameEditBlackBorders(0, 0.125)
 
@@ -429,6 +431,28 @@ _singluarSetController = {
             else
                 tmpData.hpTexture = 'bar\\green'
             end
+            async.call(whichPlayer, function()
+                stage.async.hpAlpha = stage.async.hpAlpha or 255
+                stage.async.hpAlphaing = stage.async.hpAlphaing or false
+                if (tmpData.hpPercent < 0.3) then
+                    if (stage.async.hpAlphaing == false and stage.async.hpAlpha >= 255) then
+                        stage.async.hpAlphaing = true
+                    end
+                    if (stage.async.hpAlphaing == true and stage.async.hpAlpha <= 155) then
+                        stage.async.hpAlphaing = false
+                    end
+                    if (stage.async.hpAlphaing) then
+                        stage.async.hpAlpha = stage.async.hpAlpha - 10
+                    else
+                        stage.async.hpAlpha = stage.async.hpAlpha + 10
+                    end
+                else
+                    stage.async.hpAlpha = 255
+                    stage.async.hpAlphaing = false
+                end
+            end)
+            tmpData.hpAlpha = stage.async.hpAlpha
+
             local mpCur = math.floor(tmpData.selection.mpCur())
             local mp = math.floor(tmpData.selection.mp() or 0)
             local mpRegen = math.round(tmpData.selection.mpRegen(), 2)
@@ -497,6 +521,7 @@ _singluarSetController = {
                      .value(tmpData.hpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
                      .text(LAYOUT_ALIGN_CENTER, tmpData.hpTxt)
                      .text(LAYOUT_ALIGN_RIGHT, tmpData.hpRegen)
+                     .alpha(tmpData.hpAlpha)
                 stage.ctl_mp
                      .texture('value', tmpData.mpTexture)
                      .value(tmpData.mpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
