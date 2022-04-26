@@ -19,6 +19,5 @@ _singluarSetMsg = {
             .relation(FRAME_ALIGN_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0.025, 0.15)
             .textAlign(TEXT_ALIGN_CENTER)
             .fontSize(13)
-
     end,
 }

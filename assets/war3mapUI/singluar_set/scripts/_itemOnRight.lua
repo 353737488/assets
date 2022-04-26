@@ -113,8 +113,8 @@ _singluarSetItemOnRight = function(stage)
         local selection = triggerPlayer.selection()
         local iCheck = false
         local wCheck = false
-        if (selection ~= nil and selection.isAlive()) then
-            if (isObject(selection, 'Unit') and selection.owner() == triggerPlayer) then
+        if (selection ~= nil) then
+            if (isObject(selection, 'Unit') and selection.isAlive() and selection.owner() == triggerPlayer) then
                 for i = 1, itemMax do
                     local it = selection.itemSlot().storage()[i]
                     local btn = frameItems[i]

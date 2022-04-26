@@ -159,7 +159,7 @@ _singluarSetBuff = {
         if (isObject(tmpData.selection, 'Unit')) then
             if (tmpData.selection.isAlive()) then
                 stage.buff_catches[pi] = {}
-                local catch = BuffCatcher(tmpData.selection, true)
+                local catch = BuffCatcher(tmpData.selection)
                 if (#catch > 0) then
                     local ewi = 0
                     local epi = 0

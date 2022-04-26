@@ -48,8 +48,8 @@ _singluarSetAbilityOnRight = function(stage)
             return
         end
         local selection = triggerPlayer.selection()
-        if (selection ~= nil and selection.isAlive()) then
-            local judge = isObject(selection, 'Unit') and selection.owner() == triggerPlayer
+        if (selection ~= nil) then
+            local judge = isObject(selection, 'Unit') and selection.isAlive() and selection.owner() == triggerPlayer
             if (judge) then
                 local j = 0
                 for i = 1, frameMax do
