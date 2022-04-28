@@ -23,33 +23,30 @@ _singluarSetItemOnRight = function(stage)
         local fit = callbackData.followObj
         if (fpi <= itemMax and i <= itemMax) then
             -- 物品 -> 物品
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { triggerPlayer.index(), "item_push", fit.id(), i, fpi })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_push", fit.id(), i, fpi })
             vcmClick1.play()
         elseif (fpi > itemMax and i > itemMax) then
             -- 仓库 -> 仓库
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { triggerPlayer.index(), "warehouse_push", fit.id(), i - itemMax, fpi - itemMax })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "warehouse_push", fit.id(), i - itemMax, fpi - itemMax })
             vcmClick1.play()
         elseif (fpi <= itemMax and i > itemMax) then
             -- 物品 -> 仓库
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { triggerPlayer.index(), "item_to_warehouse", fit.id(), i - itemMax, fpi })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_to_warehouse", fit.id(), i - itemMax, fpi })
             vcmClick1.play()
         elseif (fpi > itemMax and i <= itemMax) then
             -- 仓库 -> 物品
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { triggerPlayer.index(), "warehouse_to_item", fit.id(), i, fpi - itemMax })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "warehouse_to_item", fit.id(), i, fpi - itemMax })
             vcmClick1.play()
         end
     end
 
     sync.receive("SINGLUAR_SET_ITEM_SYNC", function(syncData)
-        if (syncData.syncPlayer.index() ~= tonumber(syncData.transferData[1])) then
-            return
-        end
         local syncPlayer = syncData.syncPlayer
-        local command = syncData.transferData[2]
+        local command = syncData.transferData[1]
         if (command == "item_push") then
-            local itId = syncData.transferData[3]
-            local i = tonumber(syncData.transferData[4])
-            local fpi = tonumber(syncData.transferData[5])
+            local itId = syncData.transferData[2]
+            local i = tonumber(syncData.transferData[3])
+            local fpi = tonumber(syncData.transferData[4])
             ---@type Item
             local it = i2o(itId)
             if (isObject(it, "Item")) then
@@ -57,9 +54,9 @@ _singluarSetItemOnRight = function(stage)
             end
             japi.DzFrameSetAlpha(frameItems[fpi].handle(), frameItems[fpi].alpha())
         elseif (command == "warehouse_push") then
-            local itId = syncData.transferData[3]
-            local i = tonumber(syncData.transferData[4])
-            local fpi = tonumber(syncData.transferData[5])
+            local itId = syncData.transferData[2]
+            local i = tonumber(syncData.transferData[3])
+            local fpi = tonumber(syncData.transferData[4])
             ---@type Item
             local it = i2o(itId)
             if (isObject(it, "Item")) then
@@ -67,9 +64,9 @@ _singluarSetItemOnRight = function(stage)
             end
             japi.DzFrameSetAlpha(frameWarehouse[fpi].handle(), frameWarehouse[fpi].alpha())
         elseif (command == "item_to_warehouse") then
-            local itId = syncData.transferData[3]
-            local wIdx = tonumber(syncData.transferData[4])
-            local fpi = tonumber(syncData.transferData[5])
+            local itId = syncData.transferData[2]
+            local wIdx = tonumber(syncData.transferData[3])
+            local fpi = tonumber(syncData.transferData[4])
             ---@type Item
             local it = i2o(itId)
             if (isObject(it, "Item")) then
@@ -84,9 +81,9 @@ _singluarSetItemOnRight = function(stage)
             end
             japi.DzFrameSetAlpha(frameItems[fpi].handle(), frameItems[fpi].alpha())
         elseif (command == "warehouse_to_item") then
-            local wItId = syncData.transferData[3]
-            local itIdx = tonumber(syncData.transferData[4])
-            local fpi = tonumber(syncData.transferData[5])
+            local wItId = syncData.transferData[2]
+            local itIdx = tonumber(syncData.transferData[3])
+            local fpi = tonumber(syncData.transferData[4])
             ---@type Item
             local wIt = i2o(wItId)
             if (isObject(wIt, "Item")) then

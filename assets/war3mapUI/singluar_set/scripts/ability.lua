@@ -52,7 +52,7 @@ _singluarSetAbility = {
                     end
                     local ab = selection.abilitySlot().storage()[i]
                     if (isObject(ab, "Ability")) then
-                        sync.send("SINGLUAR_GAME_SYNC", { evtData.triggerPlayer.index(), "ability_quote", ab.id() })
+                        sync.send("SINGLUAR_GAME_SYNC", { "ability_quote", ab.id() })
                     end
                 end)
                 .show(false)
@@ -84,7 +84,7 @@ _singluarSetAbility = {
                         Vcm('war3_click1').play()
                         local ab = selection.abilitySlot().storage()[i]
                         if (isObject(ab, "Ability")) then
-                            sync.send("SINGLUAR_GAME_SYNC", { evtData.triggerPlayer.index(), "ability_level_up", ab.id() })
+                            sync.send("SINGLUAR_GAME_SYNC", { "ability_level_up", ab.id() })
                             local content = _singluarSetTooltipsBuilder.ability(ab, 1)
                             if (content ~= nil) then
                                 stage.tooltips.content(content)

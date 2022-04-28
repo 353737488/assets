@@ -113,15 +113,15 @@ _singluarSetWarehouse = {
                                     if (ed.key == "item") then
                                         local selection = ed.triggerPlayer.selection()
                                         if (isObject(selection, "Unit")) then
-                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "warehouse_to_item", it.id() })
+                                            sync.send("SINGLUAR_GAME_SYNC", { "warehouse_to_item", it.id() })
                                         end
                                     elseif (ed.key == "drop") then
                                         local selection = ed.triggerPlayer.selection()
                                         if (isObject(selection, "Unit")) then
-                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_drop", it.id(), selection.x(), selection.y() })
+                                            sync.send("SINGLUAR_GAME_SYNC", { "item_drop", it.id(), selection.x(), selection.y() })
                                         end
                                     elseif (ed.key == "pawn") then
-                                        sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_pawn", it.id() })
+                                        sync.send("SINGLUAR_GAME_SYNC", { "item_pawn", it.id() })
                                     elseif (ed.key == "separate") then
 
                                     end
@@ -203,6 +203,11 @@ _singluarSetWarehouse = {
                 stage.warehouse_resInfo[i].text(tmpData.resInfo[i])
             end
             for i = 1, stage.warehouse_max do
+                if (false == isObject(tmpData.selection, "Unit") or tmpData.selection.owner() ~= whichPlayer) then
+                    stage.warehouse_btn[i].alpha(50)
+                else
+                    stage.warehouse_btn[i].alpha(255)
+                end
                 stage.warehouse_btn[i].texture(tmpData.btn[i].texture)
                 stage.warehouse_btn[i].border(tmpData.btn[i].border)
                 stage.warehouse_btn[i].maskValue(tmpData.btn[i].maskValue)

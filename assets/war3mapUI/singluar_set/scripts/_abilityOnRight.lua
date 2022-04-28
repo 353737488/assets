@@ -16,21 +16,18 @@ _singluarSetAbilityOnRight = function(stage)
     local onFollowChange = function(callbackData, triggerPlayer, i)
         local fab = callbackData.followObj
         if (isObject(fab, "Ability")) then
-            sync.send("SINGLUAR_SET_ABILITY_SYNC", { triggerPlayer.index(), "ability_push", fab.id(), i, callbackData.followData })
+            sync.send("SINGLUAR_SET_ABILITY_SYNC", { "ability_push", fab.id(), i, callbackData.followData })
             vcmClick1.play()
         end
     end
 
     sync.receive("SINGLUAR_SET_ABILITY_SYNC", function(syncData)
-        if (syncData.syncPlayer.index() ~= tonumber(syncData.transferData[1])) then
-            return
-        end
         local syncPlayer = syncData.syncPlayer
-        local command = syncData.transferData[2]
+        local command = syncData.transferData[1]
         if (command == "ability_push") then
-            local abId = syncData.transferData[3]
-            local i = tonumber(syncData.transferData[4])
-            local fpi = tonumber(syncData.transferData[5])
+            local abId = syncData.transferData[2]
+            local i = tonumber(syncData.transferData[3])
+            local fpi = tonumber(syncData.transferData[4])
             ---@type Ability
             local ab = i2o(abId)
             if (isObject(ab, "Ability")) then

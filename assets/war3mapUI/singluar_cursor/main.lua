@@ -28,7 +28,7 @@ this.onSetup(function()
                 if (ry < 0.125) then
                     if (rx > 0.240 and rx < 0.32) then
                         if (tt == ABILITY_TARGET_TYPE.TAG_U) then
-                            sync.send("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_u", ab.id(), evtData.triggerPlayer.selection().id() })
+                            sync.send("SINGLUAR_GAME_SYNC", { "ability_effective_u", ab.id(), evtData.triggerPlayer.selection().id() })
                         end
                     end
                     return
@@ -36,7 +36,7 @@ this.onSetup(function()
                     return
                 end
                 if (tt == ABILITY_TARGET_TYPE.TAG_L or tt == ABILITY_TARGET_TYPE.TAG_R) then
-                    sync.send("SINGLUAR_GAME_SYNC", { pIdx, "ability_effective_xyz", ab.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY(), japi.DzGetMouseTerrainZ() })
+                    sync.send("SINGLUAR_GAME_SYNC", { "ability_effective_xyz", ab.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY(), japi.DzGetMouseTerrainZ() })
                 end
             end
         elseif (obj ~= nil) then
@@ -45,7 +45,7 @@ this.onSetup(function()
                 local mx = japi.MouseRX()
                 local my = japi.MouseRY()
                 if (mx > 0.01 and mx < 0.79 and my > 0.155 and my < 0.56) then
-                    sync.send("SINGLUAR_GAME_SYNC", { pIdx, "item_drop_cursor", obj.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
+                    sync.send("SINGLUAR_GAME_SYNC", { "item_drop_cursor", obj.id(), japi.DzGetMouseTerrainX(), japi.DzGetMouseTerrainY() })
                 end
             end
         end

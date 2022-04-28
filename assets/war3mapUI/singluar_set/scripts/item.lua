@@ -59,11 +59,11 @@ _singluarSetItem = {
                                     local it = selection.itemSlot().storage()[i]
                                     if (isObject(it, "Item")) then
                                         if (ed.key == "warehouse") then
-                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_to_warehouse", it.id() })
+                                            sync.send("SINGLUAR_GAME_SYNC", { "item_to_warehouse", it.id() })
                                         elseif (ed.key == "drop") then
-                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_drop", it.id(), selection.x(), selection.y() })
+                                            sync.send("SINGLUAR_GAME_SYNC", { "item_drop", it.id(), selection.x(), selection.y() })
                                         elseif (ed.key == "pawn") then
-                                            sync.send("SINGLUAR_GAME_SYNC", { ed.triggerPlayer.index(), "item_pawn", it.id() })
+                                            sync.send("SINGLUAR_GAME_SYNC", { "item_pawn", it.id() })
                                         elseif (ed.key == "separate") then
 
                                         end
@@ -80,7 +80,7 @@ _singluarSetItem = {
                     -- 引用
                     local it = evtData.triggerPlayer.selection().itemSlot().storage()[i]
                     if (isObject(it, "Item")) then
-                        sync.send("SINGLUAR_GAME_SYNC", { evtData.triggerPlayer.index(), "item_quote", it.id() })
+                        sync.send("SINGLUAR_GAME_SYNC", { "item_quote", it.id() })
                     end
                 end)
 
