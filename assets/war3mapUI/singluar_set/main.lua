@@ -58,26 +58,25 @@ this.onSetup(function()
         end
     end
 
-    ---@param evtData noteOnPropGame
-    event.reaction(EVENT.Prop.Game, "_singluarSet", function(evtData)
-        if (evtData.key == "playingQuantity") then
-            stage.updateFn()
-        elseif (evtData.key == "infoCenter") then
-            stage.updateInfoCenter()
-        end
-    end)
-
-    ---@param evtData noteOnPropPlayer
-    event.reaction(EVENT.Prop.Player, "_singluarSet", function(evtData)
-        async.call(evtData.triggerPlayer, function()
-            if (evtData.key == "race") then
-                stage.updateRace()
-            elseif (evtData.key == "name") then
-                stage.updateWelcome()
-            elseif (evtData.key == "alert") then
-                stage.updateAlert()
+    ---@param evtData noteOnPropGame|noteOnPropPlayer
+    event.reaction(EVENT.Prop.Change, "_singluarSet", function(evtData)
+        if (isObject(evtData.triggerObject, "Game")) then
+            if (evtData.key == "playingQuantity") then
+                stage.updateFn()
+            elseif (evtData.key == "infoCenter") then
+                stage.updateInfoCenter()
             end
-        end)
+        elseif (isObject(evtData.triggerObject, "Player")) then
+            async.call(evtData.triggerObject, function()
+                if (evtData.key == "race") then
+                    stage.updateRace()
+                elseif (evtData.key == "name") then
+                    stage.updateWelcome()
+                elseif (evtData.key == "alert") then
+                    stage.updateAlert()
+                end
+            end)
+        end
     end)
 
 end)

@@ -76,7 +76,7 @@ _singluarSetBuff = {
             stage.buff_turner._icon["<ODDS>" .. v] = v
         end
         for _, v in ipairs(ATTR_RESISTANCE) do
-            stage.buff_turner._name["<ODDS>" .. v] = stage.buff_turner._name[v] .. '<抗性>'
+            stage.buff_turner._name["<RESISTANCE>" .. v] = stage.buff_turner._name[v] .. '<抗性>'
             stage.buff_turner._icon["<RESISTANCE>" .. v] = v
         end
         -- 名字

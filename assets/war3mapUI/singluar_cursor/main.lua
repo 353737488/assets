@@ -68,7 +68,7 @@ this.onStart(function()
     end
 end)
 
-this.onRefresh(0.03, function()
+this.onRefresh(0, function()
     local stage = this.stage()
     stage.radiusAreaLimit = stage.radiusAreaLimit + 1
     for pi, p in ipairs(Players(table.section(1, 12))) do
