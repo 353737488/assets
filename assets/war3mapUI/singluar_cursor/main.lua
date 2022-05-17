@@ -169,6 +169,7 @@ this.onRefresh(0, function()
                                     end
                                 end
                                 async.call(p, function()
+                                    japi.DzFrameClearAllPoints(stage.main.handle())
                                     japi.DzFrameSetPoint(stage.main.handle(), FRAME_ALIGN_CENTER, FrameGameUI.handle(), FRAME_ALIGN_LEFT_BOTTOM, rx, ry)
                                 end)
                             elseif (tt == ABILITY_TARGET_TYPE.TAG_R) then
