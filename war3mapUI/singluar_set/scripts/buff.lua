@@ -119,7 +119,7 @@ _singluarSetBuff = {
                 .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.buff, FRAME_ALIGN_LEFT_BOTTOM, x, y)
                 .size(stage.buff_bagRx, stage.buff_bagRy)
                 .highlight(false)
-                .fontSize(6.5)
+                .fontSize(7)
                 .maskValue(1)
                 .show(false)
                 .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
@@ -133,7 +133,7 @@ _singluarSetBuff = {
                              .show(true)
                     end
                 end)
-            stage.buff_buffs[i].childText().relation(FRAME_ALIGN_BOTTOM, stage.buff_buffs[i], FRAME_ALIGN_BOTTOM, 0, 0.003)
+            stage.buff_buffs[i].childText().relation(FRAME_ALIGN_CENTER, stage.buff_buffs[i], FRAME_ALIGN_CENTER, 0, -0.001)
             stage.buff_buffSignal[i] = FrameBackdrop(kit .. '->signal->' .. i, stage.buff_buffs[i])
                 .relation(FRAME_ALIGN_CENTER, stage.buff_buffs[i], FRAME_ALIGN_CENTER, 0, 0)
                 .size(stage.buff_bagRx, stage.buff_bagRy)
