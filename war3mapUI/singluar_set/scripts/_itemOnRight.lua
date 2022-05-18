@@ -140,8 +140,7 @@ _singluarSetItemOnRight = function(stage)
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                local cbd = btn.childBackdrop()
-                                triggerPlayer.cursor().followFrame(it, cbd.texture(), cbd.size(), i, onFollowStop)
+                                triggerPlayer.cursor().followFrame(it, btn.texture(), btn.size(), i, onFollowStop)
                             end
                             iCheck = true
                             break
@@ -178,8 +177,7 @@ _singluarSetItemOnRight = function(stage)
                         japi.DzFrameSetAlpha(btn.handle(), 0)
                         stage.tooltips.show(false, 0)
                         vcmClick1.play()
-                        local cbd = btn.childBackdrop()
-                        triggerPlayer.cursor().followFrame(it, cbd.texture(), cbd.size(), itemMax + i, onFollowStop)
+                        triggerPlayer.cursor().followFrame(it, btn.texture(), btn.size(), itemMax + i, onFollowStop)
                     end
                     wCheck = true
                     break

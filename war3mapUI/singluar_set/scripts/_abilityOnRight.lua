@@ -77,8 +77,7 @@ _singluarSetAbilityOnRight = function(stage)
                                 japi.DzFrameSetAlpha(frameButton[i].handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                local cbd = frameButton[i].childBackdrop()
-                                triggerPlayer.cursor().followFrame(ab, cbd.texture(), cbd.size(), i, onFollowStop)
+                                triggerPlayer.cursor().followFrame(ab, frameButton[i].texture(), frameButton[i].size(), i, onFollowStop)
                             end
                             break
                         end
