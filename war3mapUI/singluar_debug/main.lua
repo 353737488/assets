@@ -59,13 +59,13 @@ if (DEBUGGING) then
 
         local kbKey = KEYBOARD['Control']
 
-        keyboard.onRelease(kbKey, function(_)
+        keyboard.onRelease(kbKey, "debug", function(_)
             local s = stage.mark.show()
             stage.mark.show(not s)
             for _, l in ipairs(stage.line) do
                 l.show(not s)
             end
-        end, "debug")
+        end)
 
         local types = { "all", "max" }
         local typesLabel = {

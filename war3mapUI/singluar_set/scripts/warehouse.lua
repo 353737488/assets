@@ -86,7 +86,6 @@ _singluarSetWarehouse = {
             local xo = 0.006 + (i - 1) % raw * (stage.warehouse_itWidth + itMargin)
             local yo = -0.038 - (math.ceil(i / raw) - 1) * (itMargin + stage.warehouse_itHeight)
             stage.warehouse_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.warehouse)
-                .anchor(true)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.warehouse, FRAME_ALIGN_LEFT_TOP, xo, yo)
                 .size(stage.warehouse_itWidth, stage.warehouse_itHeight)
                 .highlight(true)
@@ -105,7 +104,7 @@ _singluarSetWarehouse = {
                              .relation(FRAME_ALIGN_BOTTOM, stage.warehouse_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
                              .content(content)
                              .show(true)
-                             .onMouseClick(
+                             .onMouseLeftClick(
                             function(ed)
                                 stage.tooltips.show(false, 0)
                                 local it = ed.triggerPlayer.warehouseSlot().storage()[i]

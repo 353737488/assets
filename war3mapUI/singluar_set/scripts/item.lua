@@ -28,7 +28,6 @@ _singluarSetItem = {
             local xo = 0.003 + (i - 1) % raw * (stage.item_itWidth + itMargin)
             local yo = -0.025 - (math.ceil(i / raw) - 1) * (itMargin + stage.item_itHeight)
             stage.item_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.item)
-                .anchor(true)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.item, FRAME_ALIGN_LEFT_TOP, xo, yo)
                 .size(stage.item_itWidth, stage.item_itHeight)
                 .highlight(true)
@@ -51,7 +50,7 @@ _singluarSetItem = {
                              .relation(FRAME_ALIGN_BOTTOM, stage.item_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
                              .content(content)
                              .show(true)
-                             .onMouseClick(
+                             .onMouseLeftClick(
                             function(ed)
                                 stage.tooltips.show(false, 0)
                                 local selection = ed.triggerPlayer.selection()
@@ -72,7 +71,7 @@ _singluarSetItem = {
                             end)
                     end
                 end)
-                .onMouseClick(
+                .onMouseLeftClick(
                 function(evtData)
                     if (evtData.triggerPlayer.cursor().following()) then
                         return

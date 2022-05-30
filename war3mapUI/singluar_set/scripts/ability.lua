@@ -9,6 +9,7 @@ _singluarSetAbility = {
 
         stage.ability = FrameBackdrop(kit, FrameGameUI)
             .relation(FRAME_ALIGN_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0, 0)
+            .size(0.1, 0.1)
             .show(false)
 
         stage.ability_bedding = {}
@@ -16,7 +17,7 @@ _singluarSetAbility = {
         stage.ability_btnLvUp = {}
 
         for i = 1, stage.ability_max do
-            stage.ability_bedding[i] = FrameBackdrop(kit .. '->bedding->' .. i, stage.ability).anchor(true).show(false)
+            stage.ability_bedding[i] = FrameBackdrop(kit .. '->bedding->' .. i, stage.ability).show(false)
         end
         for i = 1, stage.ability_max do
             stage.ability_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.ability)
@@ -44,7 +45,7 @@ _singluarSetAbility = {
                              .show(true)
                     end
                 end)
-                .onMouseClick(
+                .onMouseLeftClick(
                 function(evtData)
                     local selection = evtData.triggerPlayer.selection()
                     if (isObject(selection, "Unit") == false or selection.isInterrupt() or selection.owner() ~= evtData.triggerPlayer) then
@@ -77,7 +78,7 @@ _singluarSetAbility = {
                              .show(true)
                     end
                 end)
-                .onMouseClick(
+                .onMouseLeftClick(
                 function(evtData)
                     local selection = evtData.triggerPlayer.selection()
                     if (isObject(selection, 'Unit') and selection.isAlive() and selection.owner() == evtData.triggerPlayer) then

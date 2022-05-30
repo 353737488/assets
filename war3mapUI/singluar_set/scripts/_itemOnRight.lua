@@ -100,7 +100,7 @@ _singluarSetItemOnRight = function(stage)
         end
     end)
 
-    mouse.onRightClick(function(evtData)
+    mouse.onRightClick("singluarSet_onItemMouseRightClick", function(evtData)
         local triggerPlayer = evtData.triggerPlayer
         local following = triggerPlayer.cursor().following()
         local followObject = triggerPlayer.cursor().followObject()
@@ -187,6 +187,6 @@ _singluarSetItemOnRight = function(stage)
         if (iCheck == false and wCheck == false and following == true) then
             triggerPlayer.cursor().followStop(onFollowStop)
         end
-    end, "singluarSet_onItemMouseRightClick")
+    end)
 
 end

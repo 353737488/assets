@@ -26,15 +26,15 @@ this.onSetup(function()
 
     stage.man.motion(stage.stand).duration(2).play(true, true)
 
-    keyboard.onRelease(KEYBOARD.T, function(evtData)
+    keyboard.onRelease(KEYBOARD.T, "singluar_2d", function(evtData)
         stage.man.motion(stage.stand).duration(2).play(true)
-    end, "singluar_2d")
-    keyboard.onRelease(KEYBOARD.Y, function(evtData)
+    end)
+    keyboard.onRelease(KEYBOARD.Y, "singluar_2d", function(evtData)
         stage.man.motion(stage.run).duration(0.5).play(true, true)
-    end, "singluar_2d")
-    keyboard.onRelease(KEYBOARD.U, function(evtData)
+    end)
+    keyboard.onRelease(KEYBOARD.U, "singluar_2d", function(evtData)
         stage.man.motion(stage.attack).duration(0.3).play(false, true)
-    end, "singluar_2d")
+    end)
 end)
 
 

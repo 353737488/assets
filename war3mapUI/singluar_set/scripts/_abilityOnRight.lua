@@ -37,7 +37,7 @@ _singluarSetAbilityOnRight = function(stage)
         end
     end)
 
-    mouse.onRightClick(function(evtData)
+    mouse.onRightClick("singluarSet_onAbilityMouseRightClick", function(evtData)
         local triggerPlayer = evtData.triggerPlayer
         local following = triggerPlayer.cursor().following()
         local followObject = triggerPlayer.cursor().followObject()
@@ -89,5 +89,5 @@ _singluarSetAbilityOnRight = function(stage)
                 end
             end
         end
-    end, "singluarSet_onAbilityMouseRightClick")
+    end)
 end

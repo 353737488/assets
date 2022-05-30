@@ -13,7 +13,7 @@ this.onSetup(function()
     stage.radiusAreaLimit = 0
     stage.main = FrameBackdrop(kit, FrameGameUI)
     --- 单位技能左键引用
-    mouse.onLeftClick(function(evtData)
+    mouse.onLeftClick("singluar_cursor", function(evtData)
         local cs = evtData.triggerPlayer.cursor()
         local ab = cs.ability()
         local obj = cs.followObject()
@@ -48,7 +48,7 @@ this.onSetup(function()
                 end
             end
         end
-    end, "singluar_cursor")
+    end)
 end)
 
 this.onStart(function()
