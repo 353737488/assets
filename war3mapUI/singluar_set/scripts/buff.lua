@@ -8,7 +8,8 @@ _singluarSetBuff = {
         -- buff名词转接
         stage.buff_turner = {}
         stage.buff_turner._name = {
-            rgba = "偏色",
+            rgb = "偏色",
+            alpha = "透明",
             invulnerable = "无敌",
             invisible = "隐身",
             animateScale = "动作",

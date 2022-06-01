@@ -34,10 +34,10 @@ _singluarSetItem = {
                 .fontSize(7.5)
                 .mask('btn\\mask')
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0.4) end)
+                .onMouseLeave(function(_) stage.tooltips.show(false, 0.6) end)
                 .onMouseEnter(
                 function(evtData)
-                    if (evtData.triggerPlayer.cursor().following()) then
+                    if (Cursor().following()) then
                         return
                     end
                     local sel = evtData.triggerPlayer.selection()
@@ -47,7 +47,7 @@ _singluarSetItem = {
                     local content = _singluarSetTooltipsBuilder.item(sel.itemSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
                         stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.item_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
+                             .relation(FRAME_ALIGN_BOTTOM, stage.item, FRAME_ALIGN_TOP, 0, 0.002)
                              .content(content)
                              .show(true)
                              .onMouseLeftClick(
@@ -58,11 +58,11 @@ _singluarSetItem = {
                                     local it = selection.itemSlot().storage()[i]
                                     if (isObject(it, "Item")) then
                                         if (ed.key == "warehouse") then
-                                            sync.send("SINGLUAR_GAME_SYNC", { "item_to_warehouse", it.id() })
+                                            sync.send("G_GAME_SYNC", { "item_to_warehouse", it.id() })
                                         elseif (ed.key == "drop") then
-                                            sync.send("SINGLUAR_GAME_SYNC", { "item_drop", it.id(), selection.x(), selection.y() })
+                                            sync.send("G_GAME_SYNC", { "item_drop", it.id(), selection.x(), selection.y() })
                                         elseif (ed.key == "pawn") then
-                                            sync.send("SINGLUAR_GAME_SYNC", { "item_pawn", it.id() })
+                                            sync.send("G_GAME_SYNC", { "item_pawn", it.id() })
                                         elseif (ed.key == "separate") then
 
                                         end
@@ -73,13 +73,13 @@ _singluarSetItem = {
                 end)
                 .onMouseLeftClick(
                 function(evtData)
-                    if (evtData.triggerPlayer.cursor().following()) then
+                    if (Cursor().following()) then
                         return
                     end
                     -- 引用
                     local it = evtData.triggerPlayer.selection().itemSlot().storage()[i]
                     if (isObject(it, "Item")) then
-                        sync.send("SINGLUAR_GAME_SYNC", { "item_quote", it.id() })
+                        sync.send("G_GAME_SYNC", { "item_quote", it.id() })
                     end
                 end)
 
@@ -145,9 +145,11 @@ _singluarSetItem = {
                                 tmpData.btn[i].text = reason
                             end
                         end
-                        if (ab == tmpData.selection.owner().cursor().ability()) then
-                            tmpData.btn[i].border = 'btn\\border-gold'
-                        end
+                        async.call(tmpData.selection.owner(), function()
+                            if (ab == Cursor().ability()) then
+                                tmpData.btn[i].border = 'btn\\border-gold'
+                            end
+                        end)
                     end
                 end
             end

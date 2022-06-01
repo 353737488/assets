@@ -20,7 +20,7 @@ _singluarSetAbility = {
             stage.ability_bedding[i] = FrameBackdrop(kit .. '->bedding->' .. i, stage.ability).show(false)
         end
         for i = 1, stage.ability_max do
-            stage.ability_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.ability)
+            stage.ability_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.ability_bedding[i])
                 .size(0.1, 0.1)
                 .relation(FRAME_ALIGN_CENTER, stage.ability_bedding[i], FRAME_ALIGN_CENTER, 0, 0)
                 .highlight(true)
@@ -30,7 +30,7 @@ _singluarSetAbility = {
                 .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
-                    if (evtData.triggerPlayer.cursor().following()) then
+                    if (Cursor().following()) then
                         return
                     end
                     local selection = evtData.triggerPlayer.selection()
@@ -53,7 +53,7 @@ _singluarSetAbility = {
                     end
                     local ab = selection.abilitySlot().storage()[i]
                     if (isObject(ab, "Ability")) then
-                        sync.send("SINGLUAR_GAME_SYNC", { "ability_quote", ab.id() })
+                        sync.send("G_GAME_SYNC", { "ability_quote", ab.id() })
                     end
                 end)
                 .show(false)
@@ -85,7 +85,7 @@ _singluarSetAbility = {
                         Vcm('war3_click1').play()
                         local ab = selection.abilitySlot().storage()[i]
                         if (isObject(ab, "Ability")) then
-                            sync.send("SINGLUAR_GAME_SYNC", { "ability_level_up", ab.id() })
+                            sync.send("G_GAME_SYNC", { "ability_level_up", ab.id() })
                             local content = _singluarSetTooltipsBuilder.ability(ab, 1)
                             if (content ~= nil) then
                                 stage.tooltips.content(content)
@@ -166,11 +166,13 @@ _singluarSetAbility = {
                             if (nil == tt or ABILITY_TARGET_TYPE.PAS == tt) then
                                 tmpData.btn[i].border = 'Singluar\\ui\\nil.tga'
                             else
-                                if (storage[i] == tmpData.selection.owner().cursor().ability()) then
-                                    tmpData.btn[i].border = 'btn\\border-gold'
-                                else
-                                    tmpData.btn[i].border = 'btn\\border-white'
-                                end
+                                async.call(tmpData.selection.owner(), function()
+                                    if (storage[i] == Cursor().ability()) then
+                                        tmpData.btn[i].border = 'btn\\border-gold'
+                                    else
+                                        tmpData.btn[i].border = 'btn\\border-white'
+                                    end
+                                end)
                             end
                         end
                         if (nil == tt or ABILITY_TARGET_TYPE.PAS == tt) then

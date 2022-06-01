@@ -84,8 +84,8 @@ _singluarSetController = {
             local x = -0.01
             local y = -0.01
             if (field == 'portrait') then
-                x = 0.067
-                y = 0.018
+                x = 0
+                y = 0.004
                 if (primary ~= nil) then
                     table.insert(tips, colour.gold('主属性: ' .. primary.label))
                     table.insert(tips, colour.redLight('力量: ' .. math.floor(selection.str())))
@@ -182,7 +182,7 @@ _singluarSetController = {
                 table.insert(tips, '回避<几率>: ' .. selection.avoid() .. '%')
             end
             if (field == 'portrait') then
-                stage.tooltips.relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_BOTTOM, x, y)
+                stage.tooltips.relation(FRAME_ALIGN_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_TOP, x, y)
                 stage.tooltips.content({ tips = tips }).showGradient(true, { duration = 0.1, y = 0.002 })
             else
                 stage.tooltips.relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_BOTTOM, x, y)

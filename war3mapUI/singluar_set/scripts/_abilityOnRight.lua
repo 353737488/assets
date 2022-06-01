@@ -39,9 +39,9 @@ _singluarSetAbilityOnRight = function(stage)
 
     mouse.onRightClick("singluarSet_onAbilityMouseRightClick", function(evtData)
         local triggerPlayer = evtData.triggerPlayer
-        local following = triggerPlayer.cursor().following()
-        local followObject = triggerPlayer.cursor().followObject()
-        if (following == true and isObject(followObject, "Ability") == false) then
+        local following = Cursor().following()
+        local followObj = Cursor().followObj()
+        if (following == true and isObject(followObj, "Ability") == false) then
             return
         end
         local selection = triggerPlayer.selection()
@@ -66,18 +66,18 @@ _singluarSetAbilityOnRight = function(stage)
                         local ry = japi.MouseRY()
                         if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                             if (following == true) then
-                                if (table.equal(followObject, ab) == false) then
-                                    triggerPlayer.cursor().followStop(function(callbackData)
+                                if (table.equal(followObj, ab) == false) then
+                                    Cursor().followStop(function(callbackData)
                                         onFollowChange(callbackData, triggerPlayer, i)
                                     end)
                                 else
-                                    triggerPlayer.cursor().followStop(onFollowStop)
+                                    Cursor().followStop(onFollowStop)
                                 end
                             elseif (isObject(ab, "Ability")) then
                                 japi.DzFrameSetAlpha(frameButton[i].handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                triggerPlayer.cursor().followFrame(ab, frameButton[i].texture(), frameButton[i].size(), i, onFollowStop)
+                                Cursor().followCall(ab, frameButton[i].texture(), frameButton[i].size(), i, onFollowStop)
                             end
                             break
                         end
@@ -85,7 +85,7 @@ _singluarSetAbilityOnRight = function(stage)
                     j = i + 1
                 end
                 if (j > frameMax and following == true) then
-                    triggerPlayer.cursor().followStop(onFollowStop)
+                    Cursor().followStop(onFollowStop)
                 end
             end
         end

@@ -92,16 +92,16 @@ _singluarSetWarehouse = {
                 .fontSize(7)
                 .mask('btn\\mask')
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0.4) end)
+                .onMouseLeave(function(_) stage.tooltips.show(false, 0.6) end)
                 .onMouseEnter(
                 function(evtData)
-                    if (evtData.triggerPlayer.cursor().following()) then
+                    if (Cursor().following()) then
                         return
                     end
                     local content = _singluarSetTooltipsBuilder.warehouse(evtData.triggerPlayer.warehouseSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
                         stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.warehouse_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
+                             .relation(FRAME_ALIGN_BOTTOM, stage.warehouse, FRAME_ALIGN_TOP, 0, 0.002)
                              .content(content)
                              .show(true)
                              .onMouseLeftClick(
@@ -112,15 +112,15 @@ _singluarSetWarehouse = {
                                     if (ed.key == "item") then
                                         local selection = ed.triggerPlayer.selection()
                                         if (isObject(selection, "Unit")) then
-                                            sync.send("SINGLUAR_GAME_SYNC", { "warehouse_to_item", it.id() })
+                                            sync.send("G_GAME_SYNC", { "warehouse_to_item", it.id() })
                                         end
                                     elseif (ed.key == "drop") then
                                         local selection = ed.triggerPlayer.selection()
                                         if (isObject(selection, "Unit")) then
-                                            sync.send("SINGLUAR_GAME_SYNC", { "item_drop", it.id(), selection.x(), selection.y() })
+                                            sync.send("G_GAME_SYNC", { "item_drop", it.id(), selection.x(), selection.y() })
                                         end
                                     elseif (ed.key == "pawn") then
-                                        sync.send("SINGLUAR_GAME_SYNC", { "item_pawn", it.id() })
+                                        sync.send("G_GAME_SYNC", { "item_pawn", it.id() })
                                     elseif (ed.key == "separate") then
 
                                     end

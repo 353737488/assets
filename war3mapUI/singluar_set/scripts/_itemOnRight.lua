@@ -102,9 +102,9 @@ _singluarSetItemOnRight = function(stage)
 
     mouse.onRightClick("singluarSet_onItemMouseRightClick", function(evtData)
         local triggerPlayer = evtData.triggerPlayer
-        local following = triggerPlayer.cursor().following()
-        local followObject = triggerPlayer.cursor().followObject()
-        if (following == true and isObject(followObject, "Item") == false) then
+        local following = Cursor().following()
+        local followObj = Cursor().followObj()
+        if (following == true and isObject(followObj, "Item") == false) then
             return
         end
         local selection = triggerPlayer.selection()
@@ -129,18 +129,18 @@ _singluarSetItemOnRight = function(stage)
                         local ry = japi.MouseRY()
                         if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                             if (following == true) then
-                                if (table.equal(followObject, it) == false) then
-                                    triggerPlayer.cursor().followStop(function(callbackData)
+                                if (table.equal(followObj, it) == false) then
+                                    Cursor().followStop(function(callbackData)
                                         onFollowChange(callbackData, triggerPlayer, i)
                                     end)
                                 else
-                                    triggerPlayer.cursor().followStop(onFollowStop)
+                                    Cursor().followStop(onFollowStop)
                                 end
                             elseif (isObject(it, "Item")) then
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                triggerPlayer.cursor().followFrame(it, btn.texture(), btn.size(), i, onFollowStop)
+                                Cursor().followCall(it, btn.texture(), btn.size(), i, onFollowStop)
                             end
                             iCheck = true
                             break
@@ -166,18 +166,18 @@ _singluarSetItemOnRight = function(stage)
                 local ry = japi.MouseRY()
                 if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                     if (following == true) then
-                        if (table.equal(followObject, it) == false) then
-                            triggerPlayer.cursor().followStop(function(callbackData)
+                        if (table.equal(followObj, it) == false) then
+                            Cursor().followStop(function(callbackData)
                                 onFollowChange(callbackData, triggerPlayer, itemMax + i)
                             end)
                         else
-                            triggerPlayer.cursor().followStop(onFollowStop)
+                            Cursor().followStop(onFollowStop)
                         end
                     elseif (isObject(it, "Item")) then
                         japi.DzFrameSetAlpha(btn.handle(), 0)
                         stage.tooltips.show(false, 0)
                         vcmClick1.play()
-                        triggerPlayer.cursor().followFrame(it, btn.texture(), btn.size(), itemMax + i, onFollowStop)
+                        Cursor().followCall(it, btn.texture(), btn.size(), itemMax + i, onFollowStop)
                     end
                     wCheck = true
                     break
@@ -185,7 +185,7 @@ _singluarSetItemOnRight = function(stage)
             end
         end
         if (iCheck == false and wCheck == false and following == true) then
-            triggerPlayer.cursor().followStop(onFollowStop)
+            Cursor().followStop(onFollowStop)
         end
     end)
 
