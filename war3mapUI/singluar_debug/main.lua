@@ -5,7 +5,8 @@
 
 if (DEBUGGING) then
 
-    DEBUGGING_RAM = DEBUGGING_RAM or collectgarbage("count")
+    collectgarbage("collect")
+    local ram = collectgarbage("count")
 
     local kit = 'singluar_debug'
 
@@ -132,25 +133,35 @@ if (DEBUGGING) then
                     i = i + 1
                 end
             end
-            collectgarbage("collect")
             table.insert(txts, "  计时器 : " .. i)
             table.insert(txts, "|n  [内存占用]")
-            table.insert(txts, '  ' .. colour.gold(string.format('%.5f', (collectgarbage("count") - DEBUGGING_RAM) / 1024) .. ' MB'))
+            local cost = math.round((collectgarbage("count") - ram) / 1024, 3)
+            if (stage.costMax == nil or stage.costMax < cost) then
+                stage.costMax = cost
+            end
+            local avg = 0
+            if (#stage.costAvg < 100) then
+                table.insert(stage.costAvg, cost)
+                avg = table.average(stage.costAvg)
+            else
+                avg = table.average(stage.costAvg)
+                stage.costAvg = { avg }
+            end
+            table.insert(txts, colour.yellowLight("  平均 : " .. string.format('%0.4f', avg) .. ' MB'))
+            table.insert(txts, colour.redLight("  最大 : " .. string.format('%0.4f', stage.costMax) .. ' MB'))
+            table.insert(txts, colour.gold("  当前 : " .. string.format('%0.4f', cost) .. ' MB'))
             return txts
         end
 
     end)
 
-    this.onStart(function()
+    this.onRefresh(1, function()
+        ---@type {main:FrameText,debug:fun():table<number,number>}
         local stage = this.stage()
-        japi.Refresh("singluar_debug", function()
-            ---@type {main:FrameText,debug:fun():table<number,number>}
-            for _, p in ipairs(Players(table.section(1, 12))) do
-                if (p.isPlaying() and p.isComputer() == false) then
-                    async.call(p, function()
-                        stage.main.text(string.implode('|n', stage.debug()))
-                    end)
-                end
+        local p = PlayerLocal()
+        async.call(p, function()
+            if (p.isPlaying() and p.isComputer() == false) then
+                stage.main.text(string.implode('|n', stage.debug()))
             end
         end)
     end)

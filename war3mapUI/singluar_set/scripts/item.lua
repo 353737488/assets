@@ -73,13 +73,9 @@ _singluarSetItem = {
                 end)
                 .onMouseLeftClick(
                 function(evtData)
-                    if (Cursor().following()) then
-                        return
-                    end
-                    -- 引用
-                    local it = evtData.triggerPlayer.selection().itemSlot().storage()[i]
-                    if (isObject(it, "Item")) then
-                        sync.send("G_GAME_SYNC", { "item_quote", it.id() })
+                    local selection = evtData.triggerPlayer.selection()
+                    if (isObject(selection, "Unit")) then
+                        Cursor().itemQuote(selection.itemSlot().storage()[i])
                     end
                 end)
 

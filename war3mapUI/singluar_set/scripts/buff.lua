@@ -82,10 +82,16 @@ _singluarSetBuff = {
         end
         -- 名字
         stage.buff_turner.name = function(buffName)
+            if (string.sub(buffName, 1, 5) == "prop_") then
+                buffName = string.sub(buffName, 6)
+            end
             return stage.buff_turner._name[buffName] or buffName
         end
         -- 图标
         stage.buff_turner.icon = function(buffName)
+            if (string.sub(buffName, 1, 5) == "prop_") then
+                buffName = string.sub(buffName, 6)
+            end
             if (buffName) then
                 if (stage.buff_turner._icon[buffName] ~= nil) then
                     return "buff\\" .. stage.buff_turner._icon[buffName]

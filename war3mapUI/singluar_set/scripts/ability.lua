@@ -48,12 +48,8 @@ _singluarSetAbility = {
                 .onMouseLeftClick(
                 function(evtData)
                     local selection = evtData.triggerPlayer.selection()
-                    if (isObject(selection, "Unit") == false or selection.isInterrupt() or selection.owner() ~= evtData.triggerPlayer) then
-                        return
-                    end
-                    local ab = selection.abilitySlot().storage()[i]
-                    if (isObject(ab, "Ability")) then
-                        sync.send("G_GAME_SYNC", { "ability_quote", ab.id() })
+                    if (isObject(selection, "Unit")) then
+                        Cursor().abilityQuote(evtData.triggerPlayer.selection().abilitySlot().storage()[i])
                     end
                 end)
                 .show(false)
@@ -146,7 +142,7 @@ _singluarSetAbility = {
                         local tt = storage[i].targetType()
                         tmpData.btn[i].texture = storage[i].icon()
                         if (storage[i].coolDown() > 0 and storage[i].coolDownRemain() > 0) then
-                            tmpData.btn[i].maskValue = math.round(bagRy * storage[i].coolDownRemain() / storage[i].coolDown(), 3) / bagRy
+                            tmpData.btn[i].maskValue = math.min(1, storage[i].coolDownRemain() / storage[i].coolDown())
                             tmpData.btn[i].border = 'Singluar\\ui\\nil.tga'
                             tmpData.btn[i].fontSize = math.round(12 * (bagRx / bagRxMax), 2)
                             tmpData.btn[i].text = math.round(storage[i].coolDownRemain(), 1)
@@ -163,6 +159,7 @@ _singluarSetAbility = {
                             end
                         else
                             tmpData.btn[i].text = ''
+                            tmpData.btn[i].maskValue = 0
                             if (nil == tt or ABILITY_TARGET_TYPE.PAS == tt) then
                                 tmpData.btn[i].border = 'Singluar\\ui\\nil.tga'
                             else

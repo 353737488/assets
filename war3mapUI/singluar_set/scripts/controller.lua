@@ -81,7 +81,7 @@ _singluarSetController = {
             end
             local primary = selection.primary()
             local tips = {}
-            local x = -0.01
+            local x = 0
             local y = -0.01
             if (field == 'portrait') then
                 x = 0
@@ -160,11 +160,9 @@ _singluarSetController = {
                 table.insert(tips, '暴击<几率>: ' .. math.round(selection.odds("crit"), 2) .. '%')
                 table.insert(tips, '暴击<抗性>: ' .. math.round(selection.resistance('crit'), 2) .. '%')
             elseif (field == 'sight') then
-                x = 0.02
                 table.insert(tips, '白天视野: ' .. selection.sight())
                 table.insert(tips, '黑夜视野: ' .. selection.nsight())
             elseif (field == 'defend') then
-                x = 0.02
                 table.insert(tips, '防御: ' .. selection.defend())
                 table.insert(tips, '治疗<加成>: ' .. selection.cure() .. '%')
                 table.insert(tips, '减伤<比例>: ' .. selection.hurtReduction() .. '%')
@@ -177,7 +175,6 @@ _singluarSetController = {
                 table.insert(tips, '攻击吸魔<抗性>: ' .. selection.resistance('mpSuck') .. '%')
                 table.insert(tips, '技能吸魔<抗性>: ' .. selection.resistance('mpSuckSpell') .. '%')
             elseif (field == 'move') then
-                x = 0.02
                 table.insert(tips, '移动速度: ' .. selection.move())
                 table.insert(tips, '回避<几率>: ' .. selection.avoid() .. '%')
             end
@@ -229,7 +226,7 @@ _singluarSetController = {
 
                 -- 7个信息
                 local infoMargin = -0.005
-                local infoWidthL = 0.061
+                local infoWidthL = 0.058
                 local infoWidthR = 0.04
                 local infoHeight = 0.014
                 local infoAlpha = 220
@@ -237,7 +234,7 @@ _singluarSetController = {
 
                 -- 攻击
                 stage.ctl_info.attack = FrameLabel(kitP .. '->info->attack', stage.ctl_plate[t])
-                    .relation(FRAME_ALIGN_LEFT_TOP, stage.ctl_plate[t], FRAME_ALIGN_LEFT_TOP, 0.030, -0.068)
+                    .relation(FRAME_ALIGN_LEFT_TOP, stage.ctl_plate[t], FRAME_ALIGN_LEFT_TOP, 0.028, -0.068)
                     .size(infoWidthL, infoHeight)
                     .alpha(infoAlpha)
                     .highlight(true)
@@ -284,7 +281,7 @@ _singluarSetController = {
 
                 -- 视野
                 stage.ctl_info.sight = FrameLabel(kitP .. '->info->sight', stage.ctl_plate[t])
-                    .relation(FRAME_ALIGN_LEFT, stage.ctl_info.attackSpeed, FRAME_ALIGN_RIGHT, 0, 0)
+                    .relation(FRAME_ALIGN_LEFT_TOP, stage.ctl_plate[t], FRAME_ALIGN_LEFT_TOP, 0.097, -0.087)
                     .size(infoWidthR, infoHeight)
                     .side(LAYOUT_ALIGN_RIGHT)
                     .alpha(infoAlpha)
