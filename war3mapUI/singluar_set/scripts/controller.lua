@@ -179,7 +179,7 @@ _singluarSetController = {
                 table.insert(tips, '回避<几率>: ' .. selection.avoid() .. '%')
             end
             if (field == 'portrait') then
-                stage.tooltips.relation(FRAME_ALIGN_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_TOP, x, y)
+                stage.tooltips.relation(FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_TOP, x, y)
                 stage.tooltips.content({ tips = tips }).showGradient(true, { duration = 0.1, y = 0.002 })
             else
                 stage.tooltips.relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_BOTTOM, x, y)
@@ -217,7 +217,7 @@ _singluarSetController = {
                 -- 大头信息
                 stage.ctl_info.portrait = FrameLabel(kitP .. '->info->portrait', stage.ctl_plate[t])
                     .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_portrait, FRAME_ALIGN_LEFT_BOTTOM, 0.005, 0.006)
-                    .size(0.080, 0.012)
+                    .size(0.01, 0.012)
                     .highlight(true)
                     .textAlign(TEXT_ALIGN_LEFT)
                     .fontSize(10)
