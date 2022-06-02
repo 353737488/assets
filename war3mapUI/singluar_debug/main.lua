@@ -135,7 +135,7 @@ if (DEBUGGING) then
             end
             table.insert(txts, "  计时器 : " .. i)
             table.insert(txts, "|n  [内存占用]")
-            local cost = math.round((collectgarbage("count") - ram) / 1024, 3)
+            local cost = math.round((collectgarbage("count") - ram) / (1024 << 1), 3)
             if (stage.costMax == nil or stage.costMax < cost) then
                 stage.costMax = cost
             end

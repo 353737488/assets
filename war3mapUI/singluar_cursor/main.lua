@@ -11,6 +11,7 @@ this.onSetup(function()
 
     local cursor = Cursor()
         .uiKit(kit)
-        --.textureRadius("circle\\common")
+    --.sizeRate(20)
+    --.textureRadius("circle\\common")
 
 end)
