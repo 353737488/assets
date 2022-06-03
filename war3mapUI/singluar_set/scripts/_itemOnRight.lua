@@ -10,16 +10,14 @@ _singluarSetItemOnRight = function(stage)
 
     --- 跟踪停止
     local onFollowStop = function(callbackData)
-        local fpi = callbackData.followData
-        if (fpi <= itemMax) then
-            japi.DzFrameSetAlpha(frameItems[fpi].handle(), frameItems[fpi].alpha())
-        else
-            japi.DzFrameSetAlpha(frameWarehouse[fpi - itemMax].handle(), frameWarehouse[fpi - itemMax].alpha())
+        local frame = callbackData.followData.frame
+        if (frame) then
+            japi.DzFrameSetAlpha(frame.handle(), frame.alpha())
         end
     end
     --- 跟踪回调
-    local onFollowChange = function(callbackData, triggerPlayer, i)
-        local fpi = callbackData.followData
+    local onFollowChange = function(callbackData, i)
+        local fpi = callbackData.followData.i
         local fit = callbackData.followObj
         if (fpi <= itemMax and i <= itemMax) then
             -- 物品 -> 物品
@@ -131,7 +129,7 @@ _singluarSetItemOnRight = function(stage)
                             if (following == true) then
                                 if (table.equal(followObj, it) == false) then
                                     Cursor().followStop(function(callbackData)
-                                        onFollowChange(callbackData, triggerPlayer, i)
+                                        onFollowChange(callbackData, i)
                                     end)
                                 else
                                     Cursor().followStop(onFollowStop)
@@ -140,7 +138,7 @@ _singluarSetItemOnRight = function(stage)
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                Cursor().followCall(it, btn.texture(), btn.size(), i, onFollowStop)
+                                Cursor().followCall(it, { frame = btn, i = i }, onFollowStop)
                             end
                             iCheck = true
                             break
@@ -168,16 +166,15 @@ _singluarSetItemOnRight = function(stage)
                     if (following == true) then
                         if (table.equal(followObj, it) == false) then
                             Cursor().followStop(function(callbackData)
-                                onFollowChange(callbackData, triggerPlayer, itemMax + i)
+                                onFollowChange(callbackData, itemMax + i)
                             end)
                         else
                             Cursor().followStop(onFollowStop)
                         end
                     elseif (isObject(it, "Item")) then
-                        japi.DzFrameSetAlpha(btn.handle(), 0)
                         stage.tooltips.show(false, 0)
                         vcmClick1.play()
-                        Cursor().followCall(it, btn.texture(), btn.size(), itemMax + i, onFollowStop)
+                        Cursor().followCall(it, { frame = btn, i = itemMax + i }, onFollowStop)
                     end
                     wCheck = true
                     break
