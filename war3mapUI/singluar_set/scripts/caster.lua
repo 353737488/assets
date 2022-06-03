@@ -22,10 +22,11 @@ _singluarSetCaster = {
             .show(false)
 
     end,
-    onRefresh = function(stage, whichPlayer)
+    onRefresh = function(stage)
+        local p = PlayerLocal()
         local tmpData = {
             ---@type Unit
-            selection = whichPlayer.selection(),
+            selection = p.selection(),
             show = false
         }
         if (isObject(tmpData.selection, 'Unit') and tmpData.selection.isAlive()) then
@@ -69,20 +70,18 @@ _singluarSetCaster = {
                 end
             end
         end
-        async.call(whichPlayer, function()
-            --- 技能点
-            if (tmpData.sp ~= nil) then
-                stage.caster_sp.text(colour.gold(tmpData.sp) .. ' 技能点')
-            end
-            stage.caster_sp.show(tmpData.sp ~= nil and tmpData.sp > 0)
-            --- 施法条
-            if (tmpData.show == true) then
-                stage.caster_bar.texture('value', tmpData.texture)
-                stage.caster_bar.value(tmpData.val, stage.caster_barLen, stage.caster_barHeight)
-                stage.caster_bar.text(LAYOUT_ALIGN_CENTER, tmpData.txt)
-                stage.caster_bar.alpha(tmpData.alpha)
-            end
-            stage.caster_bar.show(tmpData.show)
-        end)
+        --- 技能点
+        if (tmpData.sp ~= nil) then
+            stage.caster_sp.text(colour.gold(tmpData.sp) .. ' 技能点')
+        end
+        stage.caster_sp.show(tmpData.sp ~= nil and tmpData.sp > 0)
+        --- 施法条
+        if (tmpData.show == true) then
+            stage.caster_bar.texture('value', tmpData.texture)
+            stage.caster_bar.value(tmpData.val, stage.caster_barLen, stage.caster_barHeight)
+            stage.caster_bar.text(LAYOUT_ALIGN_CENTER, tmpData.txt)
+            stage.caster_bar.alpha(tmpData.alpha)
+        end
+        stage.caster_bar.show(tmpData.show)
     end,
 }

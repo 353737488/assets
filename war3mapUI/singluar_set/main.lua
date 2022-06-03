@@ -86,14 +86,10 @@ this.onRefresh(0.03, function()
     local stage = this.stage()
     async.call(PlayerLocal(), function()
         _singluarSetController.onRefresh(stage)
+        _singluarSetBuff.onRefresh(stage)
+        _singluarSetWarehouse.onRefresh(stage)
+        _singluarSetItem.onRefresh(stage)
+        _singluarSetAbility.onRefresh(stage)
+        _singluarSetCaster.onRefresh(stage)
     end)
-    for _, p in ipairs(Players(table.section(1, 12))) do
-        if (p.isPlaying()) then
-            _singluarSetBuff.onRefresh(stage, p)
-            _singluarSetWarehouse.onRefresh(stage, p)
-            _singluarSetItem.onRefresh(stage, p)
-            _singluarSetAbility.onRefresh(stage, p)
-            _singluarSetCaster.onRefresh(stage, p)
-        end
-    end
 end)

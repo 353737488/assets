@@ -146,12 +146,13 @@ _singluarSetBuff = {
                 .size(stage.buff_bagRx, stage.buff_bagRy)
         end
     end,
-    ---@type fun(stage:{buff_buffs:FrameButton[]},whichPlayer:Player)
-    onRefresh = function(stage, whichPlayer)
-        local pi = whichPlayer.index()
+    ---@type fun(stage:{buff_buffs:FrameButton[]})
+    onRefresh = function(stage)
+        local p = PlayerLocal()
+        local pi = p.index()
         local tmpData = {
             ---@type Unit
-            selection = whichPlayer.selection(),
+            selection = p.selection(),
             buffTexture = {},
             buffAlpha = {},
             buffText = {},
@@ -285,20 +286,18 @@ _singluarSetBuff = {
                 end
             end
         end
-        async.call(whichPlayer, function()
-            for bi = 1, stage.buff_max, 1 do
-                if (buffShow[bi] == true) then
-                    stage.buff_buffSignal[bi].texture(tmpData.signalTexture[bi])
-                    stage.buff_buffs[bi].texture(tmpData.buffTexture[bi])
-                    stage.buff_buffs[bi].alpha(tmpData.buffAlpha[bi])
-                    stage.buff_buffs[bi].text(tmpData.buffText[bi])
-                    stage.buff_buffs[bi].mask(tmpData.maskTexture[bi])
-                    stage.buff_buffs[bi].border(tmpData.borderTexture[bi])
-                    stage.buff_buffs[bi].show(true)
-                else
-                    stage.buff_buffs[bi].show(false)
-                end
+        for bi = 1, stage.buff_max, 1 do
+            if (buffShow[bi] == true) then
+                stage.buff_buffSignal[bi].texture(tmpData.signalTexture[bi])
+                stage.buff_buffs[bi].texture(tmpData.buffTexture[bi])
+                stage.buff_buffs[bi].alpha(tmpData.buffAlpha[bi])
+                stage.buff_buffs[bi].text(tmpData.buffText[bi])
+                stage.buff_buffs[bi].mask(tmpData.maskTexture[bi])
+                stage.buff_buffs[bi].border(tmpData.borderTexture[bi])
+                stage.buff_buffs[bi].show(true)
+            else
+                stage.buff_buffs[bi].show(false)
             end
-        end)
+        end
     end,
 }

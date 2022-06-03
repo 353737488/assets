@@ -95,11 +95,12 @@ _singluarSetAbility = {
         --- 注册同步策略
         _singluarSetAbilityOnRight(stage)
     end,
-    onRefresh = function(stage, whichPlayer)
+    onRefresh = function(stage)
+        local p = PlayerLocal()
         local tmpData = {
             ---@type Unit
-            selection = whichPlayer.selection(),
-            race = whichPlayer.race(),
+            selection = p.selection(),
+            race = p.race(),
             show = false,
             size = nil,
             bedding = {},
@@ -195,35 +196,33 @@ _singluarSetAbility = {
                 end
             end
         end
-        async.call(whichPlayer, function()
-            --- 主
-            stage.ability.show(tmpData.show)
-            if (tmpData.show) then
-                for i = 1, stage.ability_max do
-                    if (tmpData.size) then
-                        stage.ability_btn[i].size(tmpData.size[1], tmpData.size[2])
-                    end
-                    stage.ability_btn[i].hotkey(tmpData.btn[i].hotkey)
-                    stage.ability_btn[i].texture(tmpData.btn[i].texture)
-                    stage.ability_btn[i].show(tmpData.btn[i].show)
-                    stage.ability_btn[i].border(tmpData.btn[i].border)
-                    stage.ability_btn[i].maskValue(tmpData.btn[i].maskValue)
-                    stage.ability_btn[i].fontSize(tmpData.btn[i].fontSize)
-                    stage.ability_btn[i].text(tmpData.btn[i].text)
-                    if (tmpData.btnLvUp[i].size) then
-                        stage.ability_btnLvUp[i].size(tmpData.btnLvUp[i].size[1], tmpData.btnLvUp[i].size[2])
-                    end
-                    stage.ability_btnLvUp[i].show(tmpData.btnLvUp[i].show)
-                    stage.ability_bedding[i].texture('ability\\' .. tmpData.race)
-                    if (tmpData.bedding[i].relation) then
-                        stage.ability_bedding[i].relation(FRAME_ALIGN_LEFT_BOTTOM, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, tmpData.bedding[i].relation[1], tmpData.bedding[i].relation[2])
-                    end
-                    if (tmpData.size) then
-                        stage.ability_bedding[i].size(tmpData.size[1], tmpData.size[2])
-                    end
-                    stage.ability_bedding[i].show(tmpData.bedding[i].show)
+        --- 主
+        stage.ability.show(tmpData.show)
+        if (tmpData.show) then
+            for i = 1, stage.ability_max do
+                if (tmpData.size) then
+                    stage.ability_btn[i].size(tmpData.size[1], tmpData.size[2])
                 end
+                stage.ability_btn[i].hotkey(tmpData.btn[i].hotkey)
+                stage.ability_btn[i].texture(tmpData.btn[i].texture)
+                stage.ability_btn[i].show(tmpData.btn[i].show)
+                stage.ability_btn[i].border(tmpData.btn[i].border)
+                stage.ability_btn[i].maskValue(tmpData.btn[i].maskValue)
+                stage.ability_btn[i].fontSize(tmpData.btn[i].fontSize)
+                stage.ability_btn[i].text(tmpData.btn[i].text)
+                if (tmpData.btnLvUp[i].size) then
+                    stage.ability_btnLvUp[i].size(tmpData.btnLvUp[i].size[1], tmpData.btnLvUp[i].size[2])
+                end
+                stage.ability_btnLvUp[i].show(tmpData.btnLvUp[i].show)
+                stage.ability_bedding[i].texture('ability\\' .. tmpData.race)
+                if (tmpData.bedding[i].relation) then
+                    stage.ability_bedding[i].relation(FRAME_ALIGN_LEFT_BOTTOM, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, tmpData.bedding[i].relation[1], tmpData.bedding[i].relation[2])
+                end
+                if (tmpData.size) then
+                    stage.ability_bedding[i].size(tmpData.size[1], tmpData.size[2])
+                end
+                stage.ability_bedding[i].show(tmpData.bedding[i].show)
             end
-        end)
+        end
     end,
 }

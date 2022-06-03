@@ -91,10 +91,11 @@ _singluarSetItem = {
         _singluarSetItemOnRight(stage)
 
     end,
-    onRefresh = function(stage, whichPlayer)
+    onRefresh = function(stage)
+        local p = PlayerLocal()
         local tmpData = {
             ---@type Unit
-            selection = whichPlayer.selection(),
+            selection = p.selection(),
             show = false,
             btn = {},
             charges = {},
@@ -150,27 +151,25 @@ _singluarSetItem = {
                 end
             end
         end
-        async.call(whichPlayer, function()
-            stage.item.show(tmpData.show)
-            if (tmpData.show) then
-                stage.item_weight.text(tmpData.weight)
-                for i = 1, stage.item_max do
-                    stage.item_btn[i].texture(tmpData.btn[i].texture)
-                    stage.item_btn[i].border(tmpData.btn[i].border)
-                    stage.item_btn[i].maskValue(tmpData.btn[i].maskValue)
-                    stage.item_btn[i].text(tmpData.btn[i].text)
-                    stage.item_btn[i].show(tmpData.btn[i].show)
-                    if (tmpData.charges[i] > 0) then
-                        local tw = math.max(0.006, string.len(tostring(tmpData.charges[i])) * 0.004)
-                        stage.item_charges[i]
-                             .size(tw, 0.008)
-                             .text(tmpData.charges[i])
-                             .show(true)
-                    else
-                        stage.item_charges[i].show(false)
-                    end
+        stage.item.show(tmpData.show)
+        if (tmpData.show) then
+            stage.item_weight.text(tmpData.weight)
+            for i = 1, stage.item_max do
+                stage.item_btn[i].texture(tmpData.btn[i].texture)
+                stage.item_btn[i].border(tmpData.btn[i].border)
+                stage.item_btn[i].maskValue(tmpData.btn[i].maskValue)
+                stage.item_btn[i].text(tmpData.btn[i].text)
+                stage.item_btn[i].show(tmpData.btn[i].show)
+                if (tmpData.charges[i] > 0) then
+                    local tw = math.max(0.006, string.len(tostring(tmpData.charges[i])) * 0.004)
+                    stage.item_charges[i]
+                         .size(tw, 0.008)
+                         .text(tmpData.charges[i])
+                         .show(true)
+                else
+                    stage.item_charges[i].show(false)
                 end
             end
-        end)
+        end
     end,
 }

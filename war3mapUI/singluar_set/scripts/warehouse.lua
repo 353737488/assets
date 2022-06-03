@@ -138,10 +138,11 @@ _singluarSetWarehouse = {
         end
     end,
     ---@param whichPlayer Player
-    onRefresh = function(stage, whichPlayer)
+    onRefresh = function(stage)
+        local p = PlayerLocal()
         local tmpData = {
             ---@type Unit
-            selection = whichPlayer.selection(),
+            selection = p.selection(),
             cell = nil,
             resInfo = {},
             btn = {},
@@ -153,19 +154,19 @@ _singluarSetWarehouse = {
             tmpData.charges[i] = 0
         end
         --- 仓存显示
-        local qty = #(whichPlayer.warehouseSlot())
+        local qty = #(p.warehouseSlot())
         if (qty >= stage.warehouse_max) then
-            tmpData.cell = whichPlayer.name() .. ' 的仓库  ' .. colour.red(qty .. '/' .. stage.warehouse_max)
+            tmpData.cell = p.name() .. ' 的仓库  ' .. colour.red(qty .. '/' .. stage.warehouse_max)
         else
-            tmpData.cell = whichPlayer.name() .. ' 的仓库  ' .. qty .. '/' .. stage.warehouse_max
+            tmpData.cell = p.name() .. ' 的仓库  ' .. qty .. '/' .. stage.warehouse_max
         end
         --- 资源显示
-        local r = whichPlayer.worth()
+        local r = p.worth()
         for i, k in ipairs(stage.warehouse_resAllow) do
             tmpData.resInfo[i] = colour.hex(math.floor(r[k] or 0), stage.warehouse_resOcc[k].color)
         end
         --- 仓库物品控制
-        local storage = whichPlayer.warehouseSlot().storage()
+        local storage = p.warehouseSlot().storage()
         for i = 1, stage.warehouse_max do
             ---@type Item
             local it = storage[i]
@@ -196,32 +197,30 @@ _singluarSetWarehouse = {
                 end
             end
         end
-        async.call(whichPlayer, function()
-            stage.warehouse_cell.text(tmpData.cell)
-            for i, _ in ipairs(stage.warehouse_resAllow) do
-                stage.warehouse_resInfo[i].text(tmpData.resInfo[i])
+        stage.warehouse_cell.text(tmpData.cell)
+        for i, _ in ipairs(stage.warehouse_resAllow) do
+            stage.warehouse_resInfo[i].text(tmpData.resInfo[i])
+        end
+        for i = 1, stage.warehouse_max do
+            if (false == isObject(tmpData.selection, "Unit") or tmpData.selection.owner() ~= p) then
+                stage.warehouse_btn[i].alpha(50)
+            else
+                stage.warehouse_btn[i].alpha(255)
             end
-            for i = 1, stage.warehouse_max do
-                if (false == isObject(tmpData.selection, "Unit") or tmpData.selection.owner() ~= whichPlayer) then
-                    stage.warehouse_btn[i].alpha(50)
-                else
-                    stage.warehouse_btn[i].alpha(255)
-                end
-                stage.warehouse_btn[i].texture(tmpData.btn[i].texture)
-                stage.warehouse_btn[i].border(tmpData.btn[i].border)
-                stage.warehouse_btn[i].maskValue(tmpData.btn[i].maskValue)
-                stage.warehouse_btn[i].text(tmpData.btn[i].text)
-                stage.warehouse_btn[i].show(tmpData.btn[i].show)
-                if (tmpData.charges[i] > 0) then
-                    local tw = math.max(0.005, string.len(tostring(tmpData.charges[i])) * 0.0036)
-                    stage.warehouse_charges[i]
-                         .size(tw, 0.008)
-                         .text(tmpData.charges[i])
-                         .show(true)
-                else
-                    stage.warehouse_charges[i].show(false)
-                end
+            stage.warehouse_btn[i].texture(tmpData.btn[i].texture)
+            stage.warehouse_btn[i].border(tmpData.btn[i].border)
+            stage.warehouse_btn[i].maskValue(tmpData.btn[i].maskValue)
+            stage.warehouse_btn[i].text(tmpData.btn[i].text)
+            stage.warehouse_btn[i].show(tmpData.btn[i].show)
+            if (tmpData.charges[i] > 0) then
+                local tw = math.max(0.005, string.len(tostring(tmpData.charges[i])) * 0.0036)
+                stage.warehouse_charges[i]
+                     .size(tw, 0.008)
+                     .text(tmpData.charges[i])
+                     .show(true)
+            else
+                stage.warehouse_charges[i].show(false)
             end
-        end)
+        end
     end,
 }
