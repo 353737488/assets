@@ -84,9 +84,11 @@ end)
 this.onRefresh(0.03, function()
     ---@type {tips:table,main:FrameBackdrop,miniMap:Frame,miniMapBtns:Frame[],portrait:Frame,portraitShadow:FrameBackdrop,plate:table<string,FrameBackdropTile>,nilDisplay:FrameText,mp:FrameBar,hp:FrameBar,info:table<string,FrameButton|FrameText>,tile:table<string,FrameBar>}
     local stage = this.stage()
+    async.call(PlayerLocal(), function()
+        _singluarSetController.onRefresh(stage)
+    end)
     for _, p in ipairs(Players(table.section(1, 12))) do
         if (p.isPlaying()) then
-            _singluarSetController.onRefresh(stage, p)
             _singluarSetBuff.onRefresh(stage, p)
             _singluarSetWarehouse.onRefresh(stage, p)
             _singluarSetItem.onRefresh(stage, p)

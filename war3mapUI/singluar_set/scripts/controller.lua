@@ -4,8 +4,6 @@ _singluarSetController = {
 
         kit = kit .. '->ctl'
 
-        stage.async = {}
-
         -- 设置下方黑边
         japi.DzFrameEditBlackBorders(0, 0.125)
 
@@ -332,239 +330,245 @@ _singluarSetController = {
             end
         end
     end,
-    onRefresh = function(stage, whichPlayer)
-        local tmpData = {
-            class = 'Nil',
-            selection = whichPlayer.selection(),
-            race = whichPlayer.race(),
-        }
-        if (isObject(tmpData.selection, "Unit")) then
-            tmpData.class = "Unit"
-        elseif (isObject(tmpData.selection, "Item")) then
-            tmpData.class = "Item"
+    onRefresh = function(stage)
+        local p = PlayerLocal()
+        local tempAsync = p.prop("ss_ctl_tempAsync")
+        if (tempAsync == nil) then
+            tempAsync = {}
+            p.prop("ss_ctl_tempAsync", tempAsync)
         end
-        if (tmpData.class == "Nil") then
-            tmpData.nilDisplay = string.implode("|n", table.merge({ Game().name() }, Game().prop("infoIntro")))
-        elseif (tmpData.class == "Unit") then
-            if (tmpData.selection.isDead()) then
-                whichPlayer.prop("selection", NIL)
+        local d = {
+            class = 'Nil',
+            selection = p.selection(),
+            race = p.race(),
+        }
+        if (isObject(d.selection, "Unit")) then
+            d.class = "Unit"
+        elseif (isObject(d.selection, "Item")) then
+            d.class = "Item"
+        end
+        if (d.class == "Nil") then
+            d.nilDisplay = string.implode("|n", table.merge({ Game().name() }, Game().prop("infoIntro")))
+        elseif (d.class == "Unit") then
+            if (d.selection.isDead()) then
+                p.prop("selection", NIL)
                 return
             end
-            local primary = tmpData.selection.primary()
-            tmpData.nilDisplay = ""
-            tmpData.knocking = math.round(tmpData.selection.crit(), 2) .. '%'
-            tmpData.sight = math.floor(tmpData.selection.sight())
-            tmpData.defend = math.floor(tmpData.selection.defend())
-            tmpData.move = math.floor(tmpData.selection.move())
+            local primary = d.selection.primary()
+            d.nilDisplay = ""
+            d.knocking = math.round(d.selection.crit(), 2) .. '%'
+            d.sight = math.floor(d.selection.sight())
+            d.defend = math.floor(d.selection.defend())
+            d.move = math.floor(d.selection.move())
             if (time.isNight()) then
-                tmpData.sight = math.floor(tmpData.selection.nsight())
+                d.sight = math.floor(d.selection.nsight())
             else
-                tmpData.sight = math.floor(tmpData.selection.sight())
+                d.sight = math.floor(d.selection.sight())
             end
-            tmpData.portraitTexture = 'icon\\common'
-            if (tmpData.selection.isMelee()) then
-                tmpData.attackTexture = 'icon\\attack_melee'
+            d.portraitTexture = 'icon\\common'
+            if (d.selection.isMelee()) then
+                d.attackTexture = 'icon\\attack_melee'
                 if (primary ~= nil) then
-                    tmpData.portraitTexture = 'icon\\' .. primary.value .. '_melee'
+                    d.portraitTexture = 'icon\\' .. primary.value .. '_melee'
                 end
-            elseif (tmpData.selection.isRanged()) then
-                if (tmpData.selection.lightning() ~= nil) then
-                    tmpData.attackTexture = 'icon\\attack_lighting'
+            elseif (d.selection.isRanged()) then
+                if (d.selection.lightning() ~= nil) then
+                    d.attackTexture = 'icon\\attack_lighting'
                 else
-                    tmpData.attackTexture = 'icon\\attack_ranged'
+                    d.attackTexture = 'icon\\attack_ranged'
                 end
                 if (primary ~= nil) then
-                    tmpData.portraitTexture = 'icon\\' .. primary.value .. '_ranged'
+                    d.portraitTexture = 'icon\\' .. primary.value .. '_ranged'
                 end
             end
-            if (tmpData.selection.properName() ~= nil and tmpData.selection.properName() ~= '') then
-                tmpData.properName = tmpData.selection.name() .. '·' .. tmpData.selection.properName()
+            if (d.selection.properName() ~= nil and d.selection.properName() ~= '') then
+                d.properName = d.selection.name() .. '·' .. d.selection.properName()
             else
-                tmpData.properName = tmpData.selection.name()
+                d.properName = d.selection.name()
             end
-            if (tmpData.selection.isAttackAble()) then
-                tmpData.attackAlpha = 255
-                if (tmpData.selection.attackRipple() == 0) then
-                    tmpData.attack = math.floor(tmpData.selection.attack())
+            if (d.selection.isAttackAble()) then
+                d.attackAlpha = 255
+                if (d.selection.attackRipple() == 0) then
+                    d.attack = math.floor(d.selection.attack())
                 else
-                    tmpData.attack = math.floor(tmpData.selection.attack()) .. '~' .. math.floor(tmpData.selection.attack() + tmpData.selection.attackRipple())
+                    d.attack = math.floor(d.selection.attack()) .. '~' .. math.floor(d.selection.attack() + d.selection.attackRipple())
                 end
-                tmpData.attackSpeed = math.round(tmpData.selection.attackSpace(), 2) .. ' 秒/击'
-                tmpData.attackRange = math.floor(tmpData.selection.attackRange())
+                d.attackSpeed = math.round(d.selection.attackSpace(), 2) .. ' 秒/击'
+                d.attackRange = math.floor(d.selection.attackRange())
             else
-                tmpData.attackAlpha = 150
-                tmpData.attack = ' - '
-                tmpData.attackSpeed = ' - '
-                tmpData.attackRange = ' - '
+                d.attackAlpha = 150
+                d.attack = ' - '
+                d.attackSpeed = ' - '
+                d.attackRange = ' - '
             end
-            if (tmpData.selection.isInvulnerable()) then
-                tmpData.defendTexture = 'icon\\defend_gold'
-                tmpData.defend = colour.gold('无敌')
+            if (d.selection.isInvulnerable()) then
+                d.defendTexture = 'icon\\defend_gold'
+                d.defend = colour.gold('无敌')
             else
-                tmpData.defendTexture = 'icon\\defend'
-                if (tmpData.selection.defend() <= 9999) then
-                    tmpData.defend = math.floor(tmpData.selection.defend())
+                d.defendTexture = 'icon\\defend'
+                if (d.selection.defend() <= 9999) then
+                    d.defend = math.floor(d.selection.defend())
                 else
-                    tmpData.defend = math.numberFormat(tmpData.selection.defend(), 2)
+                    d.defend = math.numberFormat(d.selection.defend(), 2)
                 end
             end
 
-            local hpCur = math.floor(tmpData.selection.hpCur())
-            local hp = math.floor(tmpData.selection.hp() or 0)
-            local hpRegen = math.round(tmpData.selection.hpRegen(), 2)
+            local hpCur = math.floor(d.selection.hpCur())
+            local hp = math.floor(d.selection.hp() or 0)
+            local hpRegen = math.round(d.selection.hpRegen(), 2)
             if (hpRegen == 0 or hp == 0 or hpCur >= hp) then
-                tmpData.hpRegen = ''
+                d.hpRegen = ''
             elseif (hpRegen > 0) then
-                tmpData.hpRegen = colour.green('+' .. hpRegen)
+                d.hpRegen = colour.green('+' .. hpRegen)
             elseif (hpRegen < 0) then
-                tmpData.hpRegen = colour.red(hpRegen)
+                d.hpRegen = colour.red(hpRegen)
             end
-            tmpData.hpPercent = math.round(hpCur / hp, 3)
-            tmpData.hpTxt = hpCur .. ' / ' .. hp
+            d.hpPercent = math.round(hpCur / hp, 3)
+            d.hpTxt = hpCur .. ' / ' .. hp
             if (hpCur < hp * 0.35) then
-                tmpData.hpTexture = 'bar\\red'
+                d.hpTexture = 'bar\\red'
             elseif (hpCur < hp * 0.65) then
-                tmpData.hpTexture = 'bar\\orange'
+                d.hpTexture = 'bar\\orange'
             else
-                tmpData.hpTexture = 'bar\\green'
+                d.hpTexture = 'bar\\green'
             end
-            async.call(whichPlayer, function()
-                stage.async.hpAlpha = stage.async.hpAlpha or 255
-                stage.async.hpAlphaing = stage.async.hpAlphaing or false
-                if (tmpData.hpPercent < 0.3) then
-                    if (stage.async.hpAlphaing == false and stage.async.hpAlpha >= 255) then
-                        stage.async.hpAlphaing = true
-                    end
-                    if (stage.async.hpAlphaing == true and stage.async.hpAlpha <= 155) then
-                        stage.async.hpAlphaing = false
-                    end
-                    if (stage.async.hpAlphaing) then
-                        stage.async.hpAlpha = stage.async.hpAlpha - 10
-                    else
-                        stage.async.hpAlpha = stage.async.hpAlpha + 10
-                    end
-                else
-                    stage.async.hpAlpha = 255
-                    stage.async.hpAlphaing = false
-                end
-            end)
-            tmpData.hpAlpha = stage.async.hpAlpha
 
-            local mpCur = math.floor(tmpData.selection.mpCur())
-            local mp = math.floor(tmpData.selection.mp() or 0)
-            local mpRegen = math.round(tmpData.selection.mpRegen(), 2)
+            tempAsync.hpAlpha = tempAsync.hpAlpha or 255
+            tempAsync.hpAlphaing = tempAsync.hpAlphaing or false
+            if (d.hpPercent < 0.3) then
+                if (tempAsync.hpAlphaing == false and tempAsync.hpAlpha >= 255) then
+                    tempAsync.hpAlphaing = true
+                end
+                if (tempAsync.hpAlphaing == true and tempAsync.hpAlpha <= 155) then
+                    tempAsync.hpAlphaing = false
+                end
+                if (tempAsync.hpAlphaing) then
+                    tempAsync.hpAlpha = tempAsync.hpAlpha - 10
+                else
+                    tempAsync.hpAlpha = tempAsync.hpAlpha + 10
+                end
+            else
+                tempAsync.hpAlpha = 255
+                tempAsync.hpAlphaing = false
+            end
+
+            d.hpAlpha = tempAsync.hpAlpha
+
+            local mpCur = math.floor(d.selection.mpCur())
+            local mp = math.floor(d.selection.mp() or 0)
+            local mpRegen = math.round(d.selection.mpRegen(), 2)
             if (mpRegen == 0 or mp == 0 or mpCur >= mp) then
-                tmpData.mpRegen = ''
+                d.mpRegen = ''
             elseif (mpRegen > 0) then
-                tmpData.mpRegen = colour.skyLight('+' .. mpRegen)
+                d.mpRegen = colour.skyLight('+' .. mpRegen)
             elseif (mpRegen < 0) then
-                tmpData.mpRegen = colour.red(mpRegen)
+                d.mpRegen = colour.red(mpRegen)
             end
             if (mp == 0) then
-                tmpData.mpPercent = 1
-                tmpData.mpTxt = colour.grey(mpCur .. '/' .. mp)
-                tmpData.mpTexture = 'bar\\blueGrey'
+                d.mpPercent = 1
+                d.mpTxt = colour.grey(mpCur .. '/' .. mp)
+                d.mpTexture = 'bar\\blueGrey'
             else
-                tmpData.mpPercent = math.round(mpCur / mp, 3)
-                tmpData.mpTxt = mpCur .. '/' .. mp
-                tmpData.mpTexture = 'bar\\blue'
+                d.mpPercent = math.round(mpCur / mp, 3)
+                d.mpTxt = mpCur .. '/' .. mp
+                d.mpTexture = 'bar\\blue'
             end
 
             local tileValueCount = 0
-            local period = tmpData.selection.period()
+            local period = d.selection.period()
             if (period > 0) then
                 tileValueCount = tileValueCount + 1
-                local cur = tmpData.selection.periodRemain() or 0
-                tmpData.periodPercent = math.round(cur / period, 3)
-                tmpData.periodTxt = colour.white('存在 ' .. math.round(cur, 1) .. ' 秒')
+                local cur = d.selection.periodRemain() or 0
+                d.periodPercent = math.round(cur / period, 3)
+                d.periodTxt = colour.white('存在 ' .. math.round(cur, 1) .. ' 秒')
             end
-            local level = tmpData.selection.level()
+            local level = d.selection.level()
             if (level > 0) then
                 tileValueCount = tileValueCount + 1
-                local cur = tmpData.selection.exp() or 0
-                local prev = tmpData.selection.expNeed(level) or 0
-                local need = tmpData.selection.expNeed() or 0
-                tmpData.expPercent = math.round((cur - prev) / (need - prev), 3)
-                tmpData.expTxt = colour.white(math.integerFormat(cur) .. '/' .. math.integerFormat(need) .. '  ' .. level .. ' 级')
+                local cur = d.selection.exp() or 0
+                local prev = d.selection.expNeed(level) or 0
+                local need = d.selection.expNeed() or 0
+                d.expPercent = math.round((cur - prev) / (need - prev), 3)
+                d.expTxt = colour.white(math.integerFormat(cur) .. '/' .. math.integerFormat(need) .. '  ' .. level .. ' 级')
             end
-            local punish = tmpData.selection.punish() or 0
+            local punish = d.selection.punish() or 0
             if (punish > 0) then
                 tileValueCount = tileValueCount + 1
-                local cur = tmpData.selection.punishCur() or 0
-                local max = tmpData.selection.punish() or 0
-                tmpData.punishPercent = math.round(cur / max, 3)
-                if (tmpData.selection.isPunishing()) then
-                    tmpData.punishTxt = colour.red(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  僵住')
+                local cur = d.selection.punishCur() or 0
+                local max = d.selection.punish() or 0
+                d.punishPercent = math.round(cur / max, 3)
+                if (d.selection.isPunishing()) then
+                    d.punishTxt = colour.red(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  僵住')
                 else
-                    tmpData.punishTxt = colour.hex(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  硬直', 'DDC10C')
+                    d.punishTxt = colour.hex(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  硬直', 'DDC10C')
                 end
             end
-        elseif (tmpData.class == "Item") then
-            if (tmpData.selection.instance() == false) then
-                whichPlayer.prop("selection", NIL)
+        elseif (d.class == "Item") then
+            if (d.selection.instance() == false) then
+                p.prop("selection", NIL)
                 return
             end
-            tmpData.nilDisplay = ""
+            d.nilDisplay = ""
         end
-        async.call(whichPlayer, function()
-            if (tmpData.class == "Nil") then
-                stage.ctl_nilDisplay.text(tmpData.nilDisplay)
-                stage.ctl_plate.Unit.show(false)
-                stage.ctl_plate.Item.show(false)
-                stage.ctl_plate.Nil.show(true)
-            elseif (tmpData.class == "Unit") then
-                stage.ctl_hp
-                     .texture('value', tmpData.hpTexture)
-                     .value(tmpData.hpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
-                     .text(LAYOUT_ALIGN_CENTER, tmpData.hpTxt)
-                     .text(LAYOUT_ALIGN_RIGHT, tmpData.hpRegen)
-                     .alpha(tmpData.hpAlpha)
-                stage.ctl_mp
-                     .texture('value', tmpData.mpTexture)
-                     .value(tmpData.mpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
-                     .text(LAYOUT_ALIGN_CENTER, tmpData.mpTxt)
-                     .text(LAYOUT_ALIGN_RIGHT, tmpData.mpRegen)
-                stage.ctl_info.portrait
-                     .icon(tmpData.portraitTexture)
-                     .text(tmpData.properName)
-                stage.ctl_info.attack
-                     .icon(tmpData.attackTexture)
-                     .text(tmpData.attack)
-                     .alpha(tmpData.attackAlpha)
-                stage.ctl_info.attackSpeed
-                     .text(tmpData.attackSpeed)
-                     .alpha(tmpData.attackAlpha)
-                stage.ctl_info.attackRange
-                     .text(tmpData.attackRange)
-                     .alpha(tmpData.attackAlpha)
-                stage.ctl_info.knocking.text(tmpData.knocking)
-                stage.ctl_info.sight.text(tmpData.sight)
-                stage.ctl_info.defend
-                     .icon(tmpData.defendTexture)
-                     .text(tmpData.defend)
-                stage.ctl_info.move.text(tmpData.move)
-                --
-                local tileIdx = 0
-                for _, tb in ipairs(stage.ctl_tileTypes) do
-                    if (tmpData[tb[1] .. 'Percent'] and tmpData[tb[1] .. 'Txt']) then
-                        stage.ctl_tile[tb[1]]
-                             .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_plate.Unit, FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_tileX, 0.006 + tileIdx * 0.017)
-                             .value(tmpData[tb[1] .. 'Percent'], stage.ctl_tileWidth, stage.ctl_tileHeight)
-                             .text(LAYOUT_ALIGN_RIGHT_TOP, tmpData[tb[1] .. 'Txt'])
-                             .show(true)
-                        tileIdx = tileIdx + 1
-                    else
-                        stage.ctl_tile[tb[1]].show(false)
-                    end
+
+        if (d.class == "Nil") then
+            stage.ctl_nilDisplay.text(d.nilDisplay)
+            stage.ctl_plate.Unit.show(false)
+            stage.ctl_plate.Item.show(false)
+            stage.ctl_plate.Nil.show(true)
+        elseif (d.class == "Unit") then
+            stage.ctl_hp
+                 .texture('value', d.hpTexture)
+                 .value(d.hpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
+                 .text(LAYOUT_ALIGN_CENTER, d.hpTxt)
+                 .text(LAYOUT_ALIGN_RIGHT, d.hpRegen)
+                 .alpha(d.hpAlpha)
+            stage.ctl_mp
+                 .texture('value', d.mpTexture)
+                 .value(d.mpPercent, stage.ctl_bigBarWidth, stage.ctl_bigBarHeight)
+                 .text(LAYOUT_ALIGN_CENTER, d.mpTxt)
+                 .text(LAYOUT_ALIGN_RIGHT, d.mpRegen)
+            stage.ctl_info.portrait
+                 .icon(d.portraitTexture)
+                 .text(d.properName)
+            stage.ctl_info.attack
+                 .icon(d.attackTexture)
+                 .text(d.attack)
+                 .alpha(d.attackAlpha)
+            stage.ctl_info.attackSpeed
+                 .text(d.attackSpeed)
+                 .alpha(d.attackAlpha)
+            stage.ctl_info.attackRange
+                 .text(d.attackRange)
+                 .alpha(d.attackAlpha)
+            stage.ctl_info.knocking.text(d.knocking)
+            stage.ctl_info.sight.text(d.sight)
+            stage.ctl_info.defend
+                 .icon(d.defendTexture)
+                 .text(d.defend)
+            stage.ctl_info.move.text(d.move)
+            --
+            local tileIdx = 0
+            for _, tb in ipairs(stage.ctl_tileTypes) do
+                if (d[tb[1] .. 'Percent'] and d[tb[1] .. 'Txt']) then
+                    stage.ctl_tile[tb[1]]
+                         .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_plate.Unit, FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_tileX, 0.006 + tileIdx * 0.017)
+                         .value(d[tb[1] .. 'Percent'], stage.ctl_tileWidth, stage.ctl_tileHeight)
+                         .text(LAYOUT_ALIGN_RIGHT_TOP, d[tb[1] .. 'Txt'])
+                         .show(true)
+                    tileIdx = tileIdx + 1
+                else
+                    stage.ctl_tile[tb[1]].show(false)
                 end
-                stage.ctl_plate.Nil.show(false)
-                stage.ctl_plate.Item.show(false)
-                stage.ctl_plate.Unit.show(true)
-            elseif (tmpData.class == "Item") then
-                stage.ctl_plate.Nil.show(false)
-                stage.ctl_plate.Unit.show(false)
-                stage.ctl_plate.Item.show(true)
             end
-        end)
+            stage.ctl_plate.Nil.show(false)
+            stage.ctl_plate.Item.show(false)
+            stage.ctl_plate.Unit.show(true)
+        elseif (d.class == "Item") then
+            stage.ctl_plate.Nil.show(false)
+            stage.ctl_plate.Unit.show(false)
+            stage.ctl_plate.Item.show(true)
+        end
+
     end,
 }
