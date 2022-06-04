@@ -135,7 +135,7 @@ if (DEBUGGING) then
             end
             table.insert(txts, "  计时器 : " .. i)
             table.insert(txts, "|n  [内存占用]")
-            local cost = math.round((collectgarbage("count") - ram) / (1024 << 1), 3)
+            local cost = (collectgarbage("count") - ram) / (1024 << 1)
             if (stage.costMax == nil or stage.costMax < cost) then
                 stage.costMax = cost
             end
@@ -147,9 +147,9 @@ if (DEBUGGING) then
                 avg = table.average(stage.costAvg)
                 stage.costAvg = { avg }
             end
-            table.insert(txts, colour.yellowLight("  平均 : " .. string.format('%0.4f', avg) .. ' MB'))
-            table.insert(txts, colour.redLight("  最大 : " .. string.format('%0.4f', stage.costMax) .. ' MB'))
-            table.insert(txts, colour.gold("  当前 : " .. string.format('%0.4f', cost) .. ' MB'))
+            table.insert(txts, colour.yellowLight("  平均 : " .. math.format(avg, 4) .. ' MB'))
+            table.insert(txts, colour.redLight("  最大 : " .. math.format(stage.costMax, 4) .. ' MB'))
+            table.insert(txts, colour.gold("  当前 : " .. math.format(cost, 4) .. ' MB'))
             return txts
         end
 

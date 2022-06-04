@@ -255,10 +255,10 @@ _singluarSetBuff = {
                             end
                             local diff = b.diff()
                             if (diff > 0) then
-                                lName = lName .. ': ' .. colour.green('+' .. math.round(diff, 2))
+                                lName = lName .. ': ' .. colour.green('+' .. math.format(diff, 2))
                                 maskTexture = 'signal\\up'
                             elseif (diff < 0) then
-                                lName = lName .. ': ' .. colour.red(math.round(diff, 2))
+                                lName = lName .. ': ' .. colour.red(math.format(diff, 2))
                                 maskTexture = 'signal\\down'
                                 borderTexture = 'btn\\border-red'
                             end

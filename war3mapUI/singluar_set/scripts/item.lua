@@ -131,7 +131,7 @@ _singluarSetItem = {
                     if (isObject(ab, "Ability")) then
                         if (ab.coolDown() > 0 and ab.coolDownRemain() > 0) then
                             tmpData.btn[i].maskValue = stage.item_itHeight * ab.coolDownRemain() / ab.coolDown() / stage.item_itHeight
-                            tmpData.btn[i].text = math.round(ab.coolDownRemain(), 1)
+                            tmpData.btn[i].text = math.format(ab.coolDownRemain(), 1)
                         elseif (ab.isProhibiting() == true) then
                             local reason = ab.prohibitReason()
                             tmpData.btn[i].maskValue = 1
@@ -142,11 +142,9 @@ _singluarSetItem = {
                                 tmpData.btn[i].text = reason
                             end
                         end
-                        async.call(tmpData.selection.owner(), function()
-                            if (ab == Cursor().ability()) then
-                                tmpData.btn[i].border = 'btn\\border-gold'
-                            end
-                        end)
+                        if (tmpData.selection.owner() == PlayerLocal() and ab == Cursor().ability()) then
+                            tmpData.btn[i].border = 'btn\\border-gold'
+                        end
                     end
                 end
             end

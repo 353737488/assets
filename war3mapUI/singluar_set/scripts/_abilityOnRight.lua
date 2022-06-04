@@ -7,15 +7,10 @@ _singluarSetAbilityOnRight = function(stage)
     ---@type FrameButton[]
     local frameButton = stage.ability_btn
 
-    --- 跟踪停止
-    local onFollowStop = function(callbackData)
-        local fi = callbackData.followData.i
-        japi.DzFrameSetAlpha(frameButton[fi].handle(), frameButton[fi].alpha())
-    end
     --- 跟踪回调
-    local onFollowChange = function(callbackData, i)
-        local fi = callbackData.followData.i
-        local fo = callbackData.followObj
+    local onFollowChange = function(followData, i)
+        local fi = followData.i
+        local fo = followData.followObj
         if (isObject(fo, "Ability")) then
             sync.send("SINGLUAR_SET_ABILITY_SYNC", { "ability_push", fo.id(), i, fi })
             vcmClick1.play()
@@ -68,16 +63,16 @@ _singluarSetAbilityOnRight = function(stage)
                         if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                             if (following == true) then
                                 if (table.equal(followObj, ab) == false) then
-                                    Cursor().followStop(function(callbackData)
-                                        onFollowChange(callbackData, i)
+                                    Cursor().followStop(function(followData)
+                                        onFollowChange(followData, i)
                                     end)
                                 else
-                                    Cursor().followStop(onFollowStop)
+                                    Cursor().followStop()
                                 end
                             elseif (isObject(ab, "Ability")) then
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                Cursor().followCall(ab, { frame = frameButton[i], i = i }, onFollowStop)
+                                Cursor().followCall(ab, { frame = frameButton[i], i = i })
                             end
                             break
                         end
@@ -85,7 +80,7 @@ _singluarSetAbilityOnRight = function(stage)
                     j = i + 1
                 end
                 if (j > frameMax and following == true) then
-                    Cursor().followStop(onFollowStop)
+                    Cursor().followStop()
                 end
             end
         end

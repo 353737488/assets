@@ -104,16 +104,16 @@ _singluarSetController = {
                 else
                     table.insert(tips, '基础攻击: ' .. math.floor(selection.attack()))
                     table.insert(tips, '攻击浮动: ' .. math.floor(selection.attackRipple()))
-                    table.insert(tips, '伤害<加成>: ' .. math.round(selection.damageIncrease(), 2) .. '%')
-                    table.insert(tips, '攻击吸血: ' .. math.round(selection.hpSuckAttack(), 2) .. '%')
-                    table.insert(tips, '技能吸血: ' .. math.round(selection.hpSuckAbility(), 2) .. '%')
-                    table.insert(tips, '攻击吸魔: ' .. math.round(selection.mpSuckAttack(), 2) .. '%')
-                    table.insert(tips, '技能吸魔: ' .. math.round(selection.mpSuckAbility(), 2) .. '%')
+                    table.insert(tips, '伤害<加成>: ' .. math.format(selection.damageIncrease(), 2) .. '%')
+                    table.insert(tips, '攻击吸血: ' .. math.format(selection.hpSuckAttack(), 2) .. '%')
+                    table.insert(tips, '技能吸血: ' .. math.format(selection.hpSuckAbility(), 2) .. '%')
+                    table.insert(tips, '攻击吸魔: ' .. math.format(selection.mpSuckAttack(), 2) .. '%')
+                    table.insert(tips, '技能吸魔: ' .. math.format(selection.mpSuckAbility(), 2) .. '%')
                 end
             elseif (field == 'attackSpeed') then
-                table.insert(tips, '攻速<加成>: ' .. math.round(selection.attackSpeed(), 2) .. '%')
+                table.insert(tips, '攻速<加成>: ' .. math.format(selection.attackSpeed(), 2) .. '%')
                 table.insert(tips, '攻击范围: ' .. math.floor(selection.attackRange()))
-                table.insert(tips, '命中<加成>: ' .. math.round(selection.aim(), 2) .. '%')
+                table.insert(tips, '命中<加成>: ' .. math.format(selection.aim(), 2) .. '%')
             elseif (field == 'attackRange') then
                 if (selection.attackRange() < 250) then
                     table.insert(tips, '武器: 近战')
@@ -152,11 +152,11 @@ _singluarSetController = {
                         end
                     end
                 end
-                table.insert(tips, '基准频率: ' .. math.round(selection.attackSpaceBase(), 2) .. ' 秒/击')
+                table.insert(tips, '基准频率: ' .. math.format(selection.attackSpaceBase(), 2) .. ' 秒/击')
             elseif (field == 'knocking') then
-                table.insert(tips, '暴击<加成>: ' .. math.round(selection.crit(), 2) .. '%')
-                table.insert(tips, '暴击<几率>: ' .. math.round(selection.odds("crit"), 2) .. '%')
-                table.insert(tips, '暴击<抗性>: ' .. math.round(selection.resistance('crit'), 2) .. '%')
+                table.insert(tips, '暴击<加成>: ' .. math.format(selection.crit(), 2) .. '%')
+                table.insert(tips, '暴击<几率>: ' .. math.format(selection.odds("crit"), 2) .. '%')
+                table.insert(tips, '暴击<抗性>: ' .. math.format(selection.resistance('crit'), 2) .. '%')
             elseif (field == 'sight') then
                 table.insert(tips, '白天视野: ' .. selection.sight())
                 table.insert(tips, '黑夜视野: ' .. selection.nsight())
@@ -356,7 +356,7 @@ _singluarSetController = {
             end
             local primary = d.selection.primary()
             d.nilDisplay = ""
-            d.knocking = math.round(d.selection.crit(), 2) .. '%'
+            d.knocking = math.format(d.selection.crit(), 2) .. '%'
             d.sight = math.floor(d.selection.sight())
             d.defend = math.floor(d.selection.defend())
             d.move = math.floor(d.selection.move())
@@ -393,7 +393,7 @@ _singluarSetController = {
                 else
                     d.attack = math.floor(d.selection.attack()) .. '~' .. math.floor(d.selection.attack() + d.selection.attackRipple())
                 end
-                d.attackSpeed = math.round(d.selection.attackSpace(), 2) .. ' 秒/击'
+                d.attackSpeed = math.format(d.selection.attackSpace(), 2) .. ' 秒/击'
                 d.attackRange = math.floor(d.selection.attackRange())
             else
                 d.attackAlpha = 150
@@ -415,7 +415,7 @@ _singluarSetController = {
 
             local hpCur = math.floor(d.selection.hpCur())
             local hp = math.floor(d.selection.hp() or 0)
-            local hpRegen = math.round(d.selection.hpRegen(), 2)
+            local hpRegen = math.trunc(d.selection.hpRegen(), 2)
             if (hpRegen == 0 or hp == 0 or hpCur >= hp) then
                 d.hpRegen = ''
             elseif (hpRegen > 0) then
@@ -423,7 +423,7 @@ _singluarSetController = {
             elseif (hpRegen < 0) then
                 d.hpRegen = colour.red(hpRegen)
             end
-            d.hpPercent = math.round(hpCur / hp, 3)
+            d.hpPercent = math.trunc(hpCur / hp, 3)
             d.hpTxt = hpCur .. ' / ' .. hp
             if (hpCur < hp * 0.35) then
                 d.hpTexture = 'bar\\red'
@@ -456,7 +456,7 @@ _singluarSetController = {
 
             local mpCur = math.floor(d.selection.mpCur())
             local mp = math.floor(d.selection.mp() or 0)
-            local mpRegen = math.round(d.selection.mpRegen(), 2)
+            local mpRegen = math.trunc(d.selection.mpRegen(), 2)
             if (mpRegen == 0 or mp == 0 or mpCur >= mp) then
                 d.mpRegen = ''
             elseif (mpRegen > 0) then
@@ -469,7 +469,7 @@ _singluarSetController = {
                 d.mpTxt = colour.grey(mpCur .. '/' .. mp)
                 d.mpTexture = 'bar\\blueGrey'
             else
-                d.mpPercent = math.round(mpCur / mp, 3)
+                d.mpPercent = math.trunc(mpCur / mp, 3)
                 d.mpTxt = mpCur .. '/' .. mp
                 d.mpTexture = 'bar\\blue'
             end
@@ -479,8 +479,8 @@ _singluarSetController = {
             if (period > 0) then
                 tileValueCount = tileValueCount + 1
                 local cur = d.selection.periodRemain() or 0
-                d.periodPercent = math.round(cur / period, 3)
-                d.periodTxt = colour.white('存在 ' .. math.round(cur, 1) .. ' 秒')
+                d.periodPercent = math.trunc(cur / period, 3)
+                d.periodTxt = colour.white('存在 ' .. math.format(cur, 1) .. ' 秒')
             end
             local level = d.selection.level()
             if (level > 0) then
@@ -488,7 +488,7 @@ _singluarSetController = {
                 local cur = d.selection.exp() or 0
                 local prev = d.selection.expNeed(level) or 0
                 local need = d.selection.expNeed() or 0
-                d.expPercent = math.round((cur - prev) / (need - prev), 3)
+                d.expPercent = math.trunc((cur - prev) / (need - prev), 3)
                 d.expTxt = colour.white(math.integerFormat(cur) .. '/' .. math.integerFormat(need) .. '  ' .. level .. ' 级')
             end
             local punish = d.selection.punish() or 0
@@ -496,7 +496,7 @@ _singluarSetController = {
                 tileValueCount = tileValueCount + 1
                 local cur = d.selection.punishCur() or 0
                 local max = d.selection.punish() or 0
-                d.punishPercent = math.round(cur / max, 3)
+                d.punishPercent = math.trunc(cur / max, 3)
                 if (d.selection.isPunishing()) then
                     d.punishTxt = colour.red(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  僵住')
                 else

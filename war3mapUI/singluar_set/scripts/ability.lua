@@ -145,8 +145,8 @@ _singluarSetAbility = {
                         if (storage[i].coolDown() > 0 and storage[i].coolDownRemain() > 0) then
                             tmpData.btn[i].maskValue = math.min(1, storage[i].coolDownRemain() / storage[i].coolDown())
                             tmpData.btn[i].border = 'Singluar\\ui\\nil.tga'
-                            tmpData.btn[i].fontSize = math.round(12 * (bagRx / bagRxMax), 2)
-                            tmpData.btn[i].text = math.round(storage[i].coolDownRemain(), 1)
+                            tmpData.btn[i].fontSize = math.trunc(12 * (bagRx / bagRxMax), 2)
+                            tmpData.btn[i].text = math.trunc(storage[i].coolDownRemain(), 1)
                         elseif (storage[i].isProhibiting() == true) then
                             local reason = storage[i].prohibitReason()
                             tmpData.btn[i].maskValue = 1
@@ -155,7 +155,7 @@ _singluarSetAbility = {
                                 tmpData.btn[i].text = ''
                             else
                                 tmpData.btn[i].border = 'Singluar\\ui\\nil.tga'
-                                tmpData.btn[i].fontSize = math.round(8 * (bagRx / bagRxMax), 2)
+                                tmpData.btn[i].fontSize = math.trunc(8 * (bagRx / bagRxMax), 2)
                                 tmpData.btn[i].text = reason
                             end
                         else

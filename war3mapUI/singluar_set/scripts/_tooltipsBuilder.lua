@@ -48,7 +48,7 @@ _singluarSetTooltipsBuilder = {
                     local cur = ab.exp() or 0
                     local prev = ab.expNeed(lv) or 0
                     local need = ab.expNeed() or 0
-                    local percent = math.round((cur - prev) / (need - prev), 3)
+                    local percent = math.trunc((cur - prev) / (need - prev), 3)
                     if (percent ~= nil) then
                         table.insert(content.bars, {
                             texture = "tile\\yellow",
@@ -108,7 +108,7 @@ _singluarSetTooltipsBuilder = {
                         local cur = it.exp() or 0
                         local prev = it.expNeed(lv) or 0
                         local need = it.expNeed() or 0
-                        local percent = math.round((cur - prev) / (need - prev), 3)
+                        local percent = math.trunc((cur - prev) / (need - prev), 3)
                         if (percent ~= nil) then
                             table.insert(content.bars, {
                                 texture = "tile\\white",
@@ -186,7 +186,7 @@ _singluarSetTooltipsBuilder = {
                     local cur = it.exp() or 0
                     local prev = it.expNeed(lv) or 0
                     local need = it.expNeed() or 0
-                    local percent = math.round((cur - prev) / (need - prev), 3)
+                    local percent = math.trunc((cur - prev) / (need - prev), 3)
                     if (percent ~= nil) then
                         table.insert(content.bars, {
                             texture = "tile\\white",

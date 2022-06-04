@@ -8,17 +8,10 @@ _singluarSetItemOnRight = function(stage)
     ---@type FrameButton[]
     local frameWarehouse = stage.warehouse_btn
 
-    --- 跟踪停止
-    local onFollowStop = function(callbackData)
-        local frame = callbackData.followData.frame
-        if (frame) then
-            japi.DzFrameSetAlpha(frame.handle(), frame.alpha())
-        end
-    end
     --- 跟踪回调
-    local onFollowChange = function(callbackData, i)
-        local fi = callbackData.followData.i
-        local fo = callbackData.followObj
+    local onFollowChange = function(followData, i)
+        local fi = followData.i
+        local fo = followData.followObj
         if (fi <= itemMax and i <= itemMax) then
             -- 物品 -> 物品
             sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_push", fo.id(), i, fi })
@@ -128,17 +121,17 @@ _singluarSetItemOnRight = function(stage)
                         if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                             if (following == true) then
                                 if (table.equal(followObj, it) == false) then
-                                    Cursor().followStop(function(callbackData)
-                                        onFollowChange(callbackData, i)
+                                    Cursor().followStop(function(followData)
+                                        onFollowChange(followData, i)
                                     end)
                                 else
-                                    Cursor().followStop(onFollowStop)
+                                    Cursor().followStop()
                                 end
                             elseif (isObject(it, "Item")) then
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                Cursor().followCall(it, { frame = btn, i = i }, onFollowStop)
+                                Cursor().followCall(it, { frame = btn, i = i })
                             end
                             iCheck = true
                             break
@@ -165,11 +158,11 @@ _singluarSetItemOnRight = function(stage)
                 if (rx < xMax and rx > xMin and ry < yMax and ry > yMin) then
                     if (following == true) then
                         if (table.equal(followObj, it) == false) then
-                            Cursor().followStop(function(callbackData)
-                                onFollowChange(callbackData, itemMax + i)
+                            Cursor().followStop(function(followData)
+                                onFollowChange(followData, itemMax + i)
                             end)
                         else
-                            Cursor().followStop(onFollowStop)
+                            Cursor().followStop()
                         end
                     elseif (isObject(it, "Item")) then
                         stage.tooltips.show(false, 0)
@@ -182,7 +175,7 @@ _singluarSetItemOnRight = function(stage)
             end
         end
         if (iCheck == false and wCheck == false and following == true) then
-            Cursor().followStop(onFollowStop)
+            Cursor().followStop()
         end
     end)
 

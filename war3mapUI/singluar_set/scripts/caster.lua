@@ -41,18 +41,18 @@ _singluarSetCaster = {
                 local val = 0
                 local txt = 0
                 if (tmpData.selection.isAbilityChantCasting()) then
-                    remain = math.round(tmpData.selection.abilityChantCastingRemain(), 1)
-                    set = math.round(tmpData.selection.abilityChantCastingSet(), 1)
+                    remain = math.trunc(tmpData.selection.abilityChantCastingRemain(), 1)
+                    set = math.trunc(tmpData.selection.abilityChantCastingSet(), 1)
                     label = '吟唱 '
                     texture = 'tile\\red'
-                    val = math.round(1 - remain / set, 2)
+                    val = math.trunc(1 - remain / set, 2)
                     txt = set - remain
                 elseif (tmpData.selection.isAbilityKeepCasting()) then
-                    remain = math.round(tmpData.selection.abilityKeepCastingRemain(), 1)
-                    set = math.round(tmpData.selection.abilityKeepCastingSet(), 1)
+                    remain = math.trunc(tmpData.selection.abilityKeepCastingRemain(), 1)
+                    set = math.trunc(tmpData.selection.abilityKeepCastingSet(), 1)
                     label = '持续施法 '
                     texture = 'tile\\sky'
-                    val = math.round(remain / set, 2)
+                    val = math.trunc(remain / set, 2)
                     txt = remain
                 end
                 if (remain > 0 and set > 0) then

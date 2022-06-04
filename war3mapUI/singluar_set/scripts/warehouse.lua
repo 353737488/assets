@@ -57,7 +57,7 @@ _singluarSetWarehouse = {
                     local tips = {
                         '资源名称: ' .. n,
                         '资源总量: ' .. math.floor(r[k] or 0),
-                        '资源获得率: ' .. math.round(100 + evtData.triggerPlayer.raise(k), 2) .. '%',
+                        '资源获得率: ' .. math.format(100 + evtData.triggerPlayer.raise(k), 2) .. '%',
                     }
                     local cov = Game().worthConvert(k)
                     if (cov ~= nil) then
@@ -183,7 +183,7 @@ _singluarSetWarehouse = {
                 if (isObject(ab, "Ability")) then
                     if (ab.coolDown() > 0 and ab.coolDownRemain() > 0) then
                         tmpData.btn[i].maskValue = stage.warehouse_itHeight * ab.coolDownRemain() / ab.coolDown() / stage.warehouse_itHeight
-                        tmpData.btn[i].text = math.round(ab.coolDownRemain(), 1)
+                        tmpData.btn[i].text = math.format(ab.coolDownRemain(), 1)
                     elseif (ab.isProhibiting() == true) then
                         local reason = ab.prohibitReason()
                         tmpData.btn[i].maskValue = 1
