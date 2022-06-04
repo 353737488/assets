@@ -9,14 +9,15 @@ _singluarSetAbilityOnRight = function(stage)
 
     --- 跟踪停止
     local onFollowStop = function(callbackData)
-        local fpi = callbackData.followData
-        japi.DzFrameSetAlpha(frameButton[fpi].handle(), frameButton[fpi].alpha())
+        local fi = callbackData.followData.i
+        japi.DzFrameSetAlpha(frameButton[fi].handle(), frameButton[fi].alpha())
     end
     --- 跟踪回调
-    local onFollowChange = function(callbackData, triggerPlayer, i)
-        local fab = callbackData.followObj
-        if (isObject(fab, "Ability")) then
-            sync.send("SINGLUAR_SET_ABILITY_SYNC", { "ability_push", fab.id(), i, callbackData.followData })
+    local onFollowChange = function(callbackData, i)
+        local fi = callbackData.followData.i
+        local fo = callbackData.followObj
+        if (isObject(fo, "Ability")) then
+            sync.send("SINGLUAR_SET_ABILITY_SYNC", { "ability_push", fo.id(), i, fi })
             vcmClick1.play()
         end
     end
@@ -68,7 +69,7 @@ _singluarSetAbilityOnRight = function(stage)
                             if (following == true) then
                                 if (table.equal(followObj, ab) == false) then
                                     Cursor().followStop(function(callbackData)
-                                        onFollowChange(callbackData, triggerPlayer, i)
+                                        onFollowChange(callbackData, i)
                                     end)
                                 else
                                     Cursor().followStop(onFollowStop)

@@ -17,23 +17,23 @@ _singluarSetItemOnRight = function(stage)
     end
     --- 跟踪回调
     local onFollowChange = function(callbackData, i)
-        local fpi = callbackData.followData.i
-        local fit = callbackData.followObj
-        if (fpi <= itemMax and i <= itemMax) then
+        local fi = callbackData.followData.i
+        local fo = callbackData.followObj
+        if (fi <= itemMax and i <= itemMax) then
             -- 物品 -> 物品
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_push", fit.id(), i, fpi })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_push", fo.id(), i, fi })
             vcmClick1.play()
-        elseif (fpi > itemMax and i > itemMax) then
+        elseif (fi > itemMax and i > itemMax) then
             -- 仓库 -> 仓库
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { "warehouse_push", fit.id(), i - itemMax, fpi - itemMax })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "warehouse_push", fo.id(), i - itemMax, fi - itemMax })
             vcmClick1.play()
-        elseif (fpi <= itemMax and i > itemMax) then
+        elseif (fi <= itemMax and i > itemMax) then
             -- 物品 -> 仓库
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_to_warehouse", fit.id(), i - itemMax, fpi })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "item_to_warehouse", fo.id(), i - itemMax, fi })
             vcmClick1.play()
-        elseif (fpi > itemMax and i <= itemMax) then
+        elseif (fi > itemMax and i <= itemMax) then
             -- 仓库 -> 物品
-            sync.send("SINGLUAR_SET_ITEM_SYNC", { "warehouse_to_item", fit.id(), i, fpi - itemMax })
+            sync.send("SINGLUAR_SET_ITEM_SYNC", { "warehouse_to_item", fo.id(), i, fi - itemMax })
             vcmClick1.play()
         end
     end
