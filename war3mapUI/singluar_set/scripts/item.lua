@@ -34,7 +34,7 @@ _singluarSetItem = {
                 .fontSize(7.5)
                 .mask('btn\\mask')
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0.6) end)
+                .onMouseLeave(function(_) stage.tooltips.show(false, 0.5) end)
                 .onMouseEnter(
                 function(evtData)
                     if (Cursor().following()) then
