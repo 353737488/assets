@@ -164,13 +164,10 @@ _singluarSetAbility = {
                             if (nil == tt or ABILITY_TARGET_TYPE.PAS == tt) then
                                 tmpData.btn[i].border = 'Singluar\\ui\\nil.tga'
                             else
-                                async.call(tmpData.selection.owner(), function()
-                                    if (storage[i] == Cursor().ability()) then
-                                        tmpData.btn[i].border = 'btn\\border-gold'
-                                    else
-                                        tmpData.btn[i].border = 'btn\\border-white'
-                                    end
-                                end)
+                                tmpData.btn[i].border = 'btn\\border-white'
+                                if (tmpData.selection.owner() == PlayerLocal() and storage[i] == Cursor().ability()) then
+                                    tmpData.btn[i].border = 'btn\\border-gold'
+                                end
                             end
                         end
                         if (nil == tt or ABILITY_TARGET_TYPE.PAS == tt) then
