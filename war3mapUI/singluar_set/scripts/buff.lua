@@ -60,15 +60,13 @@ _singluarSetBuff = {
             punishCur = "<当前>硬直",
             weightCur = "<当前>负重",
 
-            _leapBuff = "冲锋中",
-            _crackFlyBuff = "被击飞",
+            leap = "冲锋中",
+            crackFly = "被击飞",
         }
         -- 图标转接
         stage.buff_turner._icon = {
             attackSpaceBase = "attackSpace",
             attackRangeAcquire = "attackRange",
-            _leapBuff = "leap",
-            _crackFlyBuff = "crackFly",
         }
         enchant.types.forEach(function(key, value)
             stage.buff_turner._name["e_" .. key] = value.label .. '<强化>'
