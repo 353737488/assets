@@ -240,7 +240,7 @@ _singluarSetBuff = {
                             local lAlpha = 255
                             local duration = b.duration()
                             if (duration <= 0) then
-                                lDur = colour.gold('常驻效果')
+                                lDur = colour.gold('特殊效果')
                                 borderTexture = 'btn\\border-gold'
                             else
                                 lDur = colour.sky('持续: ' .. string.format('%0.1f', duration) .. ' 秒')
