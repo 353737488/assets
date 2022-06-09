@@ -123,7 +123,7 @@ if (DEBUGGING) then
                 i = i + 1
             end
             table.insert(txts, "|n  [S内核]")
-            table.insert(txts, "  FPS : " .. math.format(SL_FPS or 60, 1))
+            table.insert(txts, "  FPS : " .. math.format(SL_FPS, 1))
             table.insert(txts, "  对象 : " .. i)
             if (group._d.Unit) then table.insert(txts, "  单位 : " .. group._d.Unit.count()) end
             if (group._d.Item) then table.insert(txts, "  物品 : " .. group._d.Item.count()) end
