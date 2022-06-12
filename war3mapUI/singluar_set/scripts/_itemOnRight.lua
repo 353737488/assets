@@ -125,13 +125,18 @@ _singluarSetItemOnRight = function(stage)
                                         onFollowChange(followData, i)
                                     end)
                                 else
-                                    Cursor().followStop()
+                                    Cursor().followStop(function(followData)
+                                        japi.DzFrameSetAlpha(followData.frame.handle(), followData.frame.alpha())
+                                    end)
                                 end
                             elseif (isObject(it, "Item")) then
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                Cursor().followCall(it, { frame = btn, i = i })
+                                japi.DzFrameSetAlpha(btn.handle(), 0)
+                                Cursor().followCall(it, { frame = btn, i = i }, function(stopData)
+                                    japi.DzFrameSetAlpha(stopData.frame.handle(), stopData.frame.alpha())
+                                end)
                             end
                             iCheck = true
                             break
@@ -162,12 +167,17 @@ _singluarSetItemOnRight = function(stage)
                                 onFollowChange(followData, itemMax + i)
                             end)
                         else
-                            Cursor().followStop()
+                            Cursor().followStop(function(followData)
+                                japi.DzFrameSetAlpha(followData.frame.handle(), followData.frame.alpha())
+                            end)
                         end
                     elseif (isObject(it, "Item")) then
                         stage.tooltips.show(false, 0)
                         vcmClick1.play()
-                        Cursor().followCall(it, { frame = btn, i = itemMax + i }, onFollowStop)
+                        japi.DzFrameSetAlpha(btn.handle(), 0)
+                        Cursor().followCall(it, { frame = btn, i = itemMax + i }, function(stopData)
+                            japi.DzFrameSetAlpha(stopData.frame.handle(), stopData.frame.alpha())
+                        end)
                     end
                     wCheck = true
                     break
@@ -175,7 +185,9 @@ _singluarSetItemOnRight = function(stage)
             end
         end
         if (iCheck == false and wCheck == false and following == true) then
-            Cursor().followStop()
+            Cursor().followStop(function(followData)
+                japi.DzFrameSetAlpha(followData.frame.handle(), followData.frame.alpha())
+            end)
         end
     end)
 

@@ -67,12 +67,17 @@ _singluarSetAbilityOnRight = function(stage)
                                         onFollowChange(followData, i)
                                     end)
                                 else
-                                    Cursor().followStop()
+                                    Cursor().followStop(function(followData)
+                                        japi.DzFrameSetAlpha(followData.frame.handle(), followData.frame.alpha())
+                                    end)
                                 end
                             elseif (isObject(ab, "Ability")) then
                                 stage.tooltips.show(false, 0)
                                 vcmClick1.play()
-                                Cursor().followCall(ab, { frame = frameButton[i], i = i })
+                                japi.DzFrameSetAlpha(frameButton[i].handle(), 0)
+                                Cursor().followCall(ab, { frame = frameButton[i], i = i }, function(stopData)
+                                    japi.DzFrameSetAlpha(stopData.frame.handle(), stopData.frame.alpha())
+                                end)
                             end
                             break
                         end
@@ -80,7 +85,9 @@ _singluarSetAbilityOnRight = function(stage)
                     j = i + 1
                 end
                 if (j > frameMax and following == true) then
-                    Cursor().followStop()
+                    Cursor().followStop(function(followData)
+                        japi.DzFrameSetAlpha(followData.frame.handle(), followData.frame.alpha())
+                    end)
                 end
             end
         end
