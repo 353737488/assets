@@ -58,16 +58,6 @@ if (DEBUGGING) then
             table.insert(stage.line, tile)
         end
 
-        local kbKey = KEYBOARD['Control']
-
-        keyboard.onRelease(kbKey, "debug", function(_)
-            local s = stage.mark.show()
-            stage.mark.show(not s)
-            for _, l in ipairs(stage.line) do
-                l.show(not s)
-            end
-        end)
-
         local types = { "all", "max" }
         local typesLabel = {
             all = "总共",
@@ -156,13 +146,18 @@ if (DEBUGGING) then
 
     end)
 
-    this.onRefresh(1, function()
+    this.onRefresh(0.5, function()
         ---@type {main:FrameText,debug:fun():table<number,number>}
         local stage = this.stage()
         local p = PlayerLocal()
         async.call(p, function()
             if (p.isPlaying() and p.isComputer() == false) then
                 stage.main.text(string.implode('|n', stage.debug()))
+                local show = japi.DzIsKeyDown(KEYBOARD.Control)
+                stage.mark.show(show)
+                for _, l in ipairs(stage.line) do
+                    l.show(show)
+                end
             end
         end)
     end)
