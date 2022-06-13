@@ -23,13 +23,13 @@ _singluarSetAbilityOnRight = function(stage)
         if (command == "ability_push") then
             local abId = syncData.transferData[2]
             local i = tonumber(syncData.transferData[3])
-            local fpi = tonumber(syncData.transferData[4])
+            local fi = tonumber(syncData.transferData[4])
             ---@type Ability
             local ab = i2o(abId)
             if (isObject(ab, "Ability")) then
                 syncPlayer.selection().abilitySlot().push(ab, i)
             end
-            japi.DzFrameSetAlpha(frameButton[fpi].handle(), frameButton[fpi].alpha())
+            japi.DzFrameSetAlpha(frameButton[fi].handle(), frameButton[fi].alpha())
         end
     end)
 
