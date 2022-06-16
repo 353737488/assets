@@ -15,12 +15,13 @@ if (DEBUGGING) then
     this.onSetup(function()
         local stage = this.stage()
         stage.main = FrameText(kit, FrameGameUI)
-            .relation(FRAME_ALIGN_LEFT, FrameGameUI, FRAME_ALIGN_LEFT, 0.001, 0.05)
+            .relation(FRAME_ALIGN_LEFT_BOTTOM, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, 0.001, 0.142)
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(8)
 
         stage.ram = FrameText(kit .. "->ram", FrameGameUI)
-            .relation(FRAME_ALIGN_LEFT_TOP, FrameGameUI, FRAME_ALIGN_TOP, -0.21, -0.024)
+            .adaptive(true)
+            .relation(FRAME_ALIGN_TOP, FrameGameUI, FRAME_ALIGN_TOP, -0.18, -0.024)
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(8)
 
