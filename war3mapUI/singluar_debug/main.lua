@@ -19,6 +19,11 @@ if (DEBUGGING) then
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(8)
 
+        stage.ram = FrameText(kit .. "->ram", FrameGameUI)
+            .relation(FRAME_ALIGN_LEFT_TOP, FrameGameUI, FRAME_ALIGN_TOP, -0.21, -0.024)
+            .textAlign(TEXT_ALIGN_LEFT)
+            .fontSize(8)
+
         stage.mark = FrameBackdrop(kit .. "->mark", FrameGameUI)
             .relation(FRAME_ALIGN_CENTER, FrameGameUI, FRAME_ALIGN_CENTER, 0, 0)
             .size(2, 2)
@@ -88,6 +93,26 @@ if (DEBUGGING) then
             ["devt"] = "对话框事件",
         }
         stage.costAvg = stage.costAvg or {}
+        stage.mem = function()
+            local cost = (collectgarbage("count") - ram) / (1024 << 1)
+            if (stage.costMax == nil or stage.costMax < cost) then
+                stage.costMax = cost
+            end
+            local avg = 0
+            if (#stage.costAvg < 100) then
+                table.insert(stage.costAvg, cost)
+                avg = table.average(stage.costAvg)
+            else
+                avg = table.average(stage.costAvg)
+                stage.costAvg = { avg }
+            end
+            return {
+                "FPS : " .. math.format(SL_FPS, 1),
+                colour.sky("平均 : " .. math.format(avg, 3) .. ' MB'),
+                colour.redLight("最大 : " .. math.format(stage.costMax, 3) .. ' MB'),
+                colour.gold("当前 : " .. math.format(cost, 3) .. ' MB'),
+            }
+        end
         stage.debug = function()
             local count = { all = 0, max = J.handleMax() }
             for i = 1, count.max do
@@ -113,7 +138,6 @@ if (DEBUGGING) then
                 i = i + 1
             end
             table.insert(txts, "|n  [S内核]")
-            table.insert(txts, "  FPS : " .. math.format(SL_FPS, 1))
             table.insert(txts, "  对象 : " .. i)
             if (group._d.Unit) then table.insert(txts, "  单位 : " .. group._d.Unit.count()) end
             if (group._d.Item) then table.insert(txts, "  物品 : " .. group._d.Item.count()) end
@@ -125,34 +149,21 @@ if (DEBUGGING) then
                 end
             end
             table.insert(txts, "  计时器 : " .. i)
-            table.insert(txts, "|n  [内存占用]")
-            local cost = (collectgarbage("count") - ram) / (1024 << 1)
-            if (stage.costMax == nil or stage.costMax < cost) then
-                stage.costMax = cost
-            end
-            local avg = 0
-            if (#stage.costAvg < 100) then
-                table.insert(stage.costAvg, cost)
-                avg = table.average(stage.costAvg)
-            else
-                avg = table.average(stage.costAvg)
-                stage.costAvg = { avg }
-            end
-            table.insert(txts, colour.yellowLight("  平均 : " .. math.format(avg, 4) .. ' MB'))
-            table.insert(txts, colour.redLight("  最大 : " .. math.format(stage.costMax, 4) .. ' MB'))
-            table.insert(txts, colour.gold("  当前 : " .. math.format(cost, 4) .. ' MB'))
             return txts
         end
 
     end)
 
-    this.onRefresh(0.5, function()
+    this.onRefresh(0.3, function()
         ---@type {main:FrameText,debug:fun():table<number,number>}
         local stage = this.stage()
+        local msg = stage.debug()
+        local mem = stage.mem()
         local p = PlayerLocal()
         async.call(p, function()
             if (p.isPlaying() and p.isComputer() == false) then
-                stage.main.text(string.implode('|n', stage.debug()))
+                stage.main.text(string.implode('|n', msg))
+                stage.ram.text(string.implode('   ', mem))
                 local show = japi.DzIsKeyDown(KEYBOARD.Control)
                 stage.mark.show(show)
                 for _, l in ipairs(stage.line) do
