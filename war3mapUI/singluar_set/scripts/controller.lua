@@ -466,7 +466,7 @@ _singluarSetController = {
             end
             if (mp == 0) then
                 d.mpPercent = 1
-                d.mpTxt = colour.grey(mpCur .. '/' .. mp)
+                d.mpTxt = colour.grey(mpCur .. ' / ' .. mp)
                 d.mpTexture = 'bar\\blueGrey'
             else
                 d.mpPercent = math.trunc(mpCur / mp, 3)
