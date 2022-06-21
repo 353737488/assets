@@ -29,13 +29,13 @@ if (DEBUGGING) then
             .relation(FRAME_ALIGN_CENTER, FrameGameUI, FRAME_ALIGN_CENTER, 0, 0)
             .size(2, 2)
             .alpha(100)
-            .texture("ReplaceableTextures\\TeamColor\\TeamColor12.blp")
+            .texture(TEAM_COLOR_BLP_BLACK)
             .show(false)
 
         ---@type FrameBackdropTile[]
         stage.line = {}
         local graduation = 0.05
-        local texture = "ReplaceableTextures\\TeamColor\\TeamColor04.blp"
+        local texture = TEAM_COLOR_BLP_YELLOW
         local txtColor = "ffe600"
         for i = 1, math.floor(0.6 / graduation - 0.5), 1 do
             local tile = FrameBackdropTile(kit .. "->horizontal->" .. i, FrameGameUI)
