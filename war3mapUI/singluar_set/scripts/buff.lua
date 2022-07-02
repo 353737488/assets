@@ -128,7 +128,6 @@ _singluarSetBuff = {
             stage.buff_buffs[i] = FrameButton(kit .. '->btn->' .. i, stage.buff)
                 .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.buff, FRAME_ALIGN_LEFT_BOTTOM, x, y)
                 .size(stage.buff_bagRx, stage.buff_bagRy)
-                .highlight(false)
                 .fontSize(7)
                 .maskValue(1)
                 .show(false)

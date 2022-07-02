@@ -30,11 +30,14 @@ _singluarSetItem = {
             stage.item_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.item)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.item, FRAME_ALIGN_LEFT_TOP, xo, yo)
                 .size(stage.item_itWidth, stage.item_itHeight)
-                .highlight(true)
                 .fontSize(7.5)
                 .mask('btn\\mask')
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0.5) end)
+                .onMouseLeave(
+                function(evtData)
+                    evtData.triggerFrame.childHighLight().show(false)
+                    stage.tooltips.show(false, 0.5)
+                end)
                 .onMouseEnter(
                 function(evtData)
                     if (Cursor().following()) then
@@ -44,6 +47,7 @@ _singluarSetItem = {
                     if (false == isObject(sel, "Unit") or sel.isDestroy()) then
                         return nil
                     end
+                    evtData.triggerFrame.childHighLight().show(true)
                     local content = _singluarSetTooltipsBuilder.item(sel.itemSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
                         stage.tooltips

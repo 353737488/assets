@@ -48,7 +48,6 @@ _singluarSetWarehouse = {
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.warehouse, FRAME_ALIGN_LEFT_TOP, x, -0.022)
                 .size(0.008, 0.010667)
                 .texture(opt.texture)
-                .highlight(true)
                 .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
@@ -88,16 +87,20 @@ _singluarSetWarehouse = {
             stage.warehouse_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.warehouse)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.warehouse, FRAME_ALIGN_LEFT_TOP, xo, yo)
                 .size(stage.warehouse_itWidth, stage.warehouse_itHeight)
-                .highlight(true)
                 .fontSize(7)
                 .mask('btn\\mask')
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0.5) end)
+                .onMouseLeave(
+                function(evtData)
+                    evtData.triggerFrame.childHighLight().show(false)
+                    stage.tooltips.show(false, 0.5)
+                end)
                 .onMouseEnter(
                 function(evtData)
                     if (Cursor().following()) then
                         return
                     end
+                    evtData.triggerFrame.childHighLight().show(true)
                     local content = _singluarSetTooltipsBuilder.warehouse(evtData.triggerPlayer.warehouseSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
                         stage.tooltips

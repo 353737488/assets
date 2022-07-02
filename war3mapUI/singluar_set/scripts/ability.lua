@@ -23,11 +23,14 @@ _singluarSetAbility = {
             stage.ability_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.ability_bedding[i])
                 .size(0.1, 0.1)
                 .relation(FRAME_ALIGN_CENTER, stage.ability_bedding[i], FRAME_ALIGN_CENTER, 0, 0)
-                .highlight(true)
                 .hotkeyFontSize(9)
                 .fontSize(12)
                 .mask('btn\\mask')
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
+                .onMouseLeave(
+                function(evtData)
+                    stage.tooltips.show(false, 0)
+                    evtData.triggerFrame.childHighLight().show(false)
+                end)
                 .onMouseEnter(
                 function(evtData)
                     if (Cursor().following()) then
@@ -37,6 +40,7 @@ _singluarSetAbility = {
                     if (selection == nil) then
                         return
                     end
+                    evtData.triggerFrame.childHighLight().show(true)
                     local content = _singluarSetTooltipsBuilder.ability(selection.abilitySlot().storage()[i], 0)
                     if (content ~= nil) then
                         stage.tooltips
@@ -57,9 +61,11 @@ _singluarSetAbility = {
             stage.ability_btnLvUp[i] = FrameButton(kit .. '->upbtn->' .. i, stage.ability_bedding[i])
                 .relation(FRAME_ALIGN_BOTTOM, stage.ability_btn[i], FRAME_ALIGN_TOP, 0, 0)
                 .texture('icon\\up')
-                .highlight(true)
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
+                .onMouseLeave(
+                function(evtData)
+                    stage  .tooltips.show(false, 0)
+                end)
                 .onMouseEnter(
                 function(evtData)
                     local selection = evtData.triggerPlayer.selection()
