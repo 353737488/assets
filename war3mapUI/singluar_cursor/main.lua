@@ -11,7 +11,9 @@ this.onSetup(function()
     this.stage().cursor = Cursor()
         .uiKit(kit)
     --.sizeRate(20)
-    --.textureRadius("circle\\common")
+    --.textureCircle({ allow = "circle\\common" })
+    --.textureSquare({ alpha = 130, allow = "square\\white", ban = "square\\red" })
+
 end)
 
 this.onStart(function()
