@@ -312,10 +312,17 @@ _singluarSetController = {
                 stage.ctl_tile = {}
                 for _, tb in ipairs(stage.ctl_tileTypes) do
                     stage.ctl_tile[tb[1]] = FrameBar(kitP .. '->tile->' .. tb[1], stage.ctl_plate[t])
-                        .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_plate[t], FRAME_ALIGN_LEFT_BOTTOM, 0, 0)
                         .texture('value', 'tile\\' .. tb[2])
-                        .fontSize(LAYOUT_ALIGN_RIGHT_TOP, 7.5)
                         .value(0, stage.ctl_tileWidth, stage.ctl_tileHeight)
+                    if (tb[1] == "period") then
+                        stage.ctl_tile[tb[1]]
+                             .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_info.portrait, FRAME_ALIGN_LEFT_TOP, 0.001, 0.001)
+                             .fontSize(LAYOUT_ALIGN_LEFT_TOP, 7.5)
+                    else
+                        stage.ctl_tile[tb[1]]
+                             .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_plate[t], FRAME_ALIGN_LEFT_BOTTOM, 0, 0)
+                             .fontSize(LAYOUT_ALIGN_RIGHT_TOP, 7.5)
+                    end
                 end
             elseif (t == 'Item') then
 
@@ -543,11 +550,14 @@ _singluarSetController = {
             local tileIdx = 0
             for _, tb in ipairs(stage.ctl_tileTypes) do
                 if (d[tb[1] .. 'Percent'] and d[tb[1] .. 'Txt']) then
-                    stage.ctl_tile[tb[1]]
-                         .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_plate.Unit, FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_tileX, 0.006 + tileIdx * 0.017)
-                         .value(d[tb[1] .. 'Percent'], stage.ctl_tileWidth, stage.ctl_tileHeight)
-                         .text(LAYOUT_ALIGN_RIGHT_TOP, d[tb[1] .. 'Txt'])
-                         .show(true)
+                    if (tb[1] == "period") then
+                        stage.ctl_tile[tb[1]].text(LAYOUT_ALIGN_LEFT_TOP, d[tb[1] .. 'Txt'])
+                    else
+                        stage.ctl_tile[tb[1]]
+                             .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_plate.Unit, FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_tileX, 0.006 + tileIdx * 0.017)
+                             .text(LAYOUT_ALIGN_RIGHT_TOP, d[tb[1] .. 'Txt'])
+                    end
+                    stage.ctl_tile[tb[1]].value(d[tb[1] .. 'Percent'], stage.ctl_tileWidth, stage.ctl_tileHeight).show(true)
                     tileIdx = tileIdx + 1
                 else
                     stage.ctl_tile[tb[1]].show(false)
