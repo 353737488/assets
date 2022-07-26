@@ -43,7 +43,7 @@ _singluarSetTooltipsBuilder = {
                         local key = w[1]
                         local color = w[2]
                         local uit = w[3]
-                        local val = math.floor(wv[key] or 0)
+                        local val = math.round(wv[key] or 0)
                         if (val > 0) then
                             if (uit ~= nil) then
                                 val = val .. " " .. uit
