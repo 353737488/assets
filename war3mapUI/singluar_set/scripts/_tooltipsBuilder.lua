@@ -9,7 +9,8 @@ _singluarSetTooltipsBuilder = {
         local icons = {
             { 'coolDown', '15DF89', '秒' },
             { 'hpCost', 'DE5D43', '血' },
-            { 'mpCost', '83B3E4', '蓝' }
+            { 'mpCost', '83B3E4', '蓝' },
+            { "worth" },
         }
         lvOffset = lvOffset or 0
         local lv = lvOffset + ab.level()
@@ -29,17 +30,44 @@ _singluarSetTooltipsBuilder = {
         }
         for _, c in ipairs(icons) do
             local method = c[1]
-            local color = c[2]
-            local uit = c[3]
-            local val = ab[method](lv)
-            if (val > 0) then
-                if (uit ~= nil) then
-                    val = val .. ' ' .. uit
+            if (method == "worth") then
+                local wv = ab.worthCost(lv)
+                if (wv ~= nil) then
+                    local wk = {
+                        { "lumber", "C49D5A", "木" },
+                        { "gold", "ECD104", "金" },
+                        { "silver", "E3E3E3", "银" },
+                        { "copper", "EC6700", "铜" }
+                    }
+                    for _, w in ipairs(wk) do
+                        local key = w[1]
+                        local color = w[2]
+                        local uit = w[3]
+                        local val = math.floor(wv[key] or 0)
+                        if (val > 0) then
+                            if (uit ~= nil) then
+                                val = val .. " " .. uit
+                            end
+                            table.insert(content.icons, {
+                                texture = "icon\\" .. key,
+                                text = colour.hex(val, color),
+                            })
+                        end
+                    end
                 end
-                table.insert(content.icons, {
-                    texture = "icon\\" .. method,
-                    text = colour.hex(val, color),
-                })
+            else
+                local color = c[2]
+                local uit = c[3]
+                local val = ab[method](lv)
+                if (val > 0) then
+                    if (uit ~= nil) then
+                        val = val .. ' ' .. uit
+                    end
+                    table.insert(content.icons, {
+                        texture = "icon\\" .. method,
+                        text = colour.hex(val, color),
+                    })
+                end
             end
         end
         if (isObject(ab, "Ability")) then
