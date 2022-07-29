@@ -1,13 +1,12 @@
 -- 单位技能
 _singluarSetAbility = {
-    ---@param stage{tooltips:FrameTooltip}
     onSetup = function(kit, stage)
 
-        kit = kit .. "->ability"
+        local kit_s = kit .. "->ability"
 
         stage.ability_max = 8
 
-        stage.ability = FrameBackdrop(kit, FrameGameUI)
+        stage.ability = FrameBackdrop(kit_s, FrameGameUI)
             .relation(FRAME_ALIGN_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0, 0)
             .size(0.1, 0.1)
             .show(false)
@@ -17,10 +16,10 @@ _singluarSetAbility = {
         stage.ability_btnLvUp = {}
 
         for i = 1, stage.ability_max do
-            stage.ability_bedding[i] = FrameBackdrop(kit .. '->bedding->' .. i, stage.ability).show(false)
+            stage.ability_bedding[i] = FrameBackdrop(kit_s .. '->bedding->' .. i, stage.ability).show(false)
         end
         for i = 1, stage.ability_max do
-            stage.ability_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.ability_bedding[i])
+            stage.ability_btn[i] = FrameButton(kit_s .. '->btn->' .. i, stage.ability_bedding[i])
                 .size(0.1, 0.1)
                 .relation(FRAME_ALIGN_CENTER, stage.ability_bedding[i], FRAME_ALIGN_CENTER, 0, 0)
                 .hotkeyFontSize(9)
@@ -28,7 +27,7 @@ _singluarSetAbility = {
                 .mask('btn\\mask')
                 .onMouseLeave(
                 function(evtData)
-                    stage.tooltips.show(false, 0)
+                    FrameTooltips().show(false, 0)
                     evtData.triggerFrame.childHighLight().show(false)
                 end)
                 .onMouseEnter(
@@ -43,10 +42,11 @@ _singluarSetAbility = {
                     evtData.triggerFrame.childHighLight().show(true)
                     local content = _singluarSetTooltipsBuilder.ability(selection.abilitySlot().storage()[i], 0)
                     if (content ~= nil) then
-                        stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.ability_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
-                             .content(content)
-                             .show(true)
+                        FrameTooltips()
+                            .kit(kit)
+                            .relation(FRAME_ALIGN_BOTTOM, stage.ability_btn[i], FRAME_ALIGN_TOP, 0, 0.002)
+                            .content(content)
+                            .show(true)
                     end
                 end)
                 .onMouseLeftClick(
@@ -58,14 +58,11 @@ _singluarSetAbility = {
                 end)
                 .show(false)
 
-            stage.ability_btnLvUp[i] = FrameButton(kit .. '->upbtn->' .. i, stage.ability_bedding[i])
+            stage.ability_btnLvUp[i] = FrameButton(kit_s .. '->upbtn->' .. i, stage.ability_bedding[i])
                 .relation(FRAME_ALIGN_BOTTOM, stage.ability_btn[i], FRAME_ALIGN_TOP, 0, 0)
                 .texture('icon\\up')
                 .show(false)
-                .onMouseLeave(
-                function(evtData)
-                    stage  .tooltips.show(false, 0)
-                end)
+                .onMouseLeave(function(_) FrameTooltips().show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
                     local selection = evtData.triggerPlayer.selection()
@@ -74,10 +71,11 @@ _singluarSetAbility = {
                     end
                     local content = _singluarSetTooltipsBuilder.ability(selection.abilitySlot().storage()[i], 1)
                     if (content ~= nil) then
-                        stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.ability_btnLvUp[i], FRAME_ALIGN_TOP, 0, 0.002)
-                             .content(content)
-                             .show(true)
+                        FrameTooltips()
+                            .kit(kit)
+                            .relation(FRAME_ALIGN_BOTTOM, stage.ability_btnLvUp[i], FRAME_ALIGN_TOP, 0, 0.002)
+                            .content(content)
+                            .show(true)
                     end
                 end)
                 .onMouseLeftClick(
@@ -90,13 +88,13 @@ _singluarSetAbility = {
                             sync.send("G_GAME_SYNC", { "ability_level_up", ab.id() })
                             local content = _singluarSetTooltipsBuilder.ability(ab, 1)
                             if (content ~= nil) then
-                                stage.tooltips.content(content)
+                                FrameTooltips().kit(kit).content(content)
                             end
                         end
                     end
                 end)
         end
-        stage.ability_cover = FrameBackdrop(kit .. '->cover', stage.ability).alpha(0)
+        stage.ability_cover = FrameBackdrop(kit_s .. '->cover', stage.ability).alpha(0)
 
         --- 注册同步策略
         _singluarSetAbilityOnRight(stage)

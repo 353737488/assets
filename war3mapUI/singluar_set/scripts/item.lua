@@ -1,17 +1,16 @@
 -- 单位物品
 _singluarSetItem = {
-    ---@param stage{tooltips:FrameTooltip}
     onSetup = function(kit, stage)
 
-        kit = kit .. '->item'
+        local kit_s = kit .. '->item'
 
         stage.item_max = 6
 
-        stage.item = FrameBackdrop(kit, FrameGameUI)
+        stage.item = FrameBackdrop(kit_s, FrameGameUI)
             .relation(FRAME_ALIGN_LEFT_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0.1358, 0)
             .size(0.059, 0.134)
 
-        stage.item_weight = FrameText(kit .. '->weight', stage.item)
+        stage.item_weight = FrameText(kit_s .. '->weight', stage.item)
             .relation(FRAME_ALIGN_TOP, stage.item, FRAME_ALIGN_TOP, 0, -0.004)
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(9)
@@ -27,7 +26,7 @@ _singluarSetItem = {
         for i = 1, stage.item_max do
             local xo = 0.003 + (i - 1) % raw * (stage.item_itWidth + itMargin)
             local yo = -0.025 - (math.ceil(i / raw) - 1) * (itMargin + stage.item_itHeight)
-            stage.item_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.item)
+            stage.item_btn[i] = FrameButton(kit_s .. '->btn->' .. i, stage.item)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.item, FRAME_ALIGN_LEFT_TOP, xo, yo)
                 .size(stage.item_itWidth, stage.item_itHeight)
                 .fontSize(7.5)
@@ -36,7 +35,7 @@ _singluarSetItem = {
                 .onMouseLeave(
                 function(evtData)
                     evtData.triggerFrame.childHighLight().show(false)
-                    stage.tooltips.show(false, 0.5)
+                    FrameTooltips().show(false, 0.5)
                 end)
                 .onMouseEnter(
                 function(evtData)
@@ -50,13 +49,14 @@ _singluarSetItem = {
                     evtData.triggerFrame.childHighLight().show(true)
                     local content = _singluarSetTooltipsBuilder.item(sel.itemSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
-                        stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.item, FRAME_ALIGN_TOP, 0, 0.002)
-                             .content(content)
-                             .show(true)
-                             .onMouseLeftClick(
+                        FrameTooltips()
+                            .kit(kit)
+                            .relation(FRAME_ALIGN_BOTTOM, stage.item, FRAME_ALIGN_TOP, 0, 0.002)
+                            .content(content)
+                            .show(true)
+                            .onMouseLeftClick(
                             function(ed)
-                                stage.tooltips.show(false, 0)
+                                FrameTooltips().show(false, 0)
                                 local selection = ed.triggerPlayer.selection()
                                 if (isObject(selection, "Unit")) then
                                     local it = selection.itemSlot().storage()[i]
@@ -84,7 +84,7 @@ _singluarSetItem = {
                 end)
 
             -- 物品使用次数
-            stage.item_charges[i] = FrameButton(kit .. '->charges->' .. i, stage.item_btn[i].childBorder())
+            stage.item_charges[i] = FrameButton(kit_s .. '->charges->' .. i, stage.item_btn[i].childBorder())
                 .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.item_btn[i], FRAME_ALIGN_RIGHT_BOTTOM, -0.0013, 0.0018)
                 .texture('bg\\shadowBlock')
                 .fontSize(7)

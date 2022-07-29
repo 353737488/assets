@@ -1,9 +1,8 @@
 -- 玩家仓库
 _singluarSetWarehouse = {
-    ---@param stage{tooltips:FrameTooltip}
     onSetup = function(kit, stage)
 
-        kit = kit .. '->warehouse'
+        local kit_s = kit .. '->warehouse'
 
         stage.warehouse_max = Game().warehouseSlot()
 
@@ -27,11 +26,11 @@ _singluarSetWarehouse = {
             end
         end)
 
-        stage.warehouse = FrameBackdrop(kit, FrameGameUI)
+        stage.warehouse = FrameBackdrop(kit_s, FrameGameUI)
             .relation(FRAME_ALIGN_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0.274, 0)
             .size(0.152, 0.134)
 
-        stage.warehouse_cell = FrameText(kit .. '->stgTxt', stage.warehouse)
+        stage.warehouse_cell = FrameText(kit_s .. '->stgTxt', stage.warehouse)
             .relation(FRAME_ALIGN_CENTER, stage.warehouse, FRAME_ALIGN_TOP, 0, -0.008)
             .textAlign(TEXT_ALIGN_LEFT)
             .fontSize(10)
@@ -44,11 +43,11 @@ _singluarSetWarehouse = {
             if (i > 1) then
                 x = x + stage.warehouse_resOcc[stage.warehouse_resAllow[i - 1]].occ * xs
             end
-            stage.warehouse_resIcon[i] = FrameButton(kit .. '->res->' .. k, stage.warehouse)
+            stage.warehouse_resIcon[i] = FrameButton(kit_s .. '->res->' .. k, stage.warehouse)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.warehouse, FRAME_ALIGN_LEFT_TOP, x, -0.022)
                 .size(0.008, 0.010667)
                 .texture(opt.texture)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
+                .onMouseLeave(function(_) FrameTooltips().show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
                     --- 资源显示
@@ -62,12 +61,13 @@ _singluarSetWarehouse = {
                     if (cov ~= nil) then
                         table.insert(tips, '经济体系: ' .. '1' .. stage.warehouse_resOcc[cov[1]].name .. ' = ' .. cov[2] .. n)
                     end
-                    stage.tooltips
-                         .relation(FRAME_ALIGN_BOTTOM, stage.warehouse_resIcon[i], FRAME_ALIGN_TOP, 0, 0.002)
-                         .content({ tips = tips })
-                         .show(true)
+                    FrameTooltips()
+                        .kit(kit)
+                        .relation(FRAME_ALIGN_BOTTOM, stage.warehouse_resIcon[i], FRAME_ALIGN_TOP, 0, 0.002)
+                        .content({ tips = tips })
+                        .show(true)
                 end)
-            stage.warehouse_resInfo[i] = FrameText(kit .. '->resTxt->' .. k, stage.warehouse_resIcon[i])
+            stage.warehouse_resInfo[i] = FrameText(kit_s .. '->resTxt->' .. k, stage.warehouse_resIcon[i])
                 .relation(FRAME_ALIGN_LEFT, stage.warehouse_resIcon[i], FRAME_ALIGN_RIGHT, 0.001, 0)
                 .textAlign(TEXT_ALIGN_LEFT)
                 .fontSize(9)
@@ -84,7 +84,7 @@ _singluarSetWarehouse = {
         for i = 1, stage.warehouse_max do
             local xo = 0.006 + (i - 1) % raw * (stage.warehouse_itWidth + itMargin)
             local yo = -0.038 - (math.ceil(i / raw) - 1) * (itMargin + stage.warehouse_itHeight)
-            stage.warehouse_btn[i] = FrameButton(kit .. '->btn->' .. i, stage.warehouse)
+            stage.warehouse_btn[i] = FrameButton(kit_s .. '->btn->' .. i, stage.warehouse)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.warehouse, FRAME_ALIGN_LEFT_TOP, xo, yo)
                 .size(stage.warehouse_itWidth, stage.warehouse_itHeight)
                 .fontSize(7)
@@ -93,7 +93,7 @@ _singluarSetWarehouse = {
                 .onMouseLeave(
                 function(evtData)
                     evtData.triggerFrame.childHighLight().show(false)
-                    stage.tooltips.show(false, 0.5)
+                    FrameTooltips().show(false, 0.5)
                 end)
                 .onMouseEnter(
                 function(evtData)
@@ -103,13 +103,14 @@ _singluarSetWarehouse = {
                     evtData.triggerFrame.childHighLight().show(true)
                     local content = _singluarSetTooltipsBuilder.warehouse(evtData.triggerPlayer.warehouseSlot().storage()[i], evtData.triggerPlayer)
                     if (content ~= nil) then
-                        stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.warehouse, FRAME_ALIGN_TOP, 0, 0.002)
-                             .content(content)
-                             .show(true)
-                             .onMouseLeftClick(
+                        FrameTooltips()
+                            .kit(kit)
+                            .relation(FRAME_ALIGN_BOTTOM, stage.warehouse, FRAME_ALIGN_TOP, 0, 0.002)
+                            .content(content)
+                            .show(true)
+                            .onMouseLeftClick(
                             function(ed)
-                                stage.tooltips.show(false, 0)
+                                FrameTooltips().show(false, 0)
                                 local it = ed.triggerPlayer.warehouseSlot().storage()[i]
                                 if (isObject(it, "Item")) then
                                     if (ed.key == "item") then
@@ -133,7 +134,7 @@ _singluarSetWarehouse = {
                 end)
 
             -- 物品使用次数
-            stage.warehouse_charges[i] = FrameButton(kit .. '->charges->' .. i, stage.warehouse_btn[i].childBorder())
+            stage.warehouse_charges[i] = FrameButton(kit_s .. '->charges->' .. i, stage.warehouse_btn[i].childBorder())
                 .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.warehouse_btn[i], FRAME_ALIGN_RIGHT_BOTTOM, -0.0011, 0.00146)
                 .texture('bg\\shadowBlock')
                 .fontSize(6.5)

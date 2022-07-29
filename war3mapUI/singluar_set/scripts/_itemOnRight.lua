@@ -131,7 +131,7 @@ _singluarSetItemOnRight = function(stage)
                                 end
                             elseif (isObject(it, "Item")) then
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
-                                stage.tooltips.show(false, 0)
+                                FrameTooltips().show(false, 0)
                                 vcmClick1.play()
                                 japi.DzFrameSetAlpha(btn.handle(), 0)
                                 Cursor().followCall(it, { frame = btn, i = i }, function(stopData)
@@ -172,7 +172,7 @@ _singluarSetItemOnRight = function(stage)
                             end)
                         end
                     elseif (isObject(it, "Item")) then
-                        stage.tooltips.show(false, 0)
+                        FrameTooltips().show(false, 0)
                         vcmClick1.play()
                         japi.DzFrameSetAlpha(btn.handle(), 0)
                         Cursor().followCall(it, { frame = btn, i = itemMax + i }, function(stopData)

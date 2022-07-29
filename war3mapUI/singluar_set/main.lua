@@ -18,9 +18,6 @@ this.onSetup(function()
     _singluarSetAbility.onSetup(kit, stage)
     _singluarSetCaster.onSetup(kit, stage)
 
-    --- 提示框
-    stage.tooltips = FrameTooltip(kit .. '->tooltips').textAlign(TEXT_ALIGN_LEFT).fontSize(10)
-
     -- updater
     stage.updateRace = function()
         stage.menu.texture("menu\\" .. PlayerLocal().race())

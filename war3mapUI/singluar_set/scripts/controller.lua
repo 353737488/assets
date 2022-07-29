@@ -1,14 +1,13 @@
 _singluarSetController = {
-    ---@param stage{tooltips:FrameTooltip}
     onSetup = function(kit, stage)
 
-        kit = kit .. '->ctl'
+        local kit_s = kit .. '->ctl'
 
         -- 设置下方黑边
         japi.DzFrameEditBlackBorders(0, 0.125)
 
         -- 主背景
-        stage.ctl = FrameBackdrop(kit, FrameGameUI)
+        stage.ctl = FrameBackdrop(kit_s, FrameGameUI)
             .absolut(FRAME_ALIGN_BOTTOM, 0, 0)
             .size(0.8, 0.1541666667)
 
@@ -27,7 +26,7 @@ _singluarSetController = {
         stage.ctl_tips = {}
 
         -- 小地图
-        stage.ctl_miniMap = Frame(kit .. '->minimap', japi.DzFrameGetMinimap(), nil)
+        stage.ctl_miniMap = Frame(kit_s .. '->minimap', japi.DzFrameGetMinimap(), nil)
             .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.ctl, FRAME_ALIGN_LEFT_BOTTOM, 0.005, 0.006)
             .size(stage.ctl_RxMMP * 0.75, stage.ctl_RxMMP)
 
@@ -42,18 +41,18 @@ _singluarSetController = {
             { 0.0023, -0.007 - 0.021 - 0.018 - 0.018 - 0.025 },
         }
         for i = 0, 4 do
-            stage.ctl_miniMapBtns[i] = Frame(kit .. '->minimap->btn->' .. i, japi.DzFrameGetMinimapButton(i), nil)
+            stage.ctl_miniMapBtns[i] = Frame(kit_s .. '->minimap->btn->' .. i, japi.DzFrameGetMinimapButton(i), nil)
                 .relation(FRAME_ALIGN_LEFT_TOP, stage.ctl_miniMap, FRAME_ALIGN_RIGHT_TOP, offset[i + 1][1], offset[i + 1][2])
                 .size(0.013, 0.013)
         end
 
         -- 单位头像
-        stage.ctl_portrait = Frame(kit .. '->portrait', japi.DzFrameGetPortrait(), nil)
+        stage.ctl_portrait = Frame(kit_s .. '->portrait', japi.DzFrameGetPortrait(), nil)
             .relation(FRAME_ALIGN_LEFT_TOP, stage.ctl_miniMap, FRAME_ALIGN_RIGHT_TOP, 0.140, -0.004)
             .size(0.090, 0.120)
 
         -- 单位头像阴影
-        stage.ctl_portraitShadow = FrameBackdrop(kit .. '->portraitShadow', stage.ctl_portrait)
+        stage.ctl_portraitShadow = FrameBackdrop(kit_s .. '->portraitShadow', stage.ctl_portrait)
             .relation(FRAME_ALIGN_BOTTOM, stage.ctl_portrait, FRAME_ALIGN_BOTTOM, 0, 0)
             .size(0.090, 0.120)
             .texture('bg\\shadowUnit')
@@ -67,7 +66,7 @@ _singluarSetController = {
         --
         stage.ctl_mouseLeave = function(evtData)
             async.call(evtData.triggerPlayer, function()
-                stage.tooltips.show(false, 0)
+                FrameTooltips().show(false, 0)
             end)
         end
         stage.ctl_mouseEnter = function(evtData, field)
@@ -177,16 +176,22 @@ _singluarSetController = {
                 table.insert(tips, '回避<几率>: ' .. selection.avoid() .. '%')
             end
             if (field == 'portrait') then
-                stage.tooltips.relation(FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_TOP, x, y)
-                stage.tooltips.content({ tips = tips }).showGradient(true, { duration = 0.1, y = 0.002 })
+                FrameTooltips()
+                    .kit(kit)
+                    .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_TOP, x, y)
+                    .content({ tips = tips })
+                    .showGradient(true, { duration = 0.1, y = 0.002 })
             else
-                stage.tooltips.relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_BOTTOM, x, y)
-                stage.tooltips.content({ tips = tips }).showGradient(true, { duration = 0.1, x = -0.001 })
+                FrameTooltips()
+                    .kit(kit)
+                    .relation(FRAME_ALIGN_RIGHT_BOTTOM, stage.ctl_info[field], FRAME_ALIGN_LEFT_BOTTOM, x, y)
+                    .content({ tips = tips })
+                    .showGradient(true, { duration = 0.1, x = -0.001 })
             end
         end
         --
         for _, t in ipairs(plateTypes) do
-            local kitP = kit .. '->' .. t
+            local kitP = kit_s .. '->' .. t
             stage.ctl_plate[t] = FrameBackdropTile(kitP, stage.ctl)
                 .relation(FRAME_ALIGN_BOTTOM, stage.ctl, FRAME_ALIGN_BOTTOM, 0, 0)
                 .size(0.6, 0.18)

@@ -2,7 +2,7 @@
 _singluarSetBuff = {
     onSetup = function(kit, stage)
 
-        kit = kit .. '->buff'
+        local kit_s = kit .. '->buff'
 
         stage.buff_max = 11 * 2 --最大buff数,偶数
         -- buff名词转接
@@ -114,7 +114,7 @@ _singluarSetBuff = {
         stage.buff_buffSignal = {}
         stage.buff_catches = {}
 
-        stage.buff = FrameBackdrop(kit, FrameGameUI)
+        stage.buff = FrameBackdrop(kit_s, FrameGameUI)
             .relation(FRAME_ALIGN_LEFT_BOTTOM, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, stage.buff_offsetX, stage.buff_offsetY)
             .size(0.2, 0.1)
         for i = 1, stage.buff_max do
@@ -125,25 +125,26 @@ _singluarSetBuff = {
                 x = (stage.buff_bagRx + stage.buff_margin) * (i - half - 1)
                 y = stage.buff_bagRy + stage.buff_margin
             end
-            stage.buff_buffs[i] = FrameButton(kit .. '->btn->' .. i, stage.buff)
+            stage.buff_buffs[i] = FrameButton(kit_s .. '->btn->' .. i, stage.buff)
                 .relation(FRAME_ALIGN_LEFT_BOTTOM, stage.buff, FRAME_ALIGN_LEFT_BOTTOM, x, y)
                 .size(stage.buff_bagRx, stage.buff_bagRy)
                 .fontSize(7)
                 .maskValue(1)
                 .show(false)
-                .onMouseLeave(function(_) stage.tooltips.show(false, 0) end)
+                .onMouseLeave(function(_) FrameTooltips().show(false, 0) end)
                 .onMouseEnter(
                 function(evtData)
                     local pi = evtData.triggerPlayer.index()
                     if (stage.buff_catches[pi] ~= nil and stage.buff_catches[pi][i] ~= nil and stage.buff_catches[pi][i].tips ~= nil) then
-                        stage.tooltips
-                             .relation(FRAME_ALIGN_BOTTOM, stage.buff_buffs[i], FRAME_ALIGN_TOP, 0, 0.002)
-                             .content({ tips = stage.buff_catches[pi][i].tips })
-                             .show(true)
+                        FrameTooltips()
+                            .kit(kit)
+                            .relation(FRAME_ALIGN_BOTTOM, stage.buff_buffs[i], FRAME_ALIGN_TOP, 0, 0.002)
+                            .content({ tips = stage.buff_catches[pi][i].tips })
+                            .show(true)
                     end
                 end)
             stage.buff_buffs[i].childText().relation(FRAME_ALIGN_CENTER, stage.buff_buffs[i], FRAME_ALIGN_CENTER, 0, -0.001)
-            stage.buff_buffSignal[i] = FrameBackdrop(kit .. '->signal->' .. i, stage.buff_buffs[i])
+            stage.buff_buffSignal[i] = FrameBackdrop(kit_s .. '->signal->' .. i, stage.buff_buffs[i])
                 .relation(FRAME_ALIGN_CENTER, stage.buff_buffs[i], FRAME_ALIGN_CENTER, 0, 0)
                 .size(stage.buff_bagRx, stage.buff_bagRy)
         end

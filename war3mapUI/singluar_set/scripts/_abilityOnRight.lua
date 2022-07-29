@@ -72,7 +72,7 @@ _singluarSetAbilityOnRight = function(stage)
                                     end)
                                 end
                             elseif (isObject(ab, "Ability")) then
-                                stage.tooltips.show(false, 0)
+                                FrameTooltips().show(false, 0)
                                 vcmClick1.play()
                                 japi.DzFrameSetAlpha(frameButton[i].handle(), 0)
                                 Cursor().followCall(ab, { frame = frameButton[i], i = i }, function(stopData)
