@@ -8,7 +8,7 @@ _singluarSetBuff = {
         -- buff名词转接
         stage.buff_turner = {}
         stage.buff_turner._name = {
-            rgb = "偏色",
+            rgba = "偏色",
             alpha = "透明",
             invulnerable = "无敌",
             invisible = "隐身",
@@ -71,9 +71,7 @@ _singluarSetBuff = {
         enchant.types.forEach(function(key, value)
             stage.buff_turner._name["e_" .. key] = value.label .. '<强化>'
             stage.buff_turner._name["<WEAPON>e_" .. key] = value.label .. '<附武>'
-            stage.buff_turner._name["<APPEND>e_" .. key] = value.label .. '<附着>'
             stage.buff_turner._icon["<WEAPON>e_" .. key] = "e_" .. key
-            stage.buff_turner._icon["<APPEND>e_" .. key] = "e_" .. key
         end)
         for _, v in ipairs(ATTR_ODDS) do
             stage.buff_turner._name["<ODDS>" .. v] = stage.buff_turner._name[v] .. '<几率>'
@@ -170,19 +168,30 @@ _singluarSetBuff = {
         if (isObject(tmpData.selection, 'Unit')) then
             if (tmpData.selection.isAlive()) then
                 stage.buff_catches[pi] = {}
+                enchant.types.forEach(function(key, value)
+                    local ev = tmpData.selection.enchantAppend(key)
+                    if (ev > 0) then
+                        table.insert(stage.buff_catches[pi], {
+                            buffTexture = "buff\\e_" .. key,
+                            signalTexture = 'signal\\append',
+                            maskTexture = 'Singluar\\ui\\nil.tga',
+                            borderTexture = 'btn\\border-white',
+                            text = ev,
+                            alpha = 255,
+                            tips = { stage.buff_turner.name(value.label .. '<附着>'), colour.gold(ev .. ' 层') },
+                        })
+                    end
+                end)
                 local catch = BuffCatcher(tmpData.selection)
                 if (#catch > 0) then
                     local ewi = 0
-                    local epi = 0
                     local ewq = 0
-                    local epq = 0
                     for _, b in ipairs(catch) do
                         if (#stage.buff_catches[pi] >= stage.buff_max) then
                             break
                         end
                         -- 合并武器
-                        local isWeapon = (string.subPos(b.name(), '<WEAPON>') == 1)
-                        local isAppend = (string.subPos(b.name(), '<APPEND>') == 1)
+                        local isWeapon = (string.subPos(b.name(), 'prop_<WEAPON>') == 1)
                         if (isWeapon == true) then
                             ewq = math.floor(ewq + 1)
                             if (ewi == 0) then
@@ -200,75 +209,62 @@ _singluarSetBuff = {
                                 stage.buff_catches[pi][ewi].text = ewq
                                 stage.buff_catches[pi][ewi].tips[2] = colour.gold('等级：' .. ewq)
                             end
-                        elseif (isAppend == true) then
-                            epq = math.floor(epq + 1)
-                            if (epi == 0) then
+                        else
+                            -- 跳过附着
+                            local isAppend = (string.subPos(b.name(), 'prop_<APPEND>') == 1)
+                            if (false == isAppend) then
+                                local isOdds = (string.subPos(b.name(), 'prop_<ODDS>') == 1)
+                                local isResistance = (string.subPos(b.name(), 'prop_<RESISTANCE>') == 1)
+                                local signalTexture = 'Singluar\\ui\\nil.tga'
+                                local maskTexture = 'Singluar\\ui\\nil.tga'
+                                local borderTexture = 'btn\\border-white'
+                                if (isOdds) then
+                                    signalTexture = 'signal\\odds'
+                                elseif (isResistance) then
+                                    signalTexture = 'signal\\resistance'
+                                elseif (isWeapon) then
+                                    signalTexture = 'signal\\weapon'
+                                elseif (isAppend) then
+                                    signalTexture = 'signal\\append'
+                                end
+                                local lName = stage.buff_turner.name(b.name())
+                                local lDur
+                                local lText = ''
+                                local lAlpha = 255
+                                local duration = b.duration()
+                                if (duration <= 0) then
+                                    lDur = colour.gold('特殊效果')
+                                    borderTexture = 'btn\\border-gold'
+                                else
+                                    lDur = colour.sky('持续: ' .. string.format('%0.1f', duration) .. ' 秒')
+                                    local remain = b.remain()
+                                    local line = math.min(5, duration)
+                                    if (remain > line) then
+                                        lAlpha = 255
+                                    else
+                                        lAlpha = 55 + 200 * remain / line
+                                    end
+                                    lText = string.format('%0.1f', remain)
+                                end
+                                local diff = b.diff()
+                                if (diff > 0) then
+                                    lName = lName .. ': ' .. colour.green('+' .. math.format(diff, 2))
+                                    maskTexture = 'signal\\up'
+                                elseif (diff < 0) then
+                                    lName = lName .. ': ' .. colour.red(math.format(diff, 2))
+                                    maskTexture = 'signal\\down'
+                                    borderTexture = 'btn\\border-red'
+                                end
                                 table.insert(stage.buff_catches[pi], {
                                     buffTexture = stage.buff_turner.icon(b.name()),
-                                    signalTexture = 'signal\\append',
-                                    maskTexture = 'Singluar\\ui\\nil.tga',
-                                    borderTexture = 'btn\\border-white',
-                                    text = ewq,
-                                    alpha = 255,
-                                    tips = { stage.buff_turner.name(b.name()), colour.gold('等级：' .. epq) },
+                                    signalTexture = signalTexture,
+                                    maskTexture = maskTexture,
+                                    borderTexture = borderTexture,
+                                    text = lText,
+                                    alpha = lAlpha,
+                                    tips = { lName, lDur },
                                 })
-                                epi = #stage.buff_catches[pi]
-                            else
-                                stage.buff_catches[pi][epi].text = epq
-                                stage.buff_catches[pi][epi].tips[2] = colour.gold('等级：' .. epq)
                             end
-                        else
-                            local isOdds = (string.subPos(b.name(), '<ODDS>') == 1)
-                            local isResistance = (string.subPos(b.name(), '<RESISTANCE>') == 1)
-                            local signalTexture = 'Singluar\\ui\\nil.tga'
-                            local maskTexture = 'Singluar\\ui\\nil.tga'
-                            local borderTexture = 'btn\\border-white'
-                            if (isOdds) then
-                                signalTexture = 'signal\\odds'
-                            elseif (isResistance) then
-                                signalTexture = 'signal\\resistance'
-                            elseif (isWeapon) then
-                                signalTexture = 'signal\\weapon'
-                            elseif (isAppend) then
-                                signalTexture = 'signal\\append'
-                            end
-                            local lName = stage.buff_turner.name(b.name())
-                            local lDur
-                            local lText = ''
-                            local lAlpha = 255
-                            local duration = b.duration()
-                            if (duration <= 0) then
-                                lDur = colour.gold('特殊效果')
-                                borderTexture = 'btn\\border-gold'
-                            else
-                                lDur = colour.sky('持续: ' .. string.format('%0.1f', duration) .. ' 秒')
-                                local remain = b.remain()
-                                local line = math.min(5, duration)
-                                if (remain > line) then
-                                    lAlpha = 255
-                                else
-                                    lAlpha = 55 + 200 * remain / line
-                                end
-                                lText = string.format('%0.1f', remain)
-                            end
-                            local diff = b.diff()
-                            if (diff > 0) then
-                                lName = lName .. ': ' .. colour.green('+' .. math.format(diff, 2))
-                                maskTexture = 'signal\\up'
-                            elseif (diff < 0) then
-                                lName = lName .. ': ' .. colour.red(math.format(diff, 2))
-                                maskTexture = 'signal\\down'
-                                borderTexture = 'btn\\border-red'
-                            end
-                            table.insert(stage.buff_catches[pi], {
-                                buffTexture = stage.buff_turner.icon(b.name()),
-                                signalTexture = signalTexture,
-                                maskTexture = maskTexture,
-                                borderTexture = borderTexture,
-                                text = lText,
-                                alpha = lAlpha,
-                                tips = { lName, lDur },
-                            })
                         end
                     end
                 end

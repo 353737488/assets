@@ -173,6 +173,7 @@ _singluarSetController = {
                 table.insert(tips, '技能吸魔<抗性>: ' .. selection.resistance('mpSuckSpell') .. '%')
             elseif (field == 'move') then
                 table.insert(tips, '移动速度: ' .. selection.move())
+                table.insert(tips, '移动类型: ' .. selection.moveType().label)
                 table.insert(tips, '回避<几率>: ' .. selection.avoid() .. '%')
             end
             if (field == 'portrait') then
