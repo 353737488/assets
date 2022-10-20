@@ -108,7 +108,7 @@ if (DEBUGGING) then
                 stage.costAvg = { avg }
             end
             return {
-                "FPS : " .. math.format(SL_FPS, 1),
+                "FPS : " .. math.format(japi.FPS(), 1),
                 colour.sky("平均 : " .. math.format(avg, 3) .. ' MB'),
                 colour.redLight("最大 : " .. math.format(stage.costMax, 3) .. ' MB'),
                 colour.gold("当前 : " .. math.format(cost, 3) .. ' MB'),
