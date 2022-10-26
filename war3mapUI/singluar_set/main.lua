@@ -71,8 +71,22 @@ this.onSetup(function()
                     stage.updateWelcome()
                 elseif (evtData.key == "alert") then
                     stage.updateAlert()
+                elseif (evtData.key == "selection") then
+                    _singluarSetController.onRefresh(stage)
+                    _singluarSetBuff.onRefresh(stage)
+                    _singluarSetCaster.onRefresh(stage)
                 end
             end)
+        elseif (isObject(evtData.triggerObject, "Unit")) then
+            local p = PlayerLocal()
+            if (evtData.triggerObject == p.selection()) then
+                print("updated")
+                async.call(p, function()
+                    _singluarSetController.onRefresh(stage)
+                    _singluarSetBuff.onRefresh(stage)
+                    _singluarSetCaster.onRefresh(stage)
+                end)
+            end
         end
     end)
 
@@ -82,11 +96,8 @@ this.onRefresh(0.03, function()
     ---@type {tips:table,main:FrameBackdrop,miniMap:Frame,miniMapBtns:Frame[],portrait:Frame,portraitShadow:FrameBackdrop,plate:table<string,FrameBackdropTile>,nilDisplay:FrameText,mp:FrameBar,hp:FrameBar,info:table<string,FrameButton|FrameText>,tile:table<string,FrameBar>}
     local stage = this.stage()
     async.call(PlayerLocal(), function()
-        _singluarSetController.onRefresh(stage)
-        _singluarSetBuff.onRefresh(stage)
         _singluarSetWarehouse.onRefresh(stage)
         _singluarSetItem.onRefresh(stage)
         _singluarSetAbility.onRefresh(stage)
-        _singluarSetCaster.onRefresh(stage)
     end)
 end)
