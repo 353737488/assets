@@ -47,7 +47,7 @@ if (DEBUGGING) then
                 .relation(FRAME_ALIGN_LEFT, tile, FRAME_ALIGN_LEFT, 0.002, 0.01)
                 .textAlign(TEXT_ALIGN_LEFT)
                 .fontSize(12)
-                .text(colour.hex(graduation * i, txtColor))
+                .text(colour.hex(txtColor, graduation * i))
             table.insert(stage.line, tile)
         end
         for i = 1, math.floor(0.8 / graduation - 0.5), 1 do
@@ -60,7 +60,7 @@ if (DEBUGGING) then
                 .relation(FRAME_ALIGN_BOTTOM, tile, FRAME_ALIGN_BOTTOM, 0.01, 0.01)
                 .textAlign(TEXT_ALIGN_LEFT)
                 .fontSize(12)
-                .text(colour.hex(graduation * i, txtColor))
+                .text(colour.hex(txtColor, graduation * i))
             table.insert(stage.line, tile)
         end
 
@@ -109,9 +109,9 @@ if (DEBUGGING) then
             end
             return {
                 "FPS : " .. math.format(japi.FPS(), 1),
-                colour.sky("平均 : " .. math.format(avg, 3) .. ' MB'),
-                colour.redLight("最大 : " .. math.format(stage.costMax, 3) .. ' MB'),
-                colour.gold("当前 : " .. math.format(cost, 3) .. ' MB'),
+                colour.hex(colour.skyblue, "平均 : " .. math.format(avg, 3) .. ' MB'),
+                colour.hex(colour.indianred, "最大 : " .. math.format(stage.costMax, 3) .. ' MB'),
+                colour.hex(colour.gold, "当前 : " .. math.format(cost, 3) .. ' MB'),
             }
         end
         stage.debug = function()

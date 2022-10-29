@@ -72,7 +72,7 @@ _singluarSetCaster = {
         end
         --- 技能点
         if (tmpData.sp ~= nil) then
-            stage.caster_sp.text(colour.gold(tmpData.sp) .. ' 技能点')
+            stage.caster_sp.text(colour.hex(colour.gold, tmpData.sp) .. ' 技能点')
         end
         stage.caster_sp.show(tmpData.sp ~= nil and tmpData.sp > 0)
         --- 施法条

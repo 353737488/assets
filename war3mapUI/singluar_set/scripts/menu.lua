@@ -39,7 +39,7 @@ _singluarSetMenu = {
                 .textAlign(TEXT_ALIGN_CENTER)
                 .fontSize(8)
             if (i == 3 and Game().playingQuantity() == 1) then
-                stage.menu_fn[i].txt.text(colour.greyDeep(t[2]))
+                stage.menu_fn[i].txt.text(colour.hex(colour.silver, t[2]))
             else
                 stage.menu_fn[i].txt.text(t[2])
             end

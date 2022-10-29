@@ -84,10 +84,10 @@ _singluarSetController = {
                 x = 0
                 y = 0.004
                 if (primary ~= nil) then
-                    table.insert(tips, colour.gold('主属性: ' .. primary.label))
-                    table.insert(tips, colour.redLight('力量: ' .. math.floor(selection.str())))
-                    table.insert(tips, colour.greenLight('敏捷: ' .. math.floor(selection.agi())))
-                    table.insert(tips, colour.sky('智力: ' .. math.floor(selection.int())))
+                    table.insert(tips, colour.hex(colour.gold, '主属性: ' .. primary.label))
+                    table.insert(tips, colour.hex(colour.indianred, '力量: ' .. math.floor(selection.str())))
+                    table.insert(tips, colour.hex(colour.lawngreen, '敏捷: ' .. math.floor(selection.agi())))
+                    table.insert(tips, colour.hex(colour.skyblue, '智力: ' .. math.floor(selection.int())))
                 else
                     table.insert(tips, '普通作战单位')
                 end
@@ -99,7 +99,7 @@ _singluarSetController = {
                 end
             elseif (field == 'attack') then
                 if (false == selection.isAttackAble()) then
-                    table.insert(tips, colour.red('无法攻击'))
+                    table.insert(tips, colour.hex(colour.indianred, '无法攻击'))
                 else
                     table.insert(tips, '基础攻击: ' .. math.floor(selection.attack()))
                     table.insert(tips, '攻击浮动: ' .. math.floor(selection.attackRipple()))
@@ -408,7 +408,7 @@ _singluarSetController = {
             end
             if (d.selection.isInvulnerable()) then
                 d.defendTexture = 'icon\\defend_gold'
-                d.defend = colour.gold('无敌')
+                d.defend = colour.hex(colour.gold, '无敌')
             else
                 d.defendTexture = 'icon\\defend'
                 if (d.selection.defend() <= 9999) then
@@ -424,9 +424,9 @@ _singluarSetController = {
             if (hpRegen == 0 or hp == 0 or hpCur >= hp) then
                 d.hpRegen = ''
             elseif (hpRegen > 0) then
-                d.hpRegen = colour.green('+' .. hpRegen)
+                d.hpRegen = colour.hex(colour.lawngreen, '+' .. hpRegen)
             elseif (hpRegen < 0) then
-                d.hpRegen = colour.red(hpRegen)
+                d.hpRegen = colour.hex(colour.indianred, hpRegen)
             end
             d.hpPercent = math.trunc(hpCur / hp, 3)
             d.hpTxt = hpCur .. ' / ' .. hp
@@ -465,13 +465,13 @@ _singluarSetController = {
             if (mpRegen == 0 or mp == 0 or mpCur >= mp) then
                 d.mpRegen = ''
             elseif (mpRegen > 0) then
-                d.mpRegen = colour.skyLight('+' .. mpRegen)
+                d.mpRegen = colour.hex(colour.skyblue, '+' .. mpRegen)
             elseif (mpRegen < 0) then
-                d.mpRegen = colour.red(mpRegen)
+                d.mpRegen = colour.hex(colour.indianred, mpRegen)
             end
             if (mp == 0) then
                 d.mpPercent = 1
-                d.mpTxt = colour.grey(mpCur .. ' / ' .. mp)
+                d.mpTxt = colour.hex(colour.darkgrey, mpCur .. ' / ' .. mp)
                 d.mpTexture = 'bar\\blueGrey'
             else
                 d.mpPercent = math.trunc(mpCur / mp, 3)
@@ -485,7 +485,7 @@ _singluarSetController = {
                 tileValueCount = tileValueCount + 1
                 local cur = d.selection.periodRemain() or 0
                 d.periodPercent = math.trunc(cur / period, 3)
-                d.periodTxt = colour.white('存在 ' .. math.format(cur, 1) .. ' 秒')
+                d.periodTxt = '存在 ' .. math.format(cur, 1) .. ' 秒'
             end
             local level = d.selection.level()
             if (level > 0) then
@@ -494,7 +494,7 @@ _singluarSetController = {
                 local prev = d.selection.expNeed(level) or 0
                 local need = d.selection.expNeed() or 0
                 d.expPercent = math.trunc((cur - prev) / (need - prev), 3)
-                d.expTxt = colour.white(math.integerFormat(cur) .. '/' .. math.integerFormat(need) .. '  ' .. level .. ' 级')
+                d.expTxt = math.integerFormat(cur) .. '/' .. math.integerFormat(need) .. '  ' .. level .. ' 级'
             end
             local punish = d.selection.punish() or 0
             if (punish > 0) then
@@ -503,9 +503,9 @@ _singluarSetController = {
                 local max = d.selection.punish() or 0
                 d.punishPercent = math.trunc(cur / max, 3)
                 if (d.selection.isPunishing()) then
-                    d.punishTxt = colour.red(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  僵住')
+                    d.punishTxt = colour.hex(colour.indianred, math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  僵住')
                 else
-                    d.punishTxt = colour.hex(math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  硬直', 'DDC10C')
+                    d.punishTxt = colour.hex('DDC10C', math.integerFormat(cur) .. '/' .. math.integerFormat(max) .. '  硬直')
                 end
             end
         elseif (d.class == "Item") then

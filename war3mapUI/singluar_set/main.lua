@@ -27,13 +27,13 @@ this.onSetup(function()
         stage.menu_lv.text("奖励级别：" .. PlayerLocal()["mapLv"]())
     end
     stage.updateWelcome = function()
-        stage.menu_welcome.text(colour.gold(Game().name()) .. ', 你好 ' .. colour.gold(PlayerLocal().name()))
+        stage.menu_welcome.text(colour.hex(colour.gold, Game().name()) .. ', 你好 ' .. colour.hex(colour.gold, PlayerLocal().name()))
     end
     stage.updateFn = function()
         for i, t in ipairs(stage.menu_fns) do
             stage.menu_fn[i].txt.text(t[2])
             if (i == 3 and Game().playingQuantity() == 1) then
-                stage.menu_fn[i].txt.text(colour.greyDeep(t[2]))
+                stage.menu_fn[i].txt.text(colour.hex(colour.silver, t[2]))
             end
         end
     end
@@ -80,7 +80,6 @@ this.onSetup(function()
         elseif (isObject(evtData.triggerObject, "Unit")) then
             local p = PlayerLocal()
             if (evtData.triggerObject == p.selection()) then
-                print("updated")
                 async.call(p, function()
                     _singluarSetController.onRefresh(stage)
                     _singluarSetBuff.onRefresh(stage)

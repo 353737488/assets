@@ -50,7 +50,7 @@ _singluarSetTooltipsBuilder = {
                             end
                             table.insert(content.icons, {
                                 texture = "icon\\" .. key,
-                                text = colour.hex(val, color),
+                                text = colour.hex(color, val),
                             })
                         end
                     end
@@ -65,7 +65,7 @@ _singluarSetTooltipsBuilder = {
                     end
                     table.insert(content.icons, {
                         texture = "icon\\" .. method,
-                        text = colour.hex(val, color),
+                        text = colour.hex(color, val),
                     })
                 end
             end
@@ -80,7 +80,7 @@ _singluarSetTooltipsBuilder = {
                     if (percent ~= nil) then
                         table.insert(content.bars, {
                             texture = "tile\\yellow",
-                            text = colour.hex("经验：" .. math.floor(cur - prev) .. '/' .. math.ceil(need - prev), "E2C306"),
+                            text = colour.hex("E2C306", "经验：" .. math.floor(cur - prev) .. '/' .. math.ceil(need - prev)),
                             ratio = percent,
                             width = 0.10,
                             height = 0.001,
@@ -124,7 +124,7 @@ _singluarSetTooltipsBuilder = {
                         end
                         table.insert(content.icons, {
                             texture = "icon\\" .. key,
-                            text = colour.hex(val, color),
+                            text = colour.hex(color, val),
                         })
                     end
                 end
@@ -140,7 +140,7 @@ _singluarSetTooltipsBuilder = {
                         if (percent ~= nil) then
                             table.insert(content.bars, {
                                 texture = "tile\\white",
-                                text = colour.white("经验：" .. math.floor(cur - prev) .. '/' .. math.ceil(need - prev)),
+                                text = "经验：" .. math.floor(cur - prev) .. '/' .. math.ceil(need - prev),
                                 ratio = percent,
                                 width = 0.10,
                                 height = 0.001,
@@ -149,22 +149,22 @@ _singluarSetTooltipsBuilder = {
                     end
                 end
                 if (whichPlayer.warehouseSlot().empty() > 0) then
-                    table.insert(content.list, { key = "warehouse", text = colour.skyLight("放入仓库"), highlight = true, textAlign = TEXT_ALIGN_LEFT })
+                    table.insert(content.list, { key = "warehouse", text = colour.hex(colour.skyblue, "放入仓库"), highlight = true, textAlign = TEXT_ALIGN_LEFT })
                 else
-                    table.insert(content.list, { text = colour.grey("仓库已满"), highlight = false, textAlign = TEXT_ALIGN_LEFT })
+                    table.insert(content.list, { text = colour.hex(colour.darkgrey, "仓库已满"), highlight = false, textAlign = TEXT_ALIGN_LEFT })
                 end
                 if (it.dropable()) then
-                    table.insert(content.list, { key = "drop", text = colour.redLight("丢弃"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
+                    table.insert(content.list, { key = "drop", text = colour.hex(colour.indianred, "丢弃"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
                 else
-                    table.insert(content.tips, colour.grey("|n不可丢弃"))
+                    table.insert(content.tips, colour.hex(colour.darkgrey, "|n不可丢弃"))
                 end
                 if (it.pawnable()) then
-                    table.insert(content.list, { key = "pawn", text = colour.gold("出售"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
+                    table.insert(content.list, { key = "pawn", text = colour.hex(colour.gold, "出售"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
                 else
-                    table.insert(content.tips, colour.grey("|n不可出售"))
+                    table.insert(content.tips, colour.hex(colour.darkgrey, "|n不可出售"))
                 end
                 if (1 == 0) then
-                    table.insert(content.list, { key = "separate", text = colour.purpleLight("拆分"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
+                    table.insert(content.list, { key = "separate", text = colour.hex(colour.purpleLight, "拆分"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
                 end
             end
         end
@@ -202,7 +202,7 @@ _singluarSetTooltipsBuilder = {
                     end
                     table.insert(content.icons, {
                         texture = "icon\\" .. key,
-                        text = colour.hex(val, color),
+                        text = colour.hex(color, val),
                     })
                 end
             end
@@ -218,7 +218,7 @@ _singluarSetTooltipsBuilder = {
                     if (percent ~= nil) then
                         table.insert(content.bars, {
                             texture = "tile\\white",
-                            text = colour.white("经验：" .. math.floor(cur - prev) .. '/' .. math.ceil(need - prev)),
+                            text = "经验：" .. math.floor(cur - prev) .. '/' .. math.ceil(need - prev),
                             ratio = percent,
                             width = 0.10,
                             height = 0.001,
@@ -229,23 +229,23 @@ _singluarSetTooltipsBuilder = {
             local selection = whichPlayer.selection()
             if (isObject(selection, "Unit") and selection.owner() == whichPlayer) then
                 if (selection.itemSlot().empty() > 0) then
-                    table.insert(content.list, { key = "item", text = colour.skyLight("放入背包"), highlight = true, textAlign = TEXT_ALIGN_LEFT })
+                    table.insert(content.list, { key = "item", text = colour.hex(colour.skyblue, "放入背包"), highlight = true, textAlign = TEXT_ALIGN_LEFT })
                 else
-                    table.insert(content.list, { text = colour.grey("背包已满"), highlight = false, textAlign = TEXT_ALIGN_LEFT })
+                    table.insert(content.list, { text = colour.hex(colour.darkgrey, "背包已满"), highlight = false, textAlign = TEXT_ALIGN_LEFT })
                 end
                 if (it.dropable()) then
-                    table.insert(content.list, { key = "drop", text = colour.redLight("丢弃"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
+                    table.insert(content.list, { key = "drop", text = colour.hex(colour.indianred, "丢弃"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
                 else
-                    table.insert(content.tips, colour.grey("|n不可丢弃"))
+                    table.insert(content.tips, colour.hex(colour.darkgrey, "|n不可丢弃"))
                 end
             end
             if (it.pawnable()) then
-                table.insert(content.list, { key = "pawn", text = colour.gold("出售"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
+                table.insert(content.list, { key = "pawn", text = colour.hex(colour.gold, "出售"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
             else
-                table.insert(content.tips, colour.grey("|n不可出售"))
+                table.insert(content.tips, colour.hex(colour.darkgrey, "|n不可出售"))
             end
             if (1 == 0) then
-                table.insert(content.list, { key = "separate", text = colour.purpleLight("拆分"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
+                table.insert(content.list, { key = "separate", text = colour.hex(colour.purpleLight, "拆分"), highlight = true, textAlign = TEXT_ALIGN_CENTER })
             end
         end
         return content

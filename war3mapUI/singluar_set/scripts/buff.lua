@@ -178,7 +178,7 @@ _singluarSetBuff = {
                             borderTexture = 'btn\\border-white',
                             text = ev,
                             alpha = 255,
-                            tips = { stage.buff_turner.name(value.label .. '<附着>'), colour.gold(ev .. ' 层') },
+                            tips = { stage.buff_turner.name(value.label .. '<附着>'), colour.hex(colour.gold, ev .. ' 层') },
                         })
                     end
                 end)
@@ -202,12 +202,12 @@ _singluarSetBuff = {
                                     borderTexture = 'btn\\border-white',
                                     text = ewq,
                                     alpha = 255,
-                                    tips = { stage.buff_turner.name(b.name()), colour.gold('等级：' .. ewq) },
+                                    tips = { stage.buff_turner.name(b.name()), colour.hex(colour.gold, '等级：' .. ewq) },
                                 })
                                 ewi = #stage.buff_catches[pi]
                             else
                                 stage.buff_catches[pi][ewi].text = ewq
-                                stage.buff_catches[pi][ewi].tips[2] = colour.gold('等级：' .. ewq)
+                                stage.buff_catches[pi][ewi].tips[2] = colour.hex(colour.gold, '等级：' .. ewq)
                             end
                         else
                             -- 跳过附着
@@ -233,10 +233,10 @@ _singluarSetBuff = {
                                 local lAlpha = 255
                                 local duration = b.duration()
                                 if (duration <= 0) then
-                                    lDur = colour.gold('特殊效果')
+                                    lDur = colour.hex(colour.gold, '特殊效果')
                                     borderTexture = 'btn\\border-gold'
                                 else
-                                    lDur = colour.sky('持续: ' .. string.format('%0.1f', duration) .. ' 秒')
+                                    lDur = colour.hex(colour.skyblue, '持续: ' .. string.format('%0.1f', duration) .. ' 秒')
                                     local remain = b.remain()
                                     local line = math.min(5, duration)
                                     if (remain > line) then
@@ -248,10 +248,10 @@ _singluarSetBuff = {
                                 end
                                 local diff = b.diff()
                                 if (diff > 0) then
-                                    lName = lName .. ': ' .. colour.green('+' .. math.format(diff, 2))
+                                    lName = lName .. ': ' .. colour.hex(colour.lawngreen, '+' .. math.format(diff, 2))
                                     maskTexture = 'signal\\up'
                                 elseif (diff < 0) then
-                                    lName = lName .. ': ' .. colour.red(math.format(diff, 2))
+                                    lName = lName .. ': ' .. colour.hex(colour.indianred, math.format(diff, 2))
                                     maskTexture = 'signal\\down'
                                     borderTexture = 'btn\\border-red'
                                 end

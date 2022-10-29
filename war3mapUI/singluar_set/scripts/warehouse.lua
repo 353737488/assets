@@ -160,14 +160,14 @@ _singluarSetWarehouse = {
         --- 仓存显示
         local qty = #(p.warehouseSlot())
         if (qty >= stage.warehouse_max) then
-            tmpData.cell = p.name() .. ' 的仓库  ' .. colour.red(qty .. '/' .. stage.warehouse_max)
+            tmpData.cell = p.name() .. ' 的仓库  ' .. colour.hex(colour.indianred, qty .. '/' .. stage.warehouse_max)
         else
             tmpData.cell = p.name() .. ' 的仓库  ' .. qty .. '/' .. stage.warehouse_max
         end
         --- 资源显示
         local r = p.worth()
         for i, k in ipairs(stage.warehouse_resAllow) do
-            tmpData.resInfo[i] = colour.hex(math.floor(r[k] or 0), stage.warehouse_resOcc[k].color)
+            tmpData.resInfo[i] = colour.hex(stage.warehouse_resOcc[k].color, math.floor(r[k] or 0))
         end
         --- 仓库物品控制
         local storage = p.warehouseSlot().storage()
