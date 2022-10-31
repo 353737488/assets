@@ -57,7 +57,7 @@ _singluarSetWarehouse = {
                     local tips = {
                         '资源名称: ' .. n,
                         '资源总量: ' .. math.floor(r[k] or 0),
-                        '资源获得率: ' .. math.format(100 + p.worthRatio(), 2) .. '%',
+                        '资源获得率: ' .. math.format(p.worthRatio(), 2) .. '%',
                     }
                     local cov = Game().worthConvert(k)
                     if (cov ~= nil) then
